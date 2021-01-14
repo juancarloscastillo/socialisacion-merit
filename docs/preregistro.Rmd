@@ -133,17 +133,18 @@ _Hipótesis de moderación_
 
 * $H_3$: La relación entre percepción meritocrática de los padres y de los hijos (H1) será más positiva para aquellos que experimentan un mayor sentido de justicia en la escuela.
 
+
 _Hipótesis de contexto socioeconómico_
 
-* $H_4$: El nivel socioeconómico de la familia posee un efecto positivo sobre las percepciones meritocráticas del estudiante
+* $H_4$: El estatus socioeconómico de la familia posee un efecto positivo sobre las percepciones meritocráticas del estudiante
 
-* $H_5$: El nivel socioeconómico de la escuela posee un efecto positivo sobre las percepciones meritocráticas del estudiante
+* $H_5$: El estatus socioeconómico de la escuela posee un efecto positivo sobre las percepciones meritocráticas del estudiante
 
 _Hipótesis de mediación_
 
-* $H_6$: La percepción meritocrática de los padres media la relación entre el nivel socioeconómico de los padres y la percepción meritocrática de los estudiantes.
+* $H_6$: La percepción meritocrática de los padres media la relación entre el estatus socioeconómico de los padres y la percepción meritocrática de los estudiantes.
 
-* $H_7$: La sensación de justicia en las notas media la relación entre el nivel socioeconómico de la escuela y la percepción meritocrática estudiantes.
+* $H_7$: La sensación de justicia en las notas media la relación entre el estatus socioeconómico de la escuela y la percepción meritocrática estudiantes.
 
 ## Describa la(s) variable(s) clave(s) especificando cómo se medirán.
 
@@ -192,13 +193,14 @@ kable(tab02,table_format,booktabs = T, linesep = "",col.names =  c("Variable","P
   column_spec(column = 2,width = "7 cm") %>%
   column_spec(column = 3,width = "4 cm") %>%
   collapse_rows(columns = 1:2,valign = "middle")
-
 ```
+ 
 
-Las variables independientes de nivel uno pueden dividirse de acuerdo a si corresponden a padres o estudiantes. En el caso de los padres, existen dos variables relevantes: percepción de meritocracia y nivel socioeconómico. Para la percepción de meritocracia los indicadores y categorías son idénticas a la variable dependiente utilizada en el cuestionario de estudiantes. Para el nivel socioeconómico, el indicador a utilizar serán los ingresos declarados por los padres, el cuál cuenta con 11 tramos de ingresos. En el caso de los estudiantes, se utilizarán dos indicadores que buscan medir el sentido de justicia en las notas. El primer indicador corresponde al reporte del estudiante sobre su nota promedio obtenida el año anterior, y el segundo indicador corresponde al reporte sobre la nota esperada. A partir de estos indicadores se utilizará la formula de @jasso_New_1980 sobre la evaluación de justicia, siguiendo las aplicaciones al ámbito educativo por parte de @resh_Sense_2014, @resh_Sense_2017, @resh_Sense_2018. La formula corresponde al logaritmo natural de la proporción entre la recompensa obtenida y la recompensa justa, en este caso las notas:
+Las variables independientes, de la de nivel uno pueden dividirse de acuerdo a si corresponden a padres o estudiantes. En el caso de los padres, existen dos variables relevantes: percepción de meritocracia y estatus socioeconómico. Para la percepción de meritocracia los indicadores y categorías son idénticas a la variable dependiente utilizada en el cuestionario de estudiantes. Para el estatus socioeconómico, el indicador a utilizar serán los ingresos declarados por los padres, el cuál cuenta con 11 tramos de ingresos. En el caso de los estudiantes,se utiliza una pregunta para medir directamente la sensación de justicia en las notas y  dos indicadores para medir indirectamente el sentido de justicia en las notas. El primero de estos dos indicadores corresponde al reporte del estudiante sobre su nota promedio obtenida el año anterior, y el segundo indicador corresponde al reporte sobre la nota esperada. A partir de estos indicadores se utilizará la formula de @jasso_New_1980 sobre la evaluación de justicia, siguiendo las aplicaciones al ámbito educativo por parte de @resh_Sense_2014, @resh_Sense_2017, @resh_Sense_2018. La formula corresponde al logaritmo natural de la proporción entre la recompensa obtenida y la recompensa justa, en este caso las notas:
 
 $\text{Sentido de justicia en notas}= ln(\frac{\text{nota obtenida}}{\text{nota esperada}})$
 
+\pagebreak
 
 
 ```{r include=FALSE}
@@ -218,15 +220,17 @@ kable(tab03,table_format,booktabs = T, linesep = "",col.names =  c("Variable","P
     position = "center",
     font_size = 10,
     bootstrap_options=c("striped", "bordered")) %>%
-  column_spec(column = 1, width = "3 cm", ) %>%
-  column_spec(column = 2,width = "7 cm") %>%
-  column_spec(column = 3,width = "4 cm")
+  column_spec(column = 1, width = "4 cm", ) %>%
+  column_spec(column = 2,width = "6 cm") %>%
+  column_spec(column = 3,width = "4 cm") %>%
+  collapse_rows(columns = 1:2,valign = "middle")
 
 ```
 
-Para calcular el nivel socioeconómico de la escuela se utilizará el promedio de nivel socioeconómico de los padres.
+Para calcular el estatus socioeconómico de la escuela se utilizará el promedio de estatus socioeconómico de los padres.Se utilizara el valor intermedio de cada rango para calcular el promedio de la escuela, utilizando el estatus socioeconómico familiar como una variable cuantitativa. El nivel educativo de los padres a nivel escuela se trabajara como una variable cuantitativa generada a partir de la proporción de padres con educación universitaria. Alternativamente se probara un promedio de años de educación. 
 
-Las variables control incluiran sexo del estudiante ...
+Las variables control incluirán edad, sexo, posición política de padres y estudiantes, ciudad, dependencia administrativa de la escuela, heterogeneidad socioeconómica de la escuela y cantidad de libros en el hogar.
+
 
 
 ## Especifique exactamente qué análisis se realizará para examinar la pregunta / hipótesis principal
@@ -237,7 +241,7 @@ Esta investigación posee dos variables dependientes de nivel ordinal. En un pri
 
 [^1]: En modelos ordinales multinivel la variables dependiente representa el cálculo de la probabilidad acumulada de que un estudiante responda hasta $C$ en los indicadores de percepción de meritocracia, siendo $Y_{cij}$ una respuesta categórica ordenada de un estudiante $i^{th}$ en una escuela (cluster) $j^{th}$ con $C$ categorías ordenadas, codificadas como $C = 1,2,3,4$. Esta probabilidad se calcula en función de: el intercepto por cada categoría $a_c$, los coeficientes $\gamma_1$ y $\gamma_2$ para la percepción de meritocracia de los padres y el sentido de justicia en las notas respectivamente, $\gamma_n$ para las variables de control, $u_{0j}$ como termino de error para una escuela $j$ y $e_{ij}$ como error de la estimación para el individuo $i$ en una escuela $j$. Para la estimación se utilizarán librerías especializadas de R como `clmm2` y `mvord` [@hirk_mvord_2020]
 
-Los modelos serán estimados incorporando las variables independientes asociadas a cada hipótesis más las variables de control.
+Los modelos serán estimados incorporando las variables independientes asociadas a cada hipótesis más las variables de control. Considerando que tenemos una medida directa y una medida indirecta del sentido de justicia en las notas, todos los modelos serán calculados dos veces, una con la medición directa y otra con la medición indirecta. 
 
 El análisis se llevará a cabo con el software estadístico `R` versión 4.0.3 "Bunny-Wunnies Freak Out".
 
