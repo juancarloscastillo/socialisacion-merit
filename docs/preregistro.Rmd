@@ -108,7 +108,7 @@ Para la elaboración de este pre-registro se ha seguido la plantilla de preinscr
 
 ## Resumen
 
-Estudios de la educación cívica han producido valiosa evidencia sobre la socialización política y la preparación para la ciudadanía democrática. Desde la socialización política se ha estudiado la transmisión intergeneracional de variadas actitudes, creencias y comportamientos políticos, pero se han incluido muy pocos estudios sobre la justicia distributiva. ¿Creen los jóvenes que la desigualdad actual es justa? ¿Creen que los recursos se distribuyen meritocráticamente según el esfuerzo? Estas son algunas preguntas del campo de la justicia distributiva, que tendría sentido realizar en el marco de la socialización política debido a que las creencias meritocraticas se asocian con temas cívicos como el autoritarismo social, la justificación de las desigualdades y la intolerancia [@madeira_Primes_2019; @bay-cheng_Tracking_2015a; @azevedo_Neoliberal_2019]. En vista de lo anterior la pregunta general de este estudio es ¿En qué medida la familia y la escuela afectan la percepción de la meritocracia de los estudiantes? La percepción de meritocracia se refiere a una constatación u observación personal sobre el funcionamiento de la meritocracia en la sociedad, entendida como que los recursos se distribuyen en base a mérito (esfuerzo y talento). Este estudio busca analizar las percepciones de estudiantes de 2do medio en Chile (n = 1635) en relación con dos agentes de socialización: la familia y la escuela. Se hipotetiza en términos generales que las creencias meritocraticas de los estudiantes son influidas por características de la familia, como las opiniones y los recursos, así como también por vivencias en la escuela, como la sensación de justicia en las notas y la heterogeneidad socioeconómica experimentada.
+Estudios en el área de la educación cívica y formación ciudadana han generado valiosa evidencia sobre la socialización política y la preparación para la ciudadanía democrática. Desde la socialización política se ha estudiado la transmisión intergeneracional de variadas actitudes, creencias y comportamientos políticos de estudiantes y jóvenes, sin embargo hasta ahora se existen escasos estudios que consideran opiniones y creencias de los jóvenes sobre la justicia en la sociedad. ¿Creen los jóvenes que la desigualdad actual es justa o injusta? Más específicamente, ¿en qué medida consideran los jóvenes que los recursos se distribuyen meritocráticamente según el esfuerzo? Estas son algunas preguntas del campo de la justicia distributiva que tendría sentido realizar en el marco de la socialización política, ya que creencias meritocraticas han sido vinculadas a temas cívicos como el autoritarismo social, la justificación de las desigualdades y la intolerancia [@madeira_Primes_2019; @bay-cheng_Tracking_2015a; @azevedo_Neoliberal_2019]. En vista de lo anterior la pregunta general de este estudio es: ¿En qué medida la familia y la escuela afectan la percepción de la meritocracia de los estudiantes? La percepción de meritocracia se refiere a una constatación u observación personal sobre el funcionamiento de la meritocracia en la sociedad, entendida como que los recursos se distribuyen en base a mérito (esfuerzo y talento), en lugar de otros factores como origen social o contactos personales. Este estudio busca analizar las percepciones de estudiantes de 2do medio en Chile (n = 1635) en relación con dos agentes de socialización: la familia y la escuela. Se hipotetiza en términos generales que las creencias meritocráticas de los estudiantes son influidas por características de la familia, como las opiniones y los recursos, así como también por vivencias en la escuela, como la experiencia de justicia en las calificaciones obtenidas.
 
 \pagebreak
 
@@ -148,7 +148,7 @@ _Hipótesis de mediación_
 
 ## Describa la(s) variable(s) clave(s) especificando cómo se medirán.
 
-Las variables más revelantes para el estudio se muestran a continuación:
+Las variables más relevantes para el estudio se muestran a continuación:
 
 ```{r include=FALSE}
 cap1 <- "Variables dependientes."
@@ -194,11 +194,11 @@ kable(tab02,table_format,booktabs = T, linesep = "",col.names =  c("Variable","P
   column_spec(column = 3,width = "4 cm") %>%
   collapse_rows(columns = 1:2,valign = "middle")
 ```
- 
 
-Las variables independientes, de la de nivel uno pueden dividirse de acuerdo a si corresponden a padres o estudiantes. En el caso de los padres, existen dos variables relevantes: percepción de meritocracia y estatus socioeconómico. Para la percepción de meritocracia los indicadores y categorías son idénticas a la variable dependiente utilizada en el cuestionario de estudiantes. Para el estatus socioeconómico, el indicador a utilizar serán los ingresos declarados por los padres, el cuál cuenta con 11 tramos de ingresos. En el caso de los estudiantes,se utiliza una pregunta para medir directamente la sensación de justicia en las notas y  dos indicadores para medir indirectamente el sentido de justicia en las notas. El primero de estos dos indicadores corresponde al reporte del estudiante sobre su nota promedio obtenida el año anterior, y el segundo indicador corresponde al reporte sobre la nota esperada. A partir de estos indicadores se utilizará la formula de @jasso_New_1980 sobre la evaluación de justicia, siguiendo las aplicaciones al ámbito educativo por parte de @resh_Sense_2014, @resh_Sense_2017, @resh_Sense_2018. La formula corresponde al logaritmo natural de la proporción entre la recompensa obtenida y la recompensa justa, en este caso las notas:
 
-$\text{Sentido de justicia en notas}= ln(\frac{\text{nota obtenida}}{\text{nota esperada}})$
+En cuanto a las variables independientes, a nivel individual pueden dividirse de acuerdo a si corresponden a padres o estudiantes. En el caso de los padres, existen dos variables relevantes: percepción de meritocracia y estatus socioeconómico. Para la percepción de meritocracia los indicadores y categorías son idénticas a la variable dependiente utilizada en el cuestionario de estudiantes. Para el estatus socioeconómico, el indicador a utilizar serán los ingresos declarados por los padres, el cuál cuenta con 11 tramos de ingresos. En el caso de los estudiantes, se utiliza una pregunta para medir directamente la sensación de justicia en las notas y otro que lo hace de manera indirecta. El indicador de medición indirecta de justicia en las notas se obtiene mediante una proporción entre el reporte de la nota promedio obtenida el año anterior (recompensa obtenida) y el reporte sobre la nota considerada justa. A partir de estos indicadores se utilizará la formula de @jasso_New_1980 sobre la evaluación de justicia, siguiendo las aplicaciones al ámbito educativo por parte de @resh_Sense_2014, @resh_Sense_2017, @resh_Sense_2018. La formula corresponde al logaritmo natural de la proporción entre la recompensa obtenida y la recompensa justa, en este caso las notas:
+
+$\text{Sentido de justicia en notas}= ln(\frac{\text{nota obtenida}}{\text{nota justa}})$
 
 \pagebreak
 
@@ -227,7 +227,7 @@ kable(tab03,table_format,booktabs = T, linesep = "",col.names =  c("Variable","P
 
 ```
 
-Para calcular el estatus socioeconómico de la escuela se utilizará el promedio de estatus socioeconómico de los padres.Se utilizara el valor intermedio de cada rango para calcular el promedio de la escuela, utilizando el estatus socioeconómico familiar como una variable cuantitativa. El nivel educativo de los padres a nivel escuela se trabajara como una variable cuantitativa generada a partir de la proporción de padres con educación universitaria. Alternativamente se probara un promedio de años de educación. 
+Para calcular el estatus socioeconómico de la escuela se utilizará el promedio de estatus socioeconómico de los padres. Se utilizara el valor intermedio de cada rango de ingresos para calcular el promedio de la escuela, utilizando el estatus socioeconómico familiar como una variable cuantitativa. El nivel educativo de los padres a nivel escuela se trabajara como una variable cuantitativa generada a partir de la proporción de padres con educación universitaria.
 
 Las variables control incluirán edad, sexo, posición política de padres y estudiantes, ciudad, dependencia administrativa de la escuela, heterogeneidad socioeconómica de la escuela y cantidad de libros en el hogar.
 
@@ -235,19 +235,19 @@ Las variables control incluirán edad, sexo, posición política de padres y est
 
 ## Especifique exactamente qué análisis se realizará para examinar la pregunta / hipótesis principal
 
-Debido a que la muestra posee una estructura jerárquica (estudiantes anidados en escuelas), se estimarán   regresiones   multinivel   para   probar   las   hipótesis   siguiendo   los   pasos recomendados para este tipo de modelos (Aguinis et al., 2013). El estudio considera 1635 estudiantes  participantes anidados  en  64 escuelas.
+Debido a que la muestra posee una estructura jerárquica (estudiantes anidados en escuelas), se estimarán   regresiones   multinivel   para   contrastar   las   hipótesis   siguiendo   los   pasos recomendados para este tipo de modelos (Aguinis et al., 2013). El estudio considera 1635 estudiantes  participantes anidados  en  64 escuelas.
 
 Esta investigación posee dos variables dependientes de nivel ordinal. En un primer momento se analizará la distribución de ellas así como su grado de correlación, y en caso que su correlación sea estadísticamente significativa a ambos niveles y con un tamaño de efecto al menos moderado, se construirá un índice promedio simple que será la variable dependiente del estudio. En este caso se utilizará el estimador de máxima verosimilitud restringida para modelos con efectos aleatorios mediante la librería `lme4` de `R`. En caso que no se fundamente apropiadamente la construcción de un índice, se trabajará con modelos multinivel para variables ordinales [@arfan_Ordinal_2017][^1] .
 
 [^1]: En modelos ordinales multinivel la variables dependiente representa el cálculo de la probabilidad acumulada de que un estudiante responda hasta $C$ en los indicadores de percepción de meritocracia, siendo $Y_{cij}$ una respuesta categórica ordenada de un estudiante $i^{th}$ en una escuela (cluster) $j^{th}$ con $C$ categorías ordenadas, codificadas como $C = 1,2,3,4$. Esta probabilidad se calcula en función de: el intercepto por cada categoría $a_c$, los coeficientes $\gamma_1$ y $\gamma_2$ para la percepción de meritocracia de los padres y el sentido de justicia en las notas respectivamente, $\gamma_n$ para las variables de control, $u_{0j}$ como termino de error para una escuela $j$ y $e_{ij}$ como error de la estimación para el individuo $i$ en una escuela $j$. Para la estimación se utilizarán librerías especializadas de R como `clmm2` y `mvord` [@hirk_mvord_2020]
 
-Los modelos serán estimados incorporando las variables independientes asociadas a cada hipótesis más las variables de control. Considerando que tenemos una medida directa y una medida indirecta del sentido de justicia en las notas, todos los modelos serán calculados dos veces, una con la medición directa y otra con la medición indirecta. 
+Los modelos serán estimados incorporando las variables independientes asociadas a cada hipótesis más las variables de control.
 
 El análisis se llevará a cabo con el software estadístico `R` versión 4.0.3 "Bunny-Wunnies Freak Out".
 
 ## ¿Algún análisis secundario?
 
-Como análisis de robustez de los modelos multinivel, se realizará la prueba d-cook para detectar casos influyentes, contrastando posteriormente la relación con y sin ellos. En la misma línea se calcularán los dfbetas para cada predictor. Con el mismo objetivo, compararemos los ajustes de los modelos multinivel con los mismos modelos pero con las variables centradas al promedio del grupo, para evaluar que el efecto que señalamos como individual no se deba al contexto de la escuela.
+Como análisis de robustez de los modelos multinivel se realizará la prueba D-cook para detectar casos influyentes, contrastando posteriormente la estimación con y sin ellos. En la misma línea se calcularán los dfbetas para cada predictor. Con el mismo objetivo, compararemos los ajustes de los modelos multinivel con los mismos modelos pero con las variables centradas al promedio del grupo, para evaluar que el efecto que señalamos como individual no se deba al contexto de la escuela.
 
 ## ¿Cuántas observaciones se recopilarán o que determinará el tamaño de la muestra? No es necesario justificar la decisión, pero sea preciso sobre cómo se determinará exactamente el número.
 
