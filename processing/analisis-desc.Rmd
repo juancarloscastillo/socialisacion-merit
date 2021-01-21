@@ -1,0 +1,191 @@
+---
+title: "Análisis descriptivo de datos - Socialización de la meritocracia"
+author: "Castillo, J.C., Iturra, J., Meneses, F. & Venegas, M."
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    df_print: paged
+    theme: readable
+    toc: yes
+    toc_float: yes
+    numbersections: true
+editor_options:
+  chunk_output_type: inline
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+El presente documento tiene por finalidad el análisis incial de datos para el artículo "La socialización de la meritocracia: el rol de la familia y la escuela" a cargo de Juan Carlos Castillo. El artículo se desarrolla en el marco del proyecto FONDECYT Regular N°1181239: "Socialización política y educación para la ciudadanía: el rol de la familia y de la escuela".
+
+El documento se estructurará en tres apartados. El primero corresponde a la carga de datos y las librerías. El segundo a los análisis descriptivos univariados. El tercero a la sección de análisis descriptivos bivariados.
+
+# Resumen ejecutivo:
+
+### Sobre el analisis:
+- Las variables de percepción concentran más del 80% en las dos categorías más altas.
+- En general, las correlaciones de las variables de interés al nivel 1 son bajas.
+- Las percepciones
+- Las correlaciones entre porcentaje ed. univ. escuela e ingresos del hogar son de 0.4.
+
+
+## Parte 1: Cargar ibrerías y datos
+
+```{r}
+# Cargar librerías
+pacman::p_load(dplyr, #Manipulacion de datos
+              stargazer, #Tablas
+              sjmisc, # Tablas
+              summarytools, # Tablas
+              kableExtra, #Tablas
+              sjPlot, #Tablas y gráficos
+              corrplot, # Correlaciones
+              sessioninfo, #  Información de la sesión de trabajo
+              ggplot2, # Graficos
+              sjlabelled) #Etiquetas
+
+# Cargar datos
+load(file = "../input/data/ap_est.RData") # Base conjunta
+```
+
+
+## Parte 2: Análisis descriptivos univariados
+### Descriptivos univariados generales
+
+A continuación se presentan los descriptivos de la base de datos completa:
+
+```{r}
+sjPlot::view_df(ap_est, show.type = T, show.prc = T, show.na = T)
+```
+
+### Descriptivos univariados variables de hipotesis
+
+Se realizan dos gráficos para variables likert. El primero corresponde a la comparación de percepción del trabajo duro en estudiates y apoderados. El segundo es la misma comparación pero para la percepción get ahead.
+
+```{r fig.width= 10}
+# Plot Likert: perc. trabajo duro apoderados y estudiantes
+
+baselik<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap)
+baselik=na.omit(baselik)
+
+# short var labels
+items <- c("Percepcion trabajo duro estudiantes", "Percepcion trabajo duro apoderados")
+
+# cambiar orden para la leyenda
+labels= c("Nada Importante", "Poco Importante", "Importante", "Muy Importante")  ### E
+sjPlot::plot_likert(baselik,
+                         axis.labels   = items,
+                         legend.labels = labels,
+                         legend.pos = "bottom",
+                         #cat.neutral   = , # identifica a indiferentes
+                         geom.colors   = c("#9ECAE1", "#6BAED6", "#4292C6",
+                                           "#2171B5"), # colorbrewer2.org
+                         sort.frq      = "neg.asc", # sort descending)
+                         title         = "Percepción de meritocracia padres e hijos",
+                         intercept.line.color = "white", # vertical middle
+                         expand.grid   = F, # no inner margins in plot
+                         show.n        = FALSE, # hide N's in axis labels
+                         grid.range    = 1.8,
+                         geom.size = 0.6, values = "sum.outside")
+
+
+```
+
+```{r fig.width=10}
+# Plot Likert: perc. get ahead apoderados y estudiantes
+
+baselik<- ap_est %>% select(perc_get_ahead_est,perc_get_ahead_ap)
+baselik=na.omit(baselik)
+
+# short var labels
+items <- c("Percepcion get ahead estudiantes", "Percepcion get head apoderados")
+
+# cambiar orden para la leyenda
+labels= c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")  ### E
+sjPlot::plot_likert(baselik,
+                         axis.labels   = items,
+                         legend.labels = labels,
+                         legend.pos = "bottom",
+                         #cat.neutral   = , # identifica a indiferentes
+                         geom.colors   = c("#9ECAE1", "#6BAED6", "#4292C6",
+                                           "#2171B5"), # colorbrewer2.org
+                         sort.frq      = "neg.asc", # sort descending)
+                         title         = "Percepción de meritocracia padres e hijos",
+                         intercept.line.color = "white", # vertical middle
+                         expand.grid   = F, # no inner margins in plot
+                         show.n        = FALSE, # hide N's in axis labels
+                         grid.range    = 1.8,
+                         geom.size = 0.6, values = "sum.outside")
+
+```
+
+# Descriptivos sentidos de justicia
+
+```{r results='asis'}
+select(ap_est, sj_indirect_ln, sj_indirect_noln, sj_direct) %>% summarytools::descr()
+```
+
+## Parte 3: Análisis descriptivo bivariado
+
+```{r}
+# Matriz de correlación entre variales principales
+
+basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_get_ahead_est,perc_get_ahead_ap,sj_indirect_ln,sj_direct,ingresos_pc_esc)
+basecor=na.omit(basecor)
+cormat=cor(basecor)
+#save
+#png("output/results/corplot_totscores.png",width=600,height=600)
+windowsFonts(A = windowsFont("Times New Roman"))
+rownames(cormat) <-c(
+    "A. Trabajo Duro Estudiantes",
+    "B. Trabajo Duro Padres",
+    "C. Get ahead Estudiantes",
+    "D. Get ahead Padres",
+    "E. Sentido justicia in",
+    "F. Sentido justicia dir",
+    "G. Ingresos")
+colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)", "(G)")
+corrplot(
+cormat,
+  method = "color",
+  type = "upper",
+  tl.col = "black",
+  addCoef.col = "black",
+  diag = TRUE,
+  family = "A",
+  number.font = 6,
+  tl.cex =0.75,
+  number.cex = 1)
+```
+
+```{r}
+# Matriz de correlación entre variables nivel 2
+
+basecor<- ap_est %>% select(ingresos_esc, ingresos_pc_esc, heterogen_esc, univ_esc)
+basecor=na.omit(basecor)
+cormat=cor(basecor)
+#save
+#png("output/results/corplot_totscores.png",width=600,height=600)
+windowsFonts(A = windowsFont("Times New Roman"))
+rownames(cormat) <-c(
+    "A. Ingresos del hogar por escuela",
+    "B. Ingresos per capita por escuela",
+    "C. Heterogeneidad socioeconomica escuela",
+    "D. Porcentaje ed. tericiaria por escuela")
+colnames(cormat) <-c("(A)", "(B)","(C)","(D)")
+corrplot(
+cormat,
+  method = "color",
+  type = "upper",
+  tl.col = "black",
+  addCoef.col = "black",
+  diag = TRUE,
+  family = "A",
+  number.font = 6,
+  tl.cex =0.75,
+  number.cex = 1)
+```
+
+
