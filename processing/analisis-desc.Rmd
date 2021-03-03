@@ -33,7 +33,8 @@ El documento se estructurará en tres apartados. El primero corresponde a la car
 - Uso de nueva base a partir de cambios en el procesamiento.
 - Cambio en el nombre de variable *get ahead* por *esfuerzo*
 - na.omit eliminado en gráficos Likert
-- na.omit sustituido por listwise deletion en correlaciones.
+- na.omit sustituido por listwise deletion en correlaciones. NOTA: Se agrega el argumento *complete.obs*
+- Incorporación propuesta Francisco
 
 ## Parte 1: Cargar ibrerías y datos
 
@@ -194,5 +195,138 @@ cormat,
   tl.cex =0.75,
   number.cex = 1)
 ```
+
+## Propuesta Francisco
+
+```{r}
+# Matriz de correlación con otras variables de interés
+
+basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap,sj_indirect_ln,sj_direct,ingresos_pc_esc, perc_falta_talento_ap, perc_falta_talento_est, perc_falta_esfuerzo_est, perc_falta_esfuerzo_ap, perc_familia_rica_est, perc_familia_rica_ap)
+
+cormat=cor(basecor, use = "complete.obs")
+windowsFonts(A = windowsFont("Times New Roman"))
+rownames(cormat) <-c(
+    "A. Trabajo Duro Estudiantes",
+    "B. Trabajo Duro Padres",
+    "C. Get ahead Estudiantes",
+    "D. Get ahead Padres",
+    "E. Sentido justicia in",
+    "F. Sentido justicia dir",
+    "G. Ingresos",
+    "H. ap Ftalento",
+    "I. est Ftalento",
+    "J. est Fesf",
+    "K. ap Fest",
+    "M. est famrich",
+    "N. ap famrich")
+colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)", "(G)", "(H)","(I)", "(J)","(K)","(M)","(N)")
+corrplot(
+cormat,
+  method = "color",
+  type = "upper",
+  tl.col = "black",
+  addCoef.col = "black",
+  diag = TRUE,
+  family = "A",
+  number.font = 6,
+  tl.cex =0.75,
+  number.cex = 1)
+
+table(basecor$perc_trabajo_duro_est==basecor$perc_trabajo_duro_ap)
+```
+
+## Indagación rbd
+
+```{r}
+table(ap_est$rbd_est)
+```
+
+```{r}
+base218<- ap_est %>% filter(rbd_est==218)
+table(is.na(base218$ingresos_esc))
+table(base218$ingresos_esc)
+table(base218$ingresos)
+```
+
+## Prueba modelo
+```{r}
+library(lavaan)
+
+baseafc<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap, perc_falta_talento_ap, perc_falta_talento_est, perc_falta_esfuerzo_est, perc_falta_esfuerzo_ap,sj_indirect_noln, ingresos_pc, rbd_est)
+baseafc <- set_na(baseafc, na = c(5,9), drop.levels = TRUE, as.tag = FALSE)
+baseafc=na.omit(baseafc)
+
+
+
+model01 <- 'perc_merit_est=~perc_trabajo_duro_est + perc_esfuerzo_est  
+            atri_merit_est=~perc_falta_talento_est+perc_falta_esfuerzo_est
+            perc_merit_ap=~perc_trabajo_duro_ap + perc_esfuerzo_ap  
+            atri_merit_ap=~perc_falta_talento_ap+perc_falta_esfuerzo_ap
+            '
+
+fit1_o <- cfa(model = model01,data = baseafc,
+            ordered = c("perc_trabajo_duro_est","perc_esfuerzo_est","perc_falta_talento_est", "perc_falta_esfuerzo_est","perc_trabajo_duro_ap","perc_esfuerzo_ap","perc_falta_talento_ap","perc_falta_esfuerzo_ap"))
+
+#---------------------------------------------------#
+fitMeasures(fit1_o, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea"))
+summary(fit1_o, fit.measures=T, standardized=T)
+```
+
+```{r}
+p1a <- predict(fit1_o)
+scores_apod = as.data.frame(p1a)
+# Merge with factor scores
+apod_cfa2_sco = cbind(baseafc, scores_apod)
+# Check
+stargazer(apod_cfa2_sco, type = "text")
+# Save  factor scores
+```
+
+```{r}
+basecor<- apod_cfa2_sco[,9:15]
+basecor<- basecor[-c(3)]
+
+#basecor=na.omit(basecor)
+cormat=cor(basecor, use = "na.or.complete")
+
+#save
+#png("output/results/corplot_totscores.png",width=600,height=600)
+windowsFonts(A = windowsFont("Times New Roman"))
+rownames(cormat) <-c(
+    "A. Sentido de justicia notas",
+    "B. Ingreso familiar",
+    "C. Percepción meritocratica Estudiante",
+    "D. Atribución de pobreza meritocratica Estudiante",
+    "E. Percepción meritocratica Apoderado",
+    "F. Atribución de pobreza meritocratica Apoderado")
+colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)")
+corrplot(
+cormat,
+  method = "color",
+  type = "upper",
+  tl.col = "black",
+  addCoef.col = "black",
+  diag = TRUE,
+  family = "A",
+  number.font = 6,
+  tl.cex =0.75,
+  number.cex = 1)
+```
+
+```{r results='asis'}
+library(lme4)
+library(texreg)
+results_0_accum  = lmer(perc_merit_est ~ 1 + (1| rbd_est), data = apod_cfa2_sco, REML=F)
+results_1_accum  = lmer(perc_merit_est ~ 1 + ingresos_pc + (1| rbd_est), data = apod_cfa2_sco, REML=F)
+results_2_accum  = lmer(perc_merit_est ~ 1 + sj_indirect_noln + (1| rbd_est), data = apod_cfa2_sco, REML=F)
+results_3_accum  = lmer(perc_merit_est ~ 1 +  perc_merit_ap + (1| rbd_est), data = apod_cfa2_sco, REML=F)
+results_4_accum  = lmer(perc_merit_est ~ 1 + atri_merit_ap + (1| rbd_est), data = apod_cfa2_sco, REML=F)
+
+results_5_accum  = lmer(perc_merit_est ~ 1 + perc_merit_ap + atri_merit_ap +  sj_indirect_noln + ingresos_pc + (1| rbd_est), data = apod_cfa2_sco, REML=F)
+
+htmlreg(list(results_0_accum, results_1_accum,results_2_accum, results_3_accum,results_4_accum,results_5_accum), custom.coef.names = c("Intercepto", "Ingresos Percapita", "Sentido de justicia", "Percepción Meritocratica Padres", "Atribución Meritocratica Padres"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica")
+
+```
+
 
 

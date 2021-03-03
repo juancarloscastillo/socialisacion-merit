@@ -72,6 +72,7 @@ est <- haven::read_dta("https://github.com/formacionciudadana/data-paces/raw/mai
 ## Parte 3: Seleccionar variables
 
 ```{r}
+
 # Seleccionar  y renombrar variables de la base de datos de apoderados
 ap_proc <- ap %>% dplyr::select(rbd = RBD,
                                 folio = FOLIO_EST,
@@ -85,9 +86,13 @@ ap_proc <- ap %>% dplyr::select(rbd = RBD,
                                ingresos_tramos = P55,
                                libros_hogar = P47,
                                perc_trabajo_duro = P9D,
+                               perc_familia_rica = P9A,
                                perc_esfuerzo = P10D,
-                               recompensa_hijos = P10C
-                               ) 
+                               recompensa_hijos = P10C,
+                               perc_falta_talento = P11A,
+                               perc_falta_esfuerzo = P11C,
+                               perc_faltasist_econ =P11D,
+                               perc_faltasist_educ =P11E) 
 
 # Seleccionar y renonbrar variables de la base de datos de estudiantes.                               
 est_proc <- est  %>% dplyr::select(rbd = RBD,
@@ -100,12 +105,17 @@ est_proc <- est  %>% dplyr::select(rbd = RBD,
                                  educ_madre = P67,
                                  libros_hogar = P68,
                                  perc_trabajo_duro = P24D,
+                                 perc_familia_rica = P24A,
                                  perc_esfuerzo = P25D,
                                  prom_obt = P27,
                                  prom_mer = P28,
                                  sj_direct = P29,
-                                 recompensa = P25C
-                                 )
+                                 recompensa = P25C,
+                                 perc_falta_talento = P26A,
+                                 perc_falta_esfuerzo = P26C,
+                                 perc_faltasist_econ =P26D,
+                                perc_faltasist_educ =P26E) 
+                                 
                                  
 ```
 
@@ -116,6 +126,7 @@ est_proc <- est  %>% dplyr::select(rbd = RBD,
 ##### Descriptivo
 ```{r}
 frq(est_proc$perc_trabajo_duro) # Frecuencias
+table(est_proc$perc_trabajo_duro)
 ```
 
 ##### Recodificación
@@ -848,6 +859,7 @@ No aplica.
 Se construyen dos variables para el ingreso a nivel escuela. La primera a partir de la agregación del ingreso del hogar. La segunda a partir de la agregación del ingreso per capita.
 
 ```{r}
+
 # Ingresos a nivel escuela
  ap_proc <- ap_proc %>%
      group_by(rbd) %>%
@@ -856,7 +868,7 @@ Se construyen dos variables para el ingreso a nivel escuela. La primera a partir
 # Ingresos per capita a nivel escuela
  ap_proc <- ap_proc %>%
      group_by(rbd) %>%
-     mutate(ingresos_pc_esc = mean(ingresos, na.rm = T))
+     mutate(ingresos_pc_esc = mean(ingresos_pc, na.rm = T))
  
 #---- Descriptivos variables nuevas----
 # Ingresos a nivel escuela
@@ -882,7 +894,7 @@ Se construye una variable que agrega el porcentaje de apoderados con educación 
 ap_proc$univ<- ifelse(ap_proc$educ==4,1,0)
  ap_proc <- ap_proc %>%
      group_by(rbd) %>%
-     mutate(univ_esc = mean(univ))
+     mutate(univ_esc = mean(univ, na.rm = T))
 
 # ---- Descriptivos nuevas variables ----
 frq(ap_proc$univ)
@@ -925,7 +937,7 @@ Se construye variable de heterogeneidad socioeconomica de la escuela a partir de
 
 ap_proc <- ap_proc %>%
      group_by(rbd) %>%
-     mutate(heterogen_esc = sd(ingresos)) 
+     mutate(heterogen_esc = sd(ingresos, na.rm = T)) 
 
 #---- Descriptivo variables nuevas ----
 
