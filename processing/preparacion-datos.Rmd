@@ -30,7 +30,9 @@ Se listan los puntos mas importantes:
 
 - Para la variable de año de nacimiento del apoderado existían datos poco probables. En detalle, existían 10 casos que indican años mayores a 1992. Provisoriamente fueron recodificados a NA.
 
-- Variables de nivel 2 (ingresos por escuela, educación terciaria por escuela y heterogeneidad) cuentan con demasiados NA. Revisar código.
+- ~~Variables de nivel 2 (ingresos por escuela, educación terciaria por escuela y heterogeneidad) cuentan con demasiados NA. Revisar código.~~
+
+- Dos cosas importantes sobre la variable ingresos. La primera es que existen 148 casos correspondientes a NS/NR que han sido recodificados a NA, discutir mantener categoría. La segunda es que en ingresos nivel dos solo existen 7 NA, pertenecientes a los RBD 10452 (solo contestaron estudiantes) y 31047 (ninguno de los seis apoderados de este colegio reportaron sus ingresos). 
 
 ## Registro de cambios desde reunión 21-1-21:
 - Cambio presentación de las variables. Se dividen entre variables estudiantes y apoderados.
@@ -41,6 +43,8 @@ Se listan los puntos mas importantes:
 - Se arregla construcción de ingreso del hogar. Faltaba una categoría por codificar.
 - Se recodifican los valores 8 y 9 en Ns/Nr para las variables de posición política.
 - Se desactiva indice flotante ya que choca con la tabla de summarytools.
+- Se agregan variables para nueva propuesta
+- Se arregla caso mal pareado (897 estudiante). Era un error de tipeo, aunque no cambia el N.
 
 # Procesamiento
 ## Parte 1: Cargar librerías  
@@ -66,6 +70,9 @@ ap <- haven::read_dta("https://github.com/formacionciudadana/data-paces/raw/main
 
 # Base de estudiantes.
 est <- haven::read_dta("https://github.com/formacionciudadana/data-paces/raw/main/docs/paces/data/base_estudiantesv2.dta")
+
+# Arreglar caso 897
+ap$FOLIO_EST[ap$FOLIO_EST == 897] <- 892
 
 ```
 

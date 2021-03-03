@@ -131,7 +131,7 @@ dev.off()
 
 ```
 
-# Descriptivos sentidos de justicia
+### Descriptivos sentidos de justicia
 
 ```{r results='asis'}
 select(ap_est, sj_indirect_ln, sj_indirect_noln, sj_direct) %>% summarytools::descr()
@@ -196,7 +196,7 @@ cormat,
   number.cex = 1)
 ```
 
-## Propuesta Francisco
+### Propuesta Francisco
 
 ```{r}
 # Matriz de correlación con otras variables de interés
@@ -235,7 +235,7 @@ cormat,
 table(basecor$perc_trabajo_duro_est==basecor$perc_trabajo_duro_ap)
 ```
 
-## Indagación rbd
+### Indagación rbd
 
 ```{r}
 table(ap_est$rbd_est)
@@ -248,7 +248,7 @@ table(base218$ingresos_esc)
 table(base218$ingresos)
 ```
 
-## Prueba modelo
+### Prueba modelo
 ```{r}
 library(lavaan)
 
