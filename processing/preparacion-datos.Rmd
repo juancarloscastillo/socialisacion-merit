@@ -851,12 +851,12 @@ Se construyen dos variables para el ingreso a nivel escuela. La primera a partir
 # Ingresos a nivel escuela
  ap_proc <- ap_proc %>%
      group_by(rbd) %>%
-     mutate(ingresos_esc = mean(ingresos))
+     mutate(ingresos_esc = mean(ingresos, na.rm = T))
 
 # Ingresos per capita a nivel escuela
  ap_proc <- ap_proc %>%
      group_by(rbd) %>%
-     mutate(ingresos_pc_esc = mean(ingresos))
+     mutate(ingresos_pc_esc = mean(ingresos, na.rm = T))
  
 #---- Descriptivos variables nuevas----
 # Ingresos a nivel escuela

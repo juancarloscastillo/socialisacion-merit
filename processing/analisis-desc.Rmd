@@ -24,12 +24,16 @@ El documento se estructurará en tres apartados. El primero corresponde a la car
 
 # Resumen ejecutivo:
 
-### Sobre el analisis:
+## Sobre el analisis:
 - Las variables de percepción concentran más del 80% en las dos categorías más altas.
 - En general, las correlaciones de las variables de interés al nivel 1 son bajas.
-- Las percepciones
 - Las correlaciones entre porcentaje ed. univ. escuela e ingresos del hogar son de 0.4.
 
+## Registro de cambios desde reunión 21-1-21
+- Uso de nueva base a partir de cambios en el procesamiento.
+- Cambio en el nombre de variable *get ahead* por *esfuerzo*
+- na.omit eliminado en gráficos Likert
+- na.omit sustituido por listwise deletion en correlaciones.
 
 ## Parte 1: Cargar ibrerías y datos
 
@@ -68,13 +72,15 @@ Se realizan dos gráficos para variables likert. El primero corresponde a la com
 # Plot Likert: perc. trabajo duro apoderados y estudiantes
 
 baselik<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap)
-baselik=na.omit(baselik)
 
 # short var labels
 items <- c("Percepcion trabajo duro estudiantes", "Percepcion trabajo duro apoderados")
 
 # cambiar orden para la leyenda
 labels= c("Nada Importante", "Poco Importante", "Importante", "Muy Importante")  ### E
+
+#save
+png("../output/images/Plot-lik-trabajoduro.png", width = 750, height = 300)
 sjPlot::plot_likert(baselik,
                          axis.labels   = items,
                          legend.labels = labels,
@@ -89,21 +95,23 @@ sjPlot::plot_likert(baselik,
                          show.n        = FALSE, # hide N's in axis labels
                          grid.range    = 1.8,
                          geom.size = 0.6, values = "sum.outside")
-
+dev.off()
 
 ```
 
 ```{r fig.width=10}
 # Plot Likert: perc. get ahead apoderados y estudiantes
 
-baselik<- ap_est %>% select(perc_get_ahead_est,perc_get_ahead_ap)
-baselik=na.omit(baselik)
+baselik<- ap_est %>% select(perc_esfuerzo_est,perc_esfuerzo_ap)
 
 # short var labels
 items <- c("Percepcion get ahead estudiantes", "Percepcion get head apoderados")
 
 # cambiar orden para la leyenda
 labels= c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")  ### E
+
+# save
+png("../output/images/Plot-lik-getahead.png", width = 750, height = 300)
 sjPlot::plot_likert(baselik,
                          axis.labels   = items,
                          legend.labels = labels,
@@ -118,6 +126,7 @@ sjPlot::plot_likert(baselik,
                          show.n        = FALSE, # hide N's in axis labels
                          grid.range    = 1.8,
                          geom.size = 0.6, values = "sum.outside")
+dev.off()
 
 ```
 
@@ -132,11 +141,10 @@ select(ap_est, sj_indirect_ln, sj_indirect_noln, sj_direct) %>% summarytools::de
 ```{r}
 # Matriz de correlación entre variales principales
 
-basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_get_ahead_est,perc_get_ahead_ap,sj_indirect_ln,sj_direct,ingresos_pc_esc)
-basecor=na.omit(basecor)
-cormat=cor(basecor)
+basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap,sj_indirect_ln,sj_direct,ingresos_pc_esc)
+cormat=cor(basecor, use = "complete.obs")
 #save
-#png("output/results/corplot_totscores.png",width=600,height=600)
+#png("../output/images/correlacionl1.png",width=600,height=600)
 windowsFonts(A = windowsFont("Times New Roman"))
 rownames(cormat) <-c(
     "A. Trabajo Duro Estudiantes",
@@ -164,10 +172,9 @@ cormat,
 # Matriz de correlación entre variables nivel 2
 
 basecor<- ap_est %>% select(ingresos_esc, ingresos_pc_esc, heterogen_esc, univ_esc)
-basecor=na.omit(basecor)
-cormat=cor(basecor)
+cormat=cor(basecor, use = "complete.obs")
 #save
-#png("output/results/corplot_totscores.png",width=600,height=600)
+#png("../output/images/correlacionl2.png",width=600,height=600)
 windowsFonts(A = windowsFont("Times New Roman"))
 rownames(cormat) <-c(
     "A. Ingresos del hogar por escuela",
