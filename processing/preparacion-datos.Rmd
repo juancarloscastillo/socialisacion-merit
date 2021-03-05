@@ -184,7 +184,15 @@ frq(est_proc$perc_esfuerzo)
 ```
 
 ##### Otros ajustes
-No aplica.
+Creación variable: promedio de percepción de meritocracia en estudiantes
+```{r}
+# Crear variable
+est_proc$prom_percmer_est <- ((est_proc$perc_trabajo_duro + est_proc$perc_esfuerzo)/2)
+
+# Etiquetar
+ap_proc$prom_percmer_ap <- set_label(x = ap_proc$prom_percmer_ap, label = "Promedio percepcion meritocratica estudiantes")
+```
+
 
 #### Sentido de justicia (indirecto): Promedio obtenido y merecido (Var. Indep. N1)
 ##### Descriptivo
@@ -362,7 +370,7 @@ Se recodifican a "Ns/Nr" los valores 8 (No sabe) y 9 (Nr). Los valores 88 (Marca
 
 ```{r}
 # Posición política estudiantes
-est_proc$pos_pol[est_proc$pos_pol == 8 | est_proc$pos_pol == 9] <- 10
+est_proc$pos_pol[est_proc$pos_pol == 8 | est_proc$pos_pol == 9] <- 99
 est_proc$pos_pol <- set_labels(est_proc$pos_pol,
             labels=c("Derecha" = 1,
                      "Centro derecha" = 2,
@@ -371,7 +379,7 @@ est_proc$pos_pol <- set_labels(est_proc$pos_pol,
                      "Izquierda" = 5,
                      "Independiente" = 6,
                      "Ninguna" = 7,
-                     "Ns/Nr"=10)) #Etiquetado categorías
+                     "Ns/Nr"=99)) #Etiquetado categorías
 est_proc$pos_pol<- set_na(est_proc$pos_pol, na = c(88), drop.levels = TRUE, as.tag = FALSE)
 ```
 
@@ -519,7 +527,14 @@ frq(ap_proc$perc_trabajo_duro)
 ```
 
 ##### Otros ajustes
-No aplica.
+Creación variable: promedio de percepción de meritocracia en apoderados
+```{r}
+# Crear variable
+ap_proc$prom_percmer_ap <- ((ap_proc$perc_trabajo_duro + ap_proc$perc_esfuerzo)/2)
+
+# Etiquetar
+ap_proc$prom_percmer_ap <- set_label(x = ap_proc$prom_percmer_ap, label = "Promedio percepcion meritocratica apoderados")
+```
 
 #### Percepción meritocratica apoderados: Esfuerzo para salir adelante (Var. Indep. N1)
 
@@ -556,9 +571,24 @@ frq(ap_proc$ingresos_tramos)
 ```
 
 ##### Recodificación
-Se recodifica a NA los valores 12 y 13, correspondientes a las categorías "No sabe" y "No responde"
-
+Se juntan los números 12 y 13, correspondiente a las categorías "No sabe" y "No responde", respectivamente.
 ```{r}
+# Ingresos tramos
+ap_proc$ingresos_tramos[ap_proc$ingresos_tramos == 12 | ap_proc$ingresos_tramos == 13] <- 99
+
+# Etiquetar
+ap_proc$ingresos_tramos <- set_label(x = ap_proc$ingresos_tramos, label = c("Menos de $101.000 mensuales líquidos" = 1,
+                                                                            "De $101.001 a $134.000 mensuales líquidos" = 2,
+                                                                            "De $134.001 a $179.000 mensuales líquidos" = 3,
+                                                                            "De $179.001 a $224.000 mensuales líquidos" = 4,
+                                                                            "De $224.001 a $291.000 mensuales líquidos" = 5,
+                                                                            "De $291.001 a $358.000 mensuales líquidos" = 6,
+                                                                            "De $358.001 a $448.000 mensuales líquidos" = 7,
+                                                                            "De $448.001 a $1.000.000 mensuales líquidos" = 8,
+                                                                            "De $1.000.001 a $2.000.000 mensuales líquidos" = 9,
+                                                                            "De $2.000.001 a $3.000.000 mensuales líquidos" = 10,
+                                                                            "Ns/Nr"=99))
+# Drop levels
 ap_proc$ingresos_tramos <- set_na(ap_proc$ingresos_tramos, na = c(12,13), drop.levels = TRUE, as.tag = FALSE)
 ```
 

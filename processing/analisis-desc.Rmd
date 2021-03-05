@@ -67,7 +67,7 @@ sjPlot::view_df(ap_est, show.type = T, show.prc = T, show.na = T)
 
 ### Descriptivos univariados variables de hipotesis
 
-Se realizan dos gráficos para variables likert. El primero corresponde a la comparación de percepción del trabajo duro en estudiates y apoderados. El segundo es la misma comparación pero para la percepción get ahead.
+Se realizan dos gráficos para variables likert. El primero corresponde a la comparación de percepción del trabajo duro en estudiates y apoderados. El segundo es la misma comparación pero para la percepción de esfuerzo.
 
 ```{r fig.width= 10}
 # Plot Likert: perc. trabajo duro apoderados y estudiantes
@@ -90,7 +90,7 @@ sjPlot::plot_likert(baselik,
                          geom.colors   = c("#9ECAE1", "#6BAED6", "#4292C6",
                                            "#2171B5"), # colorbrewer2.org
                          sort.frq      = "neg.asc", # sort descending)
-                         title         = "Percepción de meritocracia padres e hijos",
+                         title         = "Percepción de meritocracia Apoderados e hijos",
                          intercept.line.color = "white", # vertical middle
                          expand.grid   = F, # no inner margins in plot
                          show.n        = FALSE, # hide N's in axis labels
@@ -101,18 +101,18 @@ dev.off()
 ```
 
 ```{r fig.width=10}
-# Plot Likert: perc. get ahead apoderados y estudiantes
+# Plot Likert: perc. esfuerzo apoderados y estudiantes
 
 baselik<- ap_est %>% select(perc_esfuerzo_est,perc_esfuerzo_ap)
 
 # short var labels
-items <- c("Percepcion get ahead estudiantes", "Percepcion get head apoderados")
+items <- c("Percepcion esfuerzo estudiantes", "Percepcion esfuerzo apoderados")
 
 # cambiar orden para la leyenda
 labels= c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")  ### E
 
 # save
-png("../output/images/Plot-lik-getahead.png", width = 750, height = 300)
+png("../output/images/Plot-lik-esfuerzo.png", width = 750, height = 300)
 sjPlot::plot_likert(baselik,
                          axis.labels   = items,
                          legend.labels = labels,
@@ -121,7 +121,7 @@ sjPlot::plot_likert(baselik,
                          geom.colors   = c("#9ECAE1", "#6BAED6", "#4292C6",
                                            "#2171B5"), # colorbrewer2.org
                          sort.frq      = "neg.asc", # sort descending)
-                         title         = "Percepción de meritocracia padres e hijos",
+                         title         = "Percepción de meritocracia Apoderados e hijos",
                          intercept.line.color = "white", # vertical middle
                          expand.grid   = F, # no inner margins in plot
                          show.n        = FALSE, # hide N's in axis labels
@@ -142,20 +142,22 @@ select(ap_est, sj_indirect_ln, sj_indirect_noln, sj_direct) %>% summarytools::de
 ```{r}
 # Matriz de correlación entre variales principales
 
-basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap,sj_indirect_ln,sj_direct,ingresos_pc_esc)
+basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap,prom_percmer_est,prom_percmer_ap,sj_indirect_ln,sj_direct,ingresos_pc_esc)
 cormat=cor(basecor, use = "complete.obs")
 #save
 #png("../output/images/correlacionl1.png",width=600,height=600)
 windowsFonts(A = windowsFont("Times New Roman"))
 rownames(cormat) <-c(
     "A. Trabajo Duro Estudiantes",
-    "B. Trabajo Duro Padres",
-    "C. Get ahead Estudiantes",
-    "D. Get ahead Padres",
-    "E. Sentido justicia in",
-    "F. Sentido justicia dir",
-    "G. Ingresos")
-colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)", "(G)")
+    "B. Trabajo Duro Apoderados",
+    "C. Esfuerzo Estudiantes",
+    "D. Esfuerzo Apoderados",
+    "E. Prom. Perc. Mer. Estudiantes",
+    "F. Prom. Perc. Mer. Apoderados",
+    "G. Sentido justicia in",
+    "H. Sentido justicia dir",
+    "I. Ingresos")
+colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)", "(G)", "(H)", "(I)")
 corrplot(
 cormat,
   method = "color",
@@ -196,6 +198,46 @@ cormat,
   number.cex = 1)
 ```
 
+```{r}
+# Matriz de correlación entre ingresos + variables control
+basecor<- ap_est %>% select(ingresos_tramos, ingresos, ingresos_pc, ingresos_esc, ingresos_pc_esc, heterogen_esc, educ_madre, educ_padre, educ, univ, univ_esc, libros_hogar_est, libros_hogar_ap, genero_est, genero_ap, pos_pol_est, pos_pol_ap, edad )
+cormat=cor(basecor, use = "complete.obs")
+#save
+#png("../output/images/correlacionl2.png",width=600,height=600)
+windowsFonts(A = windowsFont("Times New Roman"))
+rownames(cormat) <-c(
+    "A. Ingresos del hogar en tramos",
+    "B. Ingresos del hogar",
+    "C. Ingresos per capita",
+    "D. Ingresos del hogar por escuela",
+    "E. Ingresos per capita por escuela",
+    "F. Heterogeneidad por escuela",
+    "G. Educación de la madre",
+    "H. Educación del padre",
+    "I. Educación del apoderado",
+    "J. Dummy universitaria apoderado",
+    "K. Universitaria por escuela",
+    "L. Libros en el hogar estudiante",
+    "M. Libros en el hogar apoderado",
+    "N. Genero estudiante",
+    "O. Genero apoderado",
+    "P. Posición política estudiante",
+    "Q. Posición política apoderado",
+    "R. Edad apoderado")
+colnames(cormat) <-c("(A)","(B)","(C)","(D)", "(E)", "(F)",  "(G)",  "(H)",  "(I)",  "(J)",  "(K)",  "(L)",  "(M)",  "(N)",  "(O)",  "(P)",  "(Q)",  "(R)")
+corrplot(
+cormat,
+  method = "color",
+  type = "upper",
+  tl.col = "black",
+  addCoef.col = "black",
+  diag = TRUE,
+  family = "A",
+  number.font = 6,
+  tl.cex =0.75,
+  number.cex = 0.5)
+```
+
 ### Propuesta Francisco
 
 ```{r}
@@ -207,9 +249,9 @@ cormat=cor(basecor, use = "complete.obs")
 windowsFonts(A = windowsFont("Times New Roman"))
 rownames(cormat) <-c(
     "A. Trabajo Duro Estudiantes",
-    "B. Trabajo Duro Padres",
-    "C. Get ahead Estudiantes",
-    "D. Get ahead Padres",
+    "B. Trabajo Duro Apoderados",
+    "C. Esfuerzo Estudiantes",
+    "D. Esfuerzo Apoderados",
     "E. Sentido justicia in",
     "F. Sentido justicia dir",
     "G. Ingresos",
@@ -324,7 +366,7 @@ results_4_accum  = lmer(perc_merit_est ~ 1 + atri_merit_ap + (1| rbd_est), data 
 
 results_5_accum  = lmer(perc_merit_est ~ 1 + perc_merit_ap + atri_merit_ap +  sj_indirect_noln + ingresos_pc + (1| rbd_est), data = apod_cfa2_sco, REML=F)
 
-htmlreg(list(results_0_accum, results_1_accum,results_2_accum, results_3_accum,results_4_accum,results_5_accum), custom.coef.names = c("Intercepto", "Ingresos Percapita", "Sentido de justicia", "Percepción Meritocratica Padres", "Atribución Meritocratica Padres"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica")
+htmlreg(list(results_0_accum, results_1_accum,results_2_accum, results_3_accum,results_4_accum,results_5_accum), custom.coef.names = c("Intercepto", "Ingresos Percapita", "Sentido de justicia", "Percepción Meritocratica Apoderados", "Atribución Meritocratica Apoderados"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica")
 
 ```
 
