@@ -13,14 +13,18 @@ editor_options:
   chunk_output_type: inline
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
 ```
 
 # Introducción
 
 El presente documento tiene por finalidad el análisis incial de datos para el artículo "La socialización de la meritocracia: el rol de la familia y la escuela" a cargo de Juan Carlos Castillo. El artículo se desarrolla en el marco del proyecto FONDECYT Regular N°1181239: "Socialización política y educación para la ciudadanía: el rol de la familia y de la escuela".
 
-El documento se estructurará en tres apartados. El primero corresponde a la carga de datos y las librerías. El segundo a los análisis descriptivos univariados. El tercero a la sección de análisis descriptivos bivariados.
+El documento se estructurará en cuatro apartados. El primero corresponde a la carga de datos y las librerías. El segundo a los análisis descriptivos univariados. El tercero a la sección de análisis descriptivos bivariados. Por último, la cuarta sección estará dedicada al análisis multivariado.
 
 # Resumen ejecutivo:
 
@@ -35,8 +39,11 @@ El documento se estructurará en tres apartados. El primero corresponde a la car
 - na.omit eliminado en gráficos Likert
 - na.omit sustituido por listwise deletion en correlaciones. NOTA: Se agrega el argumento *complete.obs*
 - Incorporación propuesta Francisco
+- Agrega variables promedio de percepción de meritocracia (en estudiantes y apoderados) a la matriz de correlaciones principales.
+- Agrega matriz de correlaciones sobre variables de ingresos y controles
+- Agrega sección de análisis mulivariado
 
-## Parte 1: Cargar ibrerías y datos
+## Parte 1: Cargar librerías y datos
 
 ```{r}
 # Cargar librerías
@@ -49,10 +56,19 @@ pacman::p_load(dplyr, #Manipulacion de datos
               corrplot, # Correlaciones
               sessioninfo, #  Información de la sesión de trabajo
               ggplot2, # Graficos
-              sjlabelled) #Etiquetas
-
+              sjlabelled, # Etiquetas
+              ordinal, # Modelos ordinales,
+              mixor, # Modelos ordinales
+              lme4, # Modelos mixtos,
+              lavaan, # CFA
+              texreg # Tablas modelos
+)
 # Cargar datos
 load(file = "../input/data/ap_est.RData") # Base conjunta
+
+# Orden para modelos ordinales (mixor package)
+
+ap_est_rbd<-ap_est[order(ap_est$rbd_est),]
 ```
 
 
@@ -292,8 +308,6 @@ table(base218$ingresos)
 
 ### Prueba modelo
 ```{r}
-library(lavaan)
-
 baseafc<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap, perc_falta_talento_ap, perc_falta_talento_est, perc_falta_esfuerzo_est, perc_falta_esfuerzo_ap,sj_indirect_noln, ingresos_pc, rbd_est)
 baseafc <- set_na(baseafc, na = c(5,9), drop.levels = TRUE, as.tag = FALSE)
 baseafc=na.omit(baseafc)
@@ -355,9 +369,321 @@ cormat,
   number.cex = 1)
 ```
 
+## Parte 4: Análisis multivariado
+### Modelos con todas las versiones de variables dependientes
+
 ```{r results='asis'}
-library(lme4)
-library(texreg)
+# Modelos 0: nulos con indicadores separados
+mmn_1 <- clmm(factor(perc_esfuerzo_est) ~ 1 + (1|rbd_est), data = ap_est)
+mmn_2 <- clmm(factor(perc_trabajo_duro_est) ~ 1 + (1|rbd_est), data = ap_est)
+
+# Modelos 0: nulos con promedio indicadores
+mmnp <- lmer(prom_percmer_est ~ 1 + (1|rbd_est), data = ap_est)
+
+# Modelos 0: nulos factores
+
+# Tabla
+
+htmlreg(list(mmn_1, mmn_2, mmnp), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica")
+
+#summary(mmn_1)
+#summary(mmn_2)
+#summary(mmnp)
+```
+
+```{r results='asis'}
+# Modelos 1: L1 con indicadores separados
+mml1_1 <- clmm(factor(perc_esfuerzo_est) ~ perc_esfuerzo_ap + 
+                 perc_trabajo_duro_ap + 
+                 sj_indirect_ln + 
+                 sj_direct + 
+                 ingresos_tramos + 
+                 (1|rbd_est), data = ap_est)
+
+mml1_2 <- clmm(factor(perc_trabajo_duro_est) ~ perc_esfuerzo_ap + 
+                 perc_trabajo_duro_ap + 
+                 sj_indirect_ln + 
+                 sj_direct + 
+                 ingresos_tramos + 
+                 (1|rbd_est), data = ap_est)
+
+# Modelos 1: L1 con promedio indicadores
+mml1p <- lmer(prom_percmer_est ~ 1 + perc_esfuerzo_ap + 
+                 perc_trabajo_duro_ap + 
+                 sj_indirect_ln + 
+                 sj_direct + 
+                 ingresos_tramos + 
+                 (1|rbd_est), data = ap_est)
+
+# Modelos 1: L1 factores
+mml1p <- lmer(prom_percmer_est ~ 1 + perc_esfuerzo_ap + 
+                 perc_trabajo_duro_ap + 
+                 sj_indirect_ln + 
+                 sj_direct + 
+                 ingresos_tramos + 
+                 (1|rbd_est), data = ap_est)
+
+# Tabla
+htmlreg(list(mml1_1, mml1_2, mml1p), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica")
+
+#summary(mml1_1)
+#summary(mml1_2)
+#summary(mml1p)
+```
+
+```{r}
+# Modelos 2: L2 con indicadores separados
+#mml2_1 <- clmm(factor(perc_esfuerzo_est) ~ ingresos_esc + 
+ #               univ_esc + 
+  #              heterogen_esc
+   #             + (1|rbd_est), data = ap_est) # clmm no funciona con L2, coeficientes dan NA.
+
+
+mml2_1 <- mixor(factor(perc_esfuerzo_est) ~ ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc, data = ap_est_rbd, id = rbd_est, link="logit")
+
+#mml2_2 <- clmm(factor(perc_trabajo_duro_est) ~ ingresos_esc + 
+ #               univ_esc + 
+  #              heterogen_esc
+   #         + (1|rbd_est), data = ap_est) # clmm no funciona con L2, coeficientes dan NA.
+
+mml2_2 <- mixor(factor(perc_trabajo_duro_est) ~ ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc, data = ap_est_rbd, id = rbd_est, link="logit")
+
+# Modelos 2: L2 con promedio indicadores
+mml2p <- lmer(prom_percmer_est ~ 1 + ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc 
+              + (1|rbd_est), data = ap_est)
+
+# Modelos 2: L2 factores
+
+# Tabla
+#htmlreg(list(mml2_1, mml2_2, mml2p), star.symbol = "\\*", center = T, custom.note = " <div #style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, #caption = "Socialización de la percepción meritocratica")
+
+summary(mml2_1)
+summary(mml2_2)
+summary(mml2p)
+```
+
+```{r}
+# Modelos 3: L1+L2 con indicadores separados
+mml1l2_1 <- clmm(factor(perc_esfuerzo_est) ~ + perc_esfuerzo_ap + 
+                 perc_trabajo_duro_ap + 
+                 sj_indirect_ln + 
+                 sj_direct + 
+                 ingresos_tramos + 
+                 ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc 
+                 + (1|rbd_est), data = ap_est) # clmm no funciona con L2, coeficientes dan NA.
+
+#mml1l2_1 <- mixor(perc_esfuerzo_est ~ perc_esfuerzo_ap + 
+ #                perc_trabajo_duro_ap + 
+  #               sj_indirect_ln + 
+   #              sj_direct + 
+    #             ingresos_tramos + 
+     #            ingresos_esc + 
+      #           univ_esc + 
+       #          heterogen_esc, data = ap_est_rbd, id = rbd_est, link="logit") # Se queda pegado
+
+#mml1l2_2 <- clmm(factor(perc_trabajo_duro_est) ~ perc_esfuerzo_ap + 
+ #                perc_trabajo_duro_ap + 
+  #               sj_indirect_ln + 
+   #              sj_direct + 
+    #             ingresos_tramos + 
+     #            ingresos_esc + 
+      #           univ_esc + 
+        #         heterogen_esc 
+         #        + (1|rbd_est), data = ap_est) # clmm no funciona con L2, coeficientes dan NA.
+
+mml1l2_2 <- mixor(factor(perc_trabajo_duro_est) ~ perc_esfuerzo_ap + 
+                 perc_trabajo_duro_ap + 
+                 sj_indirect_ln + 
+                 sj_direct + 
+                 ingresos_tramos + 
+                 ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc, data = ap_est_rbd, id = rbd_est, link="logit")
+
+
+# Modelos 3: L1+L2 con promedio indicadores
+mml1l2p <- lmer(prom_percmer_est ~ perc_esfuerzo_ap + 
+                 perc_trabajo_duro_ap + 
+                 sj_indirect_ln + 
+                 sj_direct + 
+                 ingresos_tramos + 
+                 ingresos_esc + 
+                 univ_esc + 
+                 #heterogen_esc 
+                + (1|rbd_est), data = ap_est)
+
+
+# Modelos 3: L1+L2 factores
+
+# Tabla
+#htmlreg(list(mml1l2_1, mml1l2_2, mml1l2p), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica")
+
+summary(mml1l2_1)
+summary(mml1l2_2)
+summary(mml1l2p)
+```
+
+```{r results='asis'}
+# Modelos 4: interacción y controles con indicadores separados
+mmin_1 <- clmm(factor(perc_esfuerzo_est) ~ perc_esfuerzo_ap + 
+                 perc_trabajo_duro_ap + 
+                 sj_indirect_ln + 
+                 sj_direct + 
+                 ingresos_tramos + 
+                 ingresos_esc + 
+                 univ_esc + 
+                 #heterogen_esc + 
+                 perc_esfuerzo_ap*sj_indirect_ln + 
+                 perc_trabajo_duro_ap*sj_indirect_ln +
+                 perc_esfuerzo_ap*sj_direct + 
+                 perc_trabajo_duro_ap*sj_direct +
+                 region_est +
+                 dependencia_est +
+                 pos_pol_est + 
+                 genero_est +
+                 educ_padre +
+                 educ_madre +
+                 libros_hogar_est + 
+                 recompensa + 
+                 pos_pol_ap +
+                 genero_ap +
+                 educ +
+                 libros_hogar_ap +
+                 recompensa_hijos +
+                 edad +
+                 (1|rbd_est), data = ap_est) # clmm no funciona con L2, coeficientes dan NA.
+
+#mmin_1 <- mixor(factor(perc_esfuerzo_est) ~ perc_esfuerzo_ap + 
+#                 perc_trabajo_duro_ap + 
+#                 sj_indirect_ln + 
+ #                sj_direct + 
+  #               ingresos_tramos + 
+   #              ingresos_esc + 
+    #             univ_esc + 
+     #            heterogen_esc +
+      #           perc_esfuerzo_ap*sj_indirect_ln + 
+       #          perc_trabajo_duro_ap*sj_indirect_ln +
+        #         perc_esfuerzo_ap*sj_direct + 
+         #        perc_trabajo_duro_ap*sj_direct +
+          #       region_est +
+           #      dependencia_est +
+            #     pos_pol_est + 
+             #    genero_est +
+              #   educ_padre +
+               #  educ_madre +
+                # libros_hogar_est + 
+                 #recompensa + 
+                 #pos_pol_ap +
+                 #genero_ap +
+                 #educ +
+                 #libros_hogar_ap +
+                 #recompensa_hijos +
+                 #edad, data = ap_est_rbd, id = rbd_est, link="logit") # Se queda pegado
+
+mmin_2 <- clmm(factor(perc_trabajo_duro_est) ~ perc_esfuerzo_ap + 
+                 perc_trabajo_duro_ap + 
+                 sj_indirect_ln + 
+                 sj_direct + 
+                 ingresos_tramos + 
+                 ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc + 
+                 perc_esfuerzo_ap*sj_indirect_ln + 
+                 perc_trabajo_duro_ap*sj_indirect_ln +
+                 perc_esfuerzo_ap*sj_direct + 
+                 perc_trabajo_duro_ap*sj_direct +
+                 region_est +
+                 dependencia_est +
+                 pos_pol_est + 
+                 genero_est +
+                 educ_padre +
+                 educ_madre +
+                 libros_hogar_est + 
+                 recompensa + 
+                 pos_pol_ap +
+                 genero_ap +
+                 educ +
+                 libros_hogar_ap +
+                 recompensa_hijos +
+                 edad +
+                 (1|rbd_est), data = ap_est) # clmm no funciona con L2, coeficientes dan NA.
+
+#mmin_2 <- mixor(factor(perc_trabajo_duro_est) ~ perc_esfuerzo_ap + 
+ #                perc_trabajo_duro_ap + 
+  #               sj_indirect_ln + 
+   #              sj_direct + 
+    #             ingresos_tramos + 
+     #            ingresos_esc + 
+      #           univ_esc + 
+       #          heterogen_esc +
+        #         perc_esfuerzo_ap*sj_indirect_ln + 
+         #        perc_trabajo_duro_ap*sj_indirect_ln +
+          #       perc_esfuerzo_ap*sj_direct + 
+           #      perc_trabajo_duro_ap*sj_direct +
+            #     region_est +
+             #    dependencia_est +
+              #   pos_pol_est + 
+               #  genero_est +
+                # educ_padre +
+                 #educ_madre +
+                 #libros_hogar_est + 
+                 #recompensa + 
+                 #pos_pol_ap +
+                 #genero_ap +
+                 #educ +
+                 #libros_hogar_ap +
+                 #recompensa_hijos +
+                 #edad, data = ap_est_rbd, id = rbd_est, link="logit") # Se queda pegado o arroja muchos NA
+
+# Modelos 4: interacción y controles con promedio indicadores
+mminp <- lmer(prom_percmer_est ~ perc_esfuerzo_ap + 
+                 perc_trabajo_duro_ap + 
+                 sj_indirect_ln + 
+                 sj_direct + 
+                 ingresos_tramos + 
+                 ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc + 
+                 perc_esfuerzo_ap*sj_indirect_ln + 
+                 perc_trabajo_duro_ap*sj_indirect_ln +
+                 perc_esfuerzo_ap*sj_direct + 
+                 perc_trabajo_duro_ap*sj_direct +
+                 region_est +
+                 dependencia_est +
+                 pos_pol_est + 
+                 genero_est +
+                 educ_padre +
+                 educ_madre +
+                 libros_hogar_est + 
+                 recompensa + 
+                 pos_pol_ap +
+                 genero_ap +
+                 educ +
+                 libros_hogar_ap +
+                 recompensa_hijos +
+                 edad +
+                 (1|rbd_est), data = ap_est)
+
+# Modelos 4: interacción y controles factores
+
+# Tabla
+htmlreg(list(mmin_1, mmin_2, mminp), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica")
+
+#summary(mmin_1)
+#summary(mmin_2)
+#summary(mminp)
+```
+
+
+```{r results='asis'}
 results_0_accum  = lmer(perc_merit_est ~ 1 + (1| rbd_est), data = apod_cfa2_sco, REML=F)
 results_1_accum  = lmer(perc_merit_est ~ 1 + ingresos_pc + (1| rbd_est), data = apod_cfa2_sco, REML=F)
 results_2_accum  = lmer(perc_merit_est ~ 1 + sj_indirect_noln + (1| rbd_est), data = apod_cfa2_sco, REML=F)
