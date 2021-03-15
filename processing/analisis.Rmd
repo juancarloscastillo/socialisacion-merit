@@ -33,7 +33,7 @@ El documento se estructurará en cuatro apartados. El primero corresponde a la c
 - En general, las correlaciones de las variables de interés al nivel 1 son bajas.
 - Las correlaciones entre porcentaje ed. univ. escuela e ingresos del hogar son de 0.4.
 
-## Registro de cambios desde reunión 21-1-21
+## Registro de cambios principales
 - Uso de nueva base a partir de cambios en el procesamiento.
 - Cambio en el nombre de variable *get ahead* por *esfuerzo*
 - na.omit eliminado en gráficos Likert
@@ -42,6 +42,8 @@ El documento se estructurará en cuatro apartados. El primero corresponde a la c
 - Agrega variables promedio de percepción de meritocracia (en estudiantes y apoderados) a la matriz de correlaciones principales.
 - Agrega matriz de correlaciones sobre variables de ingresos y controles
 - Agrega sección de análisis mulivariado
+- Cambio de orden en seccion multivariada: primero lmer, luego clmm.
+- Elaboración modelos lmer con promedios de percepción meritocrática como dependiente en dos series de modelos. La primera con coeficientes en factores, la segunda con coeficientes centrados a la media grupal.
 
 ## Parte 1: Cargar librerías y datos
 
@@ -223,7 +225,7 @@ cormat,
 ### Matriz de correlación entre ingresos + variables control
 ```{r}
 # Matriz de correlación entre ingresos + variables control
-basecor<- ap_est %>% select(ingresos_tramos, ingresos, ingresos_pc, ingresos_esc, ingresos_pc_esc, heterogen_esc, educ_madre, educ_padre, educ_ap, univ, univ_esc, libros_hogar_est, libros_hogar_ap, genero_est, genero_ap, pos_pol_est, pos_pol_ap, edad )
+basecor<- ap_est %>% select(ingresos_tramos, ingresos, ingresos_pc, ingresos_esc, ingresos_pc_esc, heterogen_esc, educ_madre, educ_padre, educ_ap, univ, univ_esc, libros_hogar_est, libros_hogar_ap, genero_est, genero_ap, pos_pol_est, pos_pol_ap, edad_ap )
 cormat=cor(basecor, use = "complete.obs")
 #save
 #png("../output/images/correlacionl2.png",width=600,height=600)
@@ -372,100 +374,96 @@ cormat,
 ```
 
 ## Parte 4: Análisis multivariado
-### Modelos con promedios de indicadores como dependiente
-#### Modelo 0: nulo con promedio indicadores
-```{r Modelo 0: nulo con promedio indicadores}
+### Modelos con promedios de indicadores como dependiente sin centrar
+#### Modelo 0: nulo con promedio indicadores sin centrar
+```{r}
 # Percepción meritocracia
 mmn_p <- lmer(prom_percmer_est ~ 1 + (1|rbd_est), data = ap_est)
 
 #summary(mmn_p)
 ```
 
-#### Modelo 1: L1 con promedio indicadores
-```{r Modelo 1: L1 con promedio indicadores}
+#### Modelo 1: L1 con promedio indicadores sin centrar
+```{r}
 # Percepción meritocracia
-mml1_p <- lmer(prom_percmer_est ~ 1 + perc_esfuerzo_factor_ap + 
-                 perc_trabajo_duro_factor_ap + 
+mml1_p <- lmer(prom_percmer_est ~ 1 + prom_percmer_ap + 
                  sj_indirect_ln + 
                  sj_direct_factor + 
-                 ingresos_tramos_factor + 
+                 quintiles_ingresos_pc_factor + 
                  (1|rbd_est), data = ap_est)
 
 #summary(mml1_p)
 ```
 
-#### Modelo 2: L2 con promedio indicadores
-```{r Modelo 2: L2 con promedio indicadores}
+#### Modelo 2: L2 con promedio indicadores sin centrar
+```{r}
 # Percepción meritocracia
 mml2_p <- lmer(prom_percmer_est ~ 1 + ingresos_esc + 
                  univ_esc + 
-                 heterogen_esc 
+                 heterogen_esc +
+                 dependencia_factor_ap
               + (1|rbd_est), data = ap_est)
 
 #summary(mml2_p)
 ```
 
-#### Modelo 3: L1+L2 con promedio indicadores
-```{r Modelo 3: L1+L2 con promedio indicadores}
+#### Modelo 3: L1+L2 con promedio indicadores sin centrar
+```{r}
 # Percepción meritocracia
-mml1l2_p <- lmer(prom_percmer_est ~ perc_esfuerzo_factor_ap + 
-                 perc_trabajo_duro_factor_ap + 
+mml1l2_p <- lmer(prom_percmer_est ~ prom_percmer_ap + 
                  sj_indirect_ln + 
                  sj_direct_factor + 
-                 ingresos_tramos_factor + 
+                 quintiles_ingresos_pc_factor + 
                  ingresos_esc + 
                  univ_esc + 
-                 heterogen_esc 
+                 heterogen_esc +
+                 dependencia_factor_ap 
                 + (1|rbd_est), data = ap_est)
 
 #summary(mml1l2_p)
 ```
 
-#### Modelo 4: interacción 1 y controles con promedio indicadores
-```{r Modelo 4: interacción 1 y controles con promedio indicadores}
+#### Modelo 4: interacción 1 y controles con promedio indicadores sin centrar
+```{r}
 # Percepción meritocracia
-mmin1_p <- lmer(prom_percmer_est ~ perc_esfuerzo_factor_ap + 
-                 perc_trabajo_duro_factor_ap + 
+mmin1_p <- lmer(prom_percmer_est ~ prom_percmer_ap + 
                  sj_indirect_ln + 
                  sj_direct_factor + 
-                 ingresos_tramos_factor + 
+                 quintiles_ingresos_pc_factor + 
                  ingresos_esc + 
                  univ_esc + 
                  heterogen_esc + 
-                 perc_esfuerzo_factor_ap*sj_indirect_ln + # Interacción
+                 dependencia_factor_ap +
+                 prom_percmer_ap*sj_indirect_ln + # Interacción
                  region_factor_est +
-                 dependencia_factor_est +
                  pos_pol_factor_est + 
                  genero_factor_est +
-                 libros_hogar_factor_est + 
                  recompensa_factor_est + 
                  pos_pol_factor_ap +
                  genero_factor_ap +
                  educ_factor_ap +
                  libros_hogar_factor_ap +
                  recompensa_factor_ap +
-                 edad +
+                 edad_ap +
                  (1|rbd_est), data = ap_est)
 
 #summary(mmin1_p)
 ```
 
-#### Modelo 4: interacción 2 y controles con promedio indicadores
-```{r Modelo 4: interacción 2 y controles con promedio indicadores}
+#### Modelo 4: interacción 2 y controles con promedio indicadores sin centrar
+```{r}
 # Percepción meritocracia
-mmin2_p <- lmer(prom_percmer_est ~ perc_esfuerzo_factor_ap + 
-                 perc_trabajo_duro_factor_ap + 
+mmin2_p <- lmer(prom_percmer_est ~ prom_percmer_ap +
                  sj_indirect_ln + 
                  sj_direct_factor + 
-                 ingresos_tramos_factor + 
+                 quintiles_ingresos_pc_factor + 
                  ingresos_esc + 
                  univ_esc + 
-                 heterogen_esc + 
-                 perc_trabajo_duro_factor_ap*sj_indirect_ln + # Interacción
+                 heterogen_esc +
+                 dependencia_factor_ap +
+                 prom_percmer_ap*sj_direct_factor + # Interacción
                  region_factor_est +
-                 dependencia_factor_est +
                  pos_pol_factor_est + 
-                 genero_factor_est +
                  libros_hogar_factor_est + 
                  recompensa_factor_est + 
                  pos_pol_factor_ap +
@@ -473,77 +471,132 @@ mmin2_p <- lmer(prom_percmer_est ~ perc_esfuerzo_factor_ap +
                  educ_factor_ap +
                  libros_hogar_factor_ap +
                  recompensa_factor_ap +
-                 edad +
+                 edad_ap +
                  (1|rbd_est), data = ap_est)
 
 #summary(mmin2_p)
 ```
 
-#### Modelo 4: interacción 3 y controles con promedio indicadores
-```{r Modelo 4: interacción 3 y controles con promedio indicadores}
-# Percepción meritocracia
-mmin3_p <- lmer(prom_percmer_est ~ perc_esfuerzo_factor_ap + 
-                 perc_trabajo_duro_factor_ap + 
-                 sj_indirect_ln + 
-                 sj_direct_factor + 
-                 ingresos_tramos_factor + 
-                 ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc + 
-                 #perc_esfuerzo_factor_ap*sj_direct_factor + # Interacción (No funciona)
-                 region_factor_est +
-                 dependencia_factor_est +
-                 pos_pol_factor_est + 
-                 genero_factor_est ++
-                 libros_hogar_factor_est + 
-                 recompensa_factor_est + 
-                 pos_pol_factor_ap +
-                 genero_factor_ap +
-                 educ_factor_ap +
-                 libros_hogar_factor_ap +
-                 recompensa_factor_ap +
-                 edad +
-                 (1|rbd_est), data = ap_est)
-#summary(mmin3_p)
-```
-
-#### Modelo 4: interacción 4 y controles con promedio indicadores
-```{r Modelo 4: interacción 4 y controles con promedio indicadores}
-# Percepción meritocracia
-mmin4_p <- lmer(prom_percmer_est ~ perc_esfuerzo_factor_ap + 
-                 perc_trabajo_duro_factor_ap + 
-                 sj_indirect_ln + 
-                 sj_direct_factor + 
-                 ingresos_tramos_factor + 
-                 ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc + 
-                 perc_trabajo_duro_factor_ap*sj_direct_factor + # Interacción
-                 region_factor_est +
-                 dependencia_factor_est +
-                 pos_pol_factor_est + 
-                 genero_factor_est +
-                 libros_hogar_factor_est + 
-                 recompensa_factor_est + 
-                 pos_pol_factor_ap +
-                 genero_factor_ap +
-                 educ_factor_ap +
-                 libros_hogar_factor_ap +
-                 recompensa_factor_ap +
-                 edad +
-                 (1|rbd_est), data = ap_est)
-
-#summary(mmin4_p)
-```
-
-### Tabla de modelos con promedio de indicadores
+### Tabla de modelos con promedio de indicadores sin centrar
 ```{r Tabla de modelos con promedio de indicadores, results='asis'}
 
-htmlreg(list(mmn_p, mml1_p, mml2_p, mml1l2_p, mmin1_p, mmin2_p, mmin3_p, mmin4_p), custom.model.names = c("Nulo", "L1", "L2", "L1+L2", "I1", "I2", "I3", "I4"),
+htmlreg(list(mmn_p, mml1_p, mml2_p, mml1l2_p, mmin1_p, mmin2_p), custom.model.names = c("Nulo", "L1", "L2", "L1+L2", "I1", "I2"),
         
 #custom.coef.names = c("Intercepto", "Perc. Esfuerzo Ap.", "Perc.Trabajo duro Ap.", "Sj Indirecto", "Sj Directo", "Ingreso tramos", "Ingresos por escuela", "Ed. Universitaria por escuela", "Heterogeneidad económica por escuela", "Perc. Esfuerzo Ap.*Sj Indirecto", "Perc. Trabajo duro Ap.*Sj Indirecto", "Perc. Esfuerzo. Ap*Sj Directo","Perc. Trabajo duro*Sj Directo", "Región", "Dependencia", "Posición política Est.", "Género Est.", "Ed. Padre", "Ed. Madre", "Libros hogar Est.", "Recompensa Est.", "Posición Política Ap.", "Género Ap.", "Ed. Ap", "Libros hogar Ap.", "Recompensa Ap.", "Edad Ap."),  
 
-star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica")
+star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (factores)")
+```
+
+### Modelos con promedios de indicadores como dependiente con L1 centrado al grupo
+#### Modelo 0: nulo con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mmn_p_cwc <- lmer(prom_percmer_est ~ 1 + (1|rbd_est), data = ap_est)
+
+#summary(mmn_p)
+```
+
+#### Modelo 1: L1 con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mml1_p_cwc <- lmer(prom_percmer_est ~ 1 + prom_percmer_ap_cwc + 
+                 sj_indirect_ln_cwc + 
+                 sj_direct_cwc + 
+                 quintiles_ingresos_pc_factor + 
+                 (1|rbd_est), data = ap_est)
+
+#summary(mml1_p)
+```
+
+#### Modelo 2: L2 con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mml2_p_cwc <- lmer(prom_percmer_est ~ 1 + ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc +
+                 dependencia_factor_ap
+              + (1|rbd_est), data = ap_est)
+
+#summary(mml2_p)
+```
+
+#### Modelo 3: L1+L2 con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mml1l2_p_cwc <- lmer(prom_percmer_est ~ prom_percmer_ap_cwc + 
+                 sj_indirect_ln_cwc + 
+                 sj_direct_cwc + 
+                 quintiles_ingresos_pc_factor + 
+                 ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc +
+                 dependencia_factor_ap
+                + (1|rbd_est), data = ap_est)
+
+#summary(mml1l2_p)
+```
+
+#### Modelo 4: interacción 1 y controles con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mmin1_p_cwc <- lmer(prom_percmer_est ~ prom_percmer_ap_cwc + 
+                 sj_indirect_ln_cwc + 
+                 sj_direct_cwc + 
+                 quintiles_ingresos_pc_factor + 
+                 ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc + 
+                 dependencia_factor_ap +
+                 prom_percmer_ap_cwc*sj_indirect_ln_cwc + # Interacción
+                 region_factor_est +
+                 pos_pol_est_cwc + 
+                 genero_est_cwc +
+                 recompensa_est_cwc + 
+                 pos_pol_ap_cwc +
+                 genero_ap_cwc +
+                 educ_ap_cwc +
+                 libros_hogar_ap_cwc +
+                 recompensa_ap_cwc +
+                 edad_ap_cwc +
+                 (1|rbd_est), data = ap_est)
+
+#summary(mmin1_p)
+```
+
+#### Modelo 4: interacción 2 y controles con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mmin2_p_cwc <- lmer(prom_percmer_est ~ prom_percmer_ap_cwc +
+                 sj_indirect_ln_cwc + 
+                 sj_direct_cwc + 
+                 quintiles_ingresos_pc_factor + 
+                 ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc + 
+                 dependencia_factor_ap +
+                 prom_percmer_ap_cwc*sj_direct_cwc + # Interacción
+                 region_est +
+                 pos_pol_est_cwc + 
+                 recompensa_est_cwc + 
+                 pos_pol_ap_cwc +
+                 genero_ap_cwc +
+                 educ_ap_cwc +
+                 libros_hogar_ap_cwc +
+                 recompensa_ap_cwc +
+                 edad_ap_cwc +
+                 (1|rbd_est), data = ap_est)
+
+#summary(mmin2_p)
+```
+
+### Tabla de modelos con promedio de indicadores
+```{r results='asis'}
+
+htmlreg(list(mmn_p_cwc, mml1_p_cwc, mml2_p_cwc, mml1l2_p_cwc, mmin1_p_cwc, mmin2_p_cwc), custom.model.names = c("Nulo", "L1", "L2", "L1+L2", "I1", "I2"),
+        
+#custom.coef.names = c("Intercepto", "Perc. Esfuerzo Ap.", "Perc.Trabajo duro Ap.", "Sj Indirecto", "Sj Directo", "Ingreso tramos", "Ingresos por escuela", "Ed. Universitaria por escuela", "Heterogeneidad económica por escuela", "Perc. Esfuerzo Ap.*Sj Indirecto", "Perc. Trabajo duro Ap.*Sj Indirecto", "Perc. Esfuerzo. Ap*Sj Directo","Perc. Trabajo duro*Sj Directo", "Región", "Dependencia", "Posición política Est.", "Género Est.", "Ed. Padre", "Ed. Madre", "Libros hogar Est.", "Recompensa Est.", "Posición Política Ap.", "Género Ap.", "Ed. Ap", "Libros hogar Ap.", "Recompensa Ap.", "Edad Ap."),  
+
+star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (CWC)")
 ```
 
 ### Modelos con indicadores separados como dependiente
@@ -663,7 +716,7 @@ mmin1_e <- clmm(perc_esfuerzo_est ~ perc_esfuerzo_ap +
                  educ +
                  libros_hogar_ap +
                  recompensa_hijos +
-                 edad +
+                 edad_ap +
                  (1|rbd_est), data = ap_est)
 
 # Trabajo duro
@@ -689,7 +742,7 @@ mmin1_td <- clmm(perc_trabajo_duro_est ~ perc_esfuerzo_ap +
                  educ +
                  libros_hogar_ap +
                  recompensa_hijos +
-                 edad +
+                 edad_ap +
                  (1|rbd_est), data = ap_est)
 
 ```
@@ -718,7 +771,7 @@ mmin2_e <- clmm(perc_esfuerzo_est ~ perc_esfuerzo_ap +
                  educ +
                  libros_hogar_ap +
                  recompensa_hijos +
-                 edad +
+                 edad_ap +
                  (1|rbd_est), data = ap_est)
 
 # Trabajo duro
@@ -745,7 +798,7 @@ mmin2_td <- clmm(perc_trabajo_duro_est ~ perc_esfuerzo_ap +
                  educ +
                  libros_hogar_ap +
                  recompensa_hijos +
-                 edad +
+                 edad_ap +
                  (1|rbd_est), data = ap_est)
 
 ```
@@ -774,7 +827,7 @@ mmin3_e <- clmm(perc_esfuerzo_est ~ perc_esfuerzo_ap +
                  educ +
                  libros_hogar_ap +
                  recompensa_hijos +
-                 edad +
+                 edad_ap +
                  (1|rbd_est), data = ap_est)
 
 # Trabajo duro
@@ -800,7 +853,7 @@ mmin3_td <- clmm(perc_trabajo_duro_est ~ perc_esfuerzo_ap +
                  educ +
                  libros_hogar_ap +
                  recompensa_hijos +
-                 edad +
+                 edad_ap +
                  (1|rbd_est), data = ap_est)
 
 ```
@@ -829,7 +882,7 @@ mmin4_e <- clmm(perc_esfuerzo_est ~ perc_esfuerzo_ap +
                  educ +
                  libros_hogar_ap +
                  recompensa_hijos +
-                 edad +
+                 edad_ap +
                  (1|rbd_est), data = ap_est)
 
 # Trabajo duro
@@ -855,7 +908,7 @@ mmin4_td <- clmm(perc_trabajo_duro_est ~ perc_esfuerzo_ap +
                  educ +
                  libros_hogar_ap +
                  recompensa_hijos +
-                 edad +
+                 edad_ap +
                  (1|rbd_est), data = ap_est)
 
 ```

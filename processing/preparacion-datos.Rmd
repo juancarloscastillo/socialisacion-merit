@@ -34,7 +34,7 @@ Se listan los puntos mas importantes:
 
 - Dos cosas importantes sobre la variable ingresos. La primera es que existen 148 casos correspondientes a NS/NR que han sido recodificados a NA, discutir mantener categoría. La segunda es que en ingresos nivel dos solo existen 7 NA, pertenecientes a los RBD 10452 (solo contestaron estudiantes) y 31047 (ninguno de los seis apoderados de este colegio reportaron sus ingresos). 
 
-## Registro de cambios desde reunión 21-1-21:
+## Registro de cambios principales:
 - Cambio presentación de las variables. Se dividen entre variables estudiantes y apoderados.
 - Se modifica la introducción en función del cambio de estructura.
 - Cambio etiquetas variables percepción meritocracia. Se asignan etiquetas más intuitivas para los indicadores.
@@ -46,7 +46,9 @@ Se listan los puntos mas importantes:
 - Se agregan variables para nueva propuesta
 - Se arregla caso mal pareado (897 estudiante). Era un error de tipeo, aunque no cambia el N.
 - Se crean variables promedios de percepción meritocrática (en estudiantes y apoderados)
-- Se incorpora código detallado sobre nivel educacional. Creación de variables filtrando por sexo del apoderado.
+- Se incorpora código detallado sobre nivel educacional (código grupo Tolerancia adaptado)
+- Se crean variables factor con su respectivo etiquetado.
+- Se centran las variables a utilizar en los modelos (CWC)
 
 # Procesamiento
 ## Parte 1: Cargar librerías  
@@ -60,9 +62,10 @@ Las librerías a utilizar para la elaboración del documento serán:
 - *haven:* leer archivos .dta
 - *SciViews:* cálculos básicos de matemáticas
 - *summarytools:* tablas descriptivas
+- *misty* funciones miscelaneas
 
 ```{r}
-pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, SciViews, summarytools)
+pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, SciViews, summarytools, misty)
 ```
 
 ## Parte 2: Cargar datos
@@ -714,7 +717,7 @@ frq(ap_proc$ingresos_tramos)
 
 ##### Otros ajustes
 
-Se construyen cuatro variables nuevas. La primera es el ingreso a partir de las marcas de clase de los tramos de ingreso. La segunda es el ingreso per capita. La tercera se construye una variable en tramos tipo factor y la cuarta serán los quintiles de ingreso per capita.
+Se construyen cuatro variables nuevas. La primera es el ingreso a partir de las marcas de clase de los tramos de ingreso. La segunda es el ingreso per capita. La tercera se construye una variable en tramos tipo factor y la cuarta serán los quintiles de ingreso per capita en su version numerica y factor.
 
 ```{r}
 # Construcción ingresos numerico
@@ -750,9 +753,15 @@ ap_proc$ingresos_tramos_factor <- factor(ap_proc$ingresos_tramos, levels = c(1,2
                                                                                               "Ns/Nr"))
 
 # Construccion ingresos per capita quintiles
-#ap_proc$quintiles_ingresos_pc <- quantile(ap_proc$ingresos_pc, prob=seq(0,1,1/5), na.rm = T)
+ap_proc <- ap_proc %>% mutate(quintiles_ingresos_pc = ntile(ingresos_pc,5))
 
-# ---- Descripción variables nuevas ----
+## Recuperar NA
+ap_proc$quintiles_ingresos_pc[ap_proc$quintiles_ingresos_pc == NA] <- 99
+
+# Construcción ingresos per capita quintiles factor
+ap_proc$quintiles_ingresos_pc_factor <- factor(ap_proc$quintiles_ingresos_pc, levels = c(1,2,3,4,5,99), labels = c("Quintil 1", "Quintil 2", "Quintil 3", "Quintil 4", "Quintil 5", "Ns/Nr"))
+
+ # ---- Descripción variables nuevas ----
 
 # ingresos
 summary(ap_proc$ingresos)
@@ -837,13 +846,13 @@ Se crea variable edad númerica.
 
 ```{r}
 # Crear variable edad
-ap_proc$edad <- 2019 - ap_proc$nacimiento
+ap_proc$edad_ap <- 2019 - ap_proc$nacimiento
 
 # ---- Descriptivo nueva variable ----
-summary(ap_proc$edad)
+summary(ap_proc$edad_ap)
 
 # ---- Etiquetado variables nuevas ----
-ap_proc$edad <- set_label(x = ap_proc$edad, label = "Edad apoderado")
+ap_proc$edad_ap <- set_label(x = ap_proc$edad_ap, label = "Edad apoderado")
 ```
 
 #### Género (Control N1)
@@ -1175,6 +1184,7 @@ ap_proc$heterogen_esc <- set_label(x = ap_proc$heterogen_esc, label = "Heterogen
 
 ## Parte 5: Merge, tabla descriptivo general, ultimos ajustes y guardar bases
 
+Unir bases.
 ```{r results='asis'}
 # Join
 
@@ -1182,14 +1192,14 @@ ap_est <- left_join(x = est_proc,y = ap_proc,by =c("folio"="folio"),suffix=c("_e
 ```
 
 Ajustes post-merge.
-
+Educación (N1): Combinación datos apoderados y estudiantes
 ```{r}
 # Guardar respuestas del nivel educacional de los padres. Si no respondió, se incluye la respuesta más alta reportada por los estudiantes.
 ap_est$educ_ap <- ifelse(is.na(ap_est$educ), ap_est$educ_padres, ap_est$educ)
 ap_est$educ_ap <- set_label(x = ap_est$educ,label = "Nivel educacional de los apoderados")
 ```
 
-Crear variable factor
+Crear variable factor para educación
 ```{r}
 # Transformacion a factor
 ap_est$educ_factor_ap <- factor(ap_est$educ_ap, levels = c(1,2,3,4), labels = c("8vo básico o menos", "Educación media", "Educación Técnica Superior", "Educación universitaria o posgrado"))
@@ -1199,7 +1209,6 @@ ap_est$educ_factor_ap <- set_label(x = ap_est$educ_factor_ap,label = "Nivel educ
 
 ```
 
-Se construye una variable que agrega el porcentaje de apoderados con educación terciaria por escuela
 ```{r eval=FALSE, include=FALSE}
 # Construcción educación terciara apoderado por escuela
 
@@ -1222,48 +1231,80 @@ ap_est$univ <- set_labels(ap_est$univ,
 ap_est$univ_esc <- set_label(x = ap_est$univ_esc, label = "Porcentaje ed. terciaria por escuela")
 
 ```
-mmin2_p <- lmer(prom_percmer_est ~ perc_esfuerzo_factor_ap + 
-                 perc_trabajo_duro_factor_ap + 
-                 sj_indirect_ln + 
-                 sj_direct_factor + 
-                 ingresos_tramos_factor + 
-                 ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc + 
-                 perc_trabajo_duro_factor_ap*sj_indirect_ln + # Interacción
-                 region_factor_est +
-                 dependencia_factor_est +
-                 pos_pol_factor_est + 
-                 genero_factor_est +
-                 libros_hogar_factor_est + 
-                 recompensa_factor_est + 
-                 pos_pol_factor_ap +
-                 genero_factor_ap +
-                 educ_factor_ap +
-                 libros_hogar_factor_ap +
-                 recompensa_factor_ap +
-                 edad +
-                 (1|rbd_est), data = ap_est)
-```{r}
-# Centrado a la media grupal
 
-## Percepción Esfuerzo apoderado
-## Percepción Trabajo Duro apoderado
+Centrado de variables a la media grupal
+```{r}
+# Centrado a la media grupal (CWC)
+
+## Promedio percepción meritocracia apoderados
+ap_est$prom_percmer_ap_cwc <- center(ap_est$prom_percmer_ap, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$prom_percmer_ap_cwc <- set_label(x = ap_est$prom_percmer_ap_cwc, label = "Promedio percepcion meritocratica apoderados CWC")
+
 ## Sentido justicia indirecto Ln
+ap_est$sj_indirect_ln_cwc <- center(ap_est$sj_indirect_ln, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$sj_indirect_ln_cwc <- set_label(x = ap_est$sj_indirect_ln_cwc, label = "Sentido justicia indirecto ln CWC")
+
 ## Sentido justicia directo
-## Ingresos tramos (?)
+ap_est$sj_direct_cwc <- center(ap_est$sj_direct, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$sj_direct_cwc < set_label(x = ap_est$sj_direct_cwc, label = "Sentido justicia directo CWC")
+
 ## Region estudiante
-## Dependencia estudiante
+#ap_est$region_est_cwc <- center(ap_est$region_est, type = "CWC", group = ap_est$rbd_est)
+
+# Error: Vector in 'x' is specified as level-1 predictor does not have any within-group variance.
+
 ## Posición Política estudiante
+ap_est$pos_pol_est_cwc <- center(ap_est$pos_pol_est, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$pos_pol_est_cwc <- set_label(x = ap_est$pos_pol_est_cwc, "Posicion politica estudiantes CWC")
+
 ## Genero estudiante
-## Libros Hogar estudiante
+ap_est$genero_est_cwc <- center(ap_est$genero_est, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$genero_est_cwc <- set_label(x = ap_est$genero_est_cwc, label = "Genero estudiantes CWC")
+
 ## Recompensa estudiante
+ap_est$recompensa_est_cwc <- center(ap_est$recompensa_est, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$recompensa_est_cwc <- set_label(x = ap_est$recompensa_est_cwc, label = "Recompensa en la escuela estudiantes CWC")
+
 ## Posición Política apoderado
+ap_est$pos_pol_ap_cwc <- center(ap_est$pos_pol_ap, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$pos_pol_ap_cwc <- set_label(x = ap_est$pos_pol_ap_cwc, label = "Posicion politica apoderados CWC" )
+
 ## Genero apoderado
+ap_est$genero_ap_cwc <- center(ap_est$genero_ap, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$genero_ap_cwc <- set_label(x = ap_est$genero_ap_cwc, label = "Genero apoderados CWC")
+
 ## Educación apoderado
+ap_est$educ_ap_cwc <- center(ap_est$educ_ap, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$educ_ap_cwc <- set_label(x = ap_est$educ_ap_cwc, label = "Nivel educacional más alto apoderados CWC")
+
 ## Libros Hogar apoderado
+ap_est$libros_hogar_ap_cwc <- center(ap_est$libros_hogar_ap, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$libros_hogar_ap_cwc <- set_label(x = ap_est$libros_hogar_ap_cwc, label = "Libros en el hogar apoderados CWC")
+
 ## Recompensa apoderado
+ap_est$recompensa_ap_cwc <- center(ap_est$recompensa_ap, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$recompensa_ap_cwc <- set_label(x = ap_est$recompensa_ap_cwc, label = "Recompensa en la escuela apoderados CWC")
+
+## Dependencia apoderado
+#ap_est$dependencia_ap_cwc <- center(ap_est$dependencia_ap, type = "CWC", group = ap_est$rbd_est)
+
+## Error in if (all(tapply(x, group, var, na.rm = TRUE) == 0)) { :valor ausente donde TRUE/FALSE es necesario
+
 ## Edad apoderado
+ap_est$edad_ap_cwc <- center(ap_est$edad_ap, type = "CWC", group = ap_est$rbd_est)
+
+ap_est$edad_ap_cwc <- set_label(x = ap_est$edad_ap_cwc, label = "Edad apoderados CWC")
 ```
 
 
