@@ -198,7 +198,7 @@ est_proc$perc_esfuerzo_factor <- set_label(x = est_proc$perc_esfuerzo_factor, la
 
 
 # Trabajo duro
-est_proc$perc_trabajo_duro_factor <- factor(est_proc$perc_esfuerzo, levels = c(1,2,3,4), labels = c("Nada importante", "Algo importante", "Importante", "Muy importante"))
+est_proc$perc_trabajo_duro_factor <- factor(est_proc$perc_trabajo_duro, levels = c(1,2,3,4), labels = c("Nada importante", "Algo importante", "Importante", "Muy importante"))
 
 # Etiquetar
 est_proc$perc_trabajo_duro_factor <- set_label(x = est_proc$perc_trabajo_duro_factor, label = "Percepcion meritocracia: Importancia trabajo duro estudiantes factor")
@@ -756,10 +756,13 @@ ap_proc$ingresos_tramos_factor <- factor(ap_proc$ingresos_tramos, levels = c(1,2
 ap_proc <- ap_proc %>% mutate(quintiles_ingresos_pc = ntile(ingresos_pc,5))
 
 ## Recuperar NA
-ap_proc$quintiles_ingresos_pc[ap_proc$quintiles_ingresos_pc == NA] <- 99
+ap_proc$quintiles_ingresos_pc[is.na(ap_proc$quintiles_ingresos_pc)] <- 99
 
 # Construcción ingresos per capita quintiles factor
 ap_proc$quintiles_ingresos_pc_factor <- factor(ap_proc$quintiles_ingresos_pc, levels = c(1,2,3,4,5,99), labels = c("Quintil 1", "Quintil 2", "Quintil 3", "Quintil 4", "Quintil 5", "Ns/Nr"))
+
+## Eliminar 99 de la variable numerica
+ap_proc$quintiles_ingresos_pc[ap_proc$quintiles_ingresos_pc == 99] <- NA
 
  # ---- Descripción variables nuevas ----
 

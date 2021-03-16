@@ -63,7 +63,8 @@ pacman::p_load(dplyr, #Manipulacion de datos
               mixor, # Modelos ordinales
               lme4, # Modelos mixtos,
               lavaan, # CFA
-              texreg # Tablas modelos
+              texreg, # Tablas modelos
+              reghelper # ICC
 )
 # Cargar datos
 load(file = "../input/data/ap_est.RData") # Base conjunta
@@ -120,6 +121,7 @@ sjPlot::plot_likert(baselik,
 #dev.off()
 
 ```
+Las respuestas de estudiantes y apoderados sobre la importancia del trabajo duro se concentran en las categorías más altas de la escala Likert. Un 81.2% de apoderados considera importante o muy importante el trabajo duro para surgir en la vida. En la misma linea, un 83.4% de los estudiantes comparte tal afirmación.
 
 ```{r fig.width= 10}
 # Plot Likert: perc. esfuerzo apoderados y estudiantes
@@ -151,7 +153,7 @@ sjPlot::plot_likert(baselik,
 #dev.off()
 
 ```
-
+Para el caso del grado de acuerdo con respecto a la afirmación "En Chile, los que se esfuerzan salen adelante" los resultados son similares al indicador anterior. Tanto en estudiantes como apoderados más del 80% de las respuestas se concentran en las categorías "De acuerdo" y "Muy de acuerdo".
 ### Descriptivos sentidos de justicia
 
 ```{r eval=FALSE, include=FALSE, results='asis'}
@@ -193,11 +195,13 @@ cormat,
   number.cex = 1)
 ```
 
+La matriz de correlación para las variables principales del estudio muestran dos tendencias: bajas correlaciones (la mayoría menos a 0.1) y positivas.Destaca la correlación entre los indicadores de esfuerzo y trabajo duro en el caso de estudiantes (0.29). Con menor magnitud, los indicadores de esfuerzo y trabajo duro en el caso de los apoderados arrojan un coeficiente de 0.1. En el caso de la correlación entre los promedios de indicadores de estudiantes y apoderados la correlación también es baja (0.13). Por último, los dos indicadores de sentido de justicia (directo e indirecto) muestran una correlación de un 0.13.
+
 ### Matriz de correlación entre variables nivel 2
 ```{r}
 # Matriz de correlación entre variables nivel 2
 
-basecor<- ap_est %>% select(ingresos_esc, ingresos_pc_esc, heterogen_esc, univ_esc)
+basecor<- ap_est %>% select(ingresos_esc, ingresos_pc_esc, heterogen_esc, univ_esc, dependencia_ap)
 cormat=cor(basecor, use = "complete.obs")
 #save
 #png("../output/images/correlacionl2.png",width=600,height=600)
@@ -206,8 +210,9 @@ rownames(cormat) <-c(
     "A. Ingresos del hogar por escuela",
     "B. Ingresos per capita por escuela",
     "C. Heterogeneidad socioeconomica escuela",
-    "D. Porcentaje ed. tericiaria por escuela")
-colnames(cormat) <-c("(A)", "(B)","(C)","(D)")
+    "D. Porcentaje ed. tericiaria por escuela",
+    "E. Dependencia administrativa de la escuela")
+colnames(cormat) <-c("(A)", "(B)","(C)","(D)", "(E)")
 corrplot(
 cormat,
   method = "color",
@@ -221,6 +226,7 @@ cormat,
   number.cex = 1)
 ```
 
+Las variables nivel 2 del estudio muestran una correlación media alta, principalmente porque ingresos del hogar por escuela, ingresos per capita por escuela y heterogeneidad socioeconómica de la escuela están construidas a partr de la agregación de ingresos. Destacan las correlaciones entre el porcentaje de educación terciaria por escuela y la heterogeneidad socioeconómica con una correlación de 0.62, entre el porcentaje de ed. terciara por escuela y la dependencia administrativa con 0.63 y la heterogeneidad socioeconómica con la dependencia adminsitrativacon 0.45.
 
 ### Matriz de correlación entre ingresos + variables control
 ```{r}
@@ -381,7 +387,11 @@ cormat,
 mmn_p <- lmer(prom_percmer_est ~ 1 + (1|rbd_est), data = ap_est)
 
 #summary(mmn_p)
+
+# Correlación Intra Clase
+reghelper::ICC(mmn_p)
 ```
+El modelo nulo con rbd reportado por estudiantes da una correlación intraclase baja (0.05). Llama la atención que al utilizar el rbd reportado por apoderados esta sube (0.09), aunque sigue por abajo del 10% de la varianza relacionada a N2.
 
 #### Modelo 1: L1 con promedio indicadores sin centrar
 ```{r}
@@ -464,7 +474,6 @@ mmin2_p <- lmer(prom_percmer_est ~ prom_percmer_ap +
                  prom_percmer_ap*sj_direct_factor + # Interacción
                  region_factor_est +
                  pos_pol_factor_est + 
-                 libros_hogar_factor_est + 
                  recompensa_factor_est + 
                  pos_pol_factor_ap +
                  genero_factor_ap +
@@ -482,10 +491,28 @@ mmin2_p <- lmer(prom_percmer_est ~ prom_percmer_ap +
 
 htmlreg(list(mmn_p, mml1_p, mml2_p, mml1l2_p, mmin1_p, mmin2_p), custom.model.names = c("Nulo", "L1", "L2", "L1+L2", "I1", "I2"),
         
-#custom.coef.names = c("Intercepto", "Perc. Esfuerzo Ap.", "Perc.Trabajo duro Ap.", "Sj Indirecto", "Sj Directo", "Ingreso tramos", "Ingresos por escuela", "Ed. Universitaria por escuela", "Heterogeneidad económica por escuela", "Perc. Esfuerzo Ap.*Sj Indirecto", "Perc. Trabajo duro Ap.*Sj Indirecto", "Perc. Esfuerzo. Ap*Sj Directo","Perc. Trabajo duro*Sj Directo", "Región", "Dependencia", "Posición política Est.", "Género Est.", "Ed. Padre", "Ed. Madre", "Libros hogar Est.", "Recompensa Est.", "Posición Política Ap.", "Género Ap.", "Ed. Ap", "Libros hogar Ap.", "Recompensa Ap.", "Edad Ap."),  
+#custom.coef.names = c("Intercepto", "Perc. Esfuerzo Ap.", "Perc.Trabajo duro Ap.", "Sj Indirecto", "Sj Directo", "Ingreso tramos", "Ingresos por escuela", "Ed. Universitaria por escuela", "Heterogeneidad económica por escuela", "Perc. Esfuerzo Ap.*Sj Indirecto", "Perc. Trabajo duro Ap.*Sj Indirecto", "Perc. Esfuerzo. Ap*Sj Directo","Perc. Trabajo duro*Sj Directo", "Región", "Dependencia", "Posición política Est.", "Género Est.", "Ed. Padre", "Ed. Madre", "Libros hogar Est.", "Recompensa Est.", "Posición Política Ap.", "Género Ap.", "Ed. Ap", "Libros hogar Ap.", "Recompensa Ap.", "Edad Ap."), 
+
+omit.coef = "(sj_indirect_ln)(sj_direct_factor)(quintiles_ingresos_pc_factor)(ingresos_esc)(univ_esc)heterogen_esc(dependencia_factor_ap)(region_factor_est)(pos_pol_factor_ap)(genero_factor_ap)(educ_factor_ap)(recompensa_factor_ap)(edad_ap)",
 
 star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (factores)")
 ```
+
+Destacan los siguientes resultados:
+
+- El promedio de percepción meritocrática en apoderados se mantiene significativo al 95% en todos los modelos, a excepción del último. El último modelo (I2) incluye la interacción entre el promedio de percepción meritocrática de apoderados y el factor del sentido de justicia directo. En esta última interacción ninguna categoría demuestra ser significativa.
+
+- La posición política del estudiante es significa al 95% en la categoría "Centro Izquierda" para el modelo I2.
+
+- La categoría "Otro" en el modelo I1 muestra ser significativa al 95%.
+
+- La variable de recompensa reportada por el estudiante muestra ser significativa al 99% en I1 y al 95% en I2 para la categoría "De acuerdo". Para la categoría "Muy de acuerdo" la significancia se mantiene del 99.9% en ambos modelos (I1 e I2).
+
+- Libros en el hogar reportados por el apoderado muestran ser signifcativos al 99% en ambos modelos (I1 e I2) para la categoría más baja (Entre 11 y 25 libros).
+
+- Las variables de sentido de justicia (directo a indirecto), los quintiles de ingresos en factores, las variables de nivel 2, la región, la posición política del apoderado, el nivel educacional del apoderado, el indicador de recompensa reportado por el apoderado y las interacciones no muestran ningún resultado significativo.
+
+
 
 ### Modelos con promedios de indicadores como dependiente con L1 centrado al grupo
 #### Modelo 0: nulo con promedio indicadores CWC
@@ -575,8 +602,9 @@ mmin2_p_cwc <- lmer(prom_percmer_est ~ prom_percmer_ap_cwc +
                  heterogen_esc + 
                  dependencia_factor_ap +
                  prom_percmer_ap_cwc*sj_direct_cwc + # Interacción
-                 region_est +
-                 pos_pol_est_cwc + 
+                 region_factor_est +
+                 pos_pol_est_cwc +
+                 genero_est_cwc +
                  recompensa_est_cwc + 
                  pos_pol_ap_cwc +
                  genero_ap_cwc +
@@ -598,6 +626,19 @@ htmlreg(list(mmn_p_cwc, mml1_p_cwc, mml2_p_cwc, mml1l2_p_cwc, mmin1_p_cwc, mmin2
 
 star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (CWC)")
 ```
+
+Destacan los siguientes resultado:
+
+- La percepción meritocrática de los apoderados pasa a ser significativa al 95% en todos los modelos
+
+- Genero en estudiantes es significativa al 95% en ambos modelos (I1 e I2)
+
+- El indicador de recompensa reportado por estudiantes es significativo al 99.9% en ambos modelos
+
+- Libros en el hogar reportado por apoderados deja de ser signifcativo al usar la variable númerica centrada. Además el coeficiente es negativo.
+
+- Todas las demás variables no presentan resultados significativos.
+
 
 ### Modelos con indicadores separados como dependiente
 ```{r Modelos 0: nulos con indicadores separados, eval=FALSE, include=FALSE}
