@@ -1,0 +1,20 @@
+name: "socializacion-meritocracia"
+output_dir: "." # Esto es para que se compile en el rootdir
+navbar:
+  title: "Socializacion de la meritocracia"
+  right:
+    - text: "Preparación"
+      href: "prod_preparacion-datos.html"
+    - text: "Análisis"
+      href: "prod_analisis.html"
+    - text: "Artículo"
+      icon: fa-file-pdf
+      href: "paper.pdf"
+    - text: ""
+      icon: fa-github fa-lg
+      href: https://github.com/juancarloscastillo/socialisacion-merit
+
+output:
+  bookdown::html_document2:
+      css: "custom.css"
+      theme: paper
