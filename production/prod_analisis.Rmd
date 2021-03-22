@@ -154,9 +154,10 @@ sjPlot::plot_likert(baselik,
 
 ```
 Para el caso del grado de acuerdo con respecto a la afirmación "En Chile, los que se esfuerzan salen adelante" los resultados son similares al indicador anterior. Tanto en estudiantes como apoderados más del 80% de las respuestas se concentran en las categorías "De acuerdo" y "Muy de acuerdo".
+
 ### Descriptivos sentidos de justicia
 
-```{r eval=FALSE, include=FALSE, results='asis'}
+```{r}
 select(ap_est, sj_indirect_ln, sj_indirect_noln) %>% summarytools::descr()
 ```
 
@@ -166,7 +167,7 @@ select(ap_est, sj_indirect_ln, sj_indirect_noln) %>% summarytools::descr()
 ```{r}
 # Matriz de correlación entre variales principales
 
-basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap,prom_percmer_est,prom_percmer_ap,sj_indirect_ln,sj_direct,ingresos_pc_esc)
+basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap,prom_percmer_est,prom_percmer_ap,sj_indirect_ln,sj_direct,ingresos_pc_esc, recompensa_est, recompensa_ap, prom_obt, prom_mer)
 cormat=cor(basecor, use = "complete.obs")
 #save
 #png("../output/images/correlacionl1.png",width=600,height=600)
@@ -180,8 +181,12 @@ rownames(cormat) <-c(
     "F. Prom. Perc. Mer. Apoderados",
     "G. Sentido justicia in",
     "H. Sentido justicia dir",
-    "I. Ingresos")
-colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)", "(G)", "(H)", "(I)")
+    "I. Ingresos",
+    "J. Recompensa estudiantes",
+    "K. Recompensa apoderados",
+    "L. Promedio obtenido",
+    "M. Promedio merecido")
+colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)", "(G)", "(H)", "(I)", "(J)", "(K)", "(L)", "(M)")
 corrplot(
 cormat,
   method = "color",
@@ -201,7 +206,7 @@ La matriz de correlación para las variables principales del estudio muestran do
 ```{r}
 # Matriz de correlación entre variables nivel 2
 
-basecor<- ap_est %>% select(ingresos_esc, ingresos_pc_esc, heterogen_esc, univ_esc, dependencia_ap)
+basecor<- ap_est %>% select(ingresos_esc, ingresos_pc_esc, heterogen_esc, univ_esc, dependencia_ap, porc_muj_esc_ap, porc_muj_esc_est)
 cormat=cor(basecor, use = "complete.obs")
 #save
 #png("../output/images/correlacionl2.png",width=600,height=600)
@@ -211,8 +216,10 @@ rownames(cormat) <-c(
     "B. Ingresos per capita por escuela",
     "C. Heterogeneidad socioeconomica escuela",
     "D. Porcentaje ed. tericiaria por escuela",
-    "E. Dependencia administrativa de la escuela")
-colnames(cormat) <-c("(A)", "(B)","(C)","(D)", "(E)")
+    "E. Dependencia administrativa de la escuela",
+    "F. Porcentaje de mujeres apoderadas en la escuela",
+    "G. Porcentaje de mujeres estudiantes en la escuela")
+colnames(cormat) <-c("(A)", "(B)","(C)","(D)", "(E)", "(F)", "(G)")
 corrplot(
 cormat,
   method = "color",
@@ -231,7 +238,7 @@ Las variables nivel 2 del estudio muestran una correlación media alta, principa
 ### Matriz de correlación entre ingresos + variables control
 ```{r}
 # Matriz de correlación entre ingresos + variables control
-basecor<- ap_est %>% select(ingresos_tramos, ingresos, ingresos_pc, ingresos_esc, ingresos_pc_esc, heterogen_esc, educ_madre, educ_padre, educ_ap, univ, univ_esc, libros_hogar_est, libros_hogar_ap, genero_est, genero_ap, pos_pol_est, pos_pol_ap, edad_ap )
+basecor<- ap_est %>% select(ingresos_tramos, ingresos, ingresos_pc, ingresos_esc, ingresos_pc_esc, heterogen_esc, educ_madre, educ_padre, educ_ap, univ, univ_esc, libros_hogar_est, libros_hogar_ap, genero_est, genero_ap, pos_pol_est, pos_pol_ap, edad_ap, recompensa_est, recompensa_ap )
 cormat=cor(basecor, use = "complete.obs")
 #save
 #png("../output/images/correlacionl2.png",width=600,height=600)
@@ -254,8 +261,10 @@ rownames(cormat) <-c(
     "O. Genero apoderado",
     "P. Posición política estudiante",
     "Q. Posición política apoderado",
-    "R. Edad apoderado")
-colnames(cormat) <-c("(A)","(B)","(C)","(D)", "(E)", "(F)",  "(G)",  "(H)",  "(I)",  "(J)",  "(K)",  "(L)",  "(M)",  "(N)",  "(O)",  "(P)",  "(Q)",  "(R)")
+    "R. Edad apoderado",
+    "S. Recompensa estudiante",
+    "T. Recompensa apoderado")
+colnames(cormat) <-c("(A)","(B)","(C)","(D)", "(E)", "(F)",  "(G)",  "(H)",  "(I)",  "(J)",  "(K)",  "(L)",  "(M)",  "(N)",  "(O)",  "(P)",  "(Q)",  "(R)", "(S)", "(T)")
 corrplot(
 cormat,
   method = "color",
@@ -269,236 +278,12 @@ cormat,
   number.cex = 0.5)
 ```
 
-```{r eval=FALSE, include=FALSE}
-# Matriz de correlación con otras variables de interés
-
-basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap,sj_indirect_ln,sj_direct,ingresos_pc_esc, perc_falta_talento_ap, perc_falta_talento_est, perc_falta_esfuerzo_est, perc_falta_esfuerzo_ap, perc_familia_rica_est, perc_familia_rica_ap)
-
-cormat=cor(basecor, use = "complete.obs")
-windowsFonts(A = windowsFont("Times New Roman"))
-rownames(cormat) <-c(
-    "A. Trabajo Duro Estudiantes",
-    "B. Trabajo Duro Apoderados",
-    "C. Esfuerzo Estudiantes",
-    "D. Esfuerzo Apoderados",
-    "E. Sentido justicia in",
-    "F. Sentido justicia dir",
-    "G. Ingresos",
-    "H. ap Ftalento",
-    "I. est Ftalento",
-    "J. est Fesf",
-    "K. ap Fest",
-    "M. est famrich",
-    "N. ap famrich")
-colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)", "(G)", "(H)","(I)", "(J)","(K)","(M)","(N)")
-corrplot(
-cormat,
-  method = "color",
-  type = "upper",
-  tl.col = "black",
-  addCoef.col = "black",
-  diag = TRUE,
-  family = "A",
-  number.font = 6,
-  tl.cex =0.75,
-  number.cex = 1)
-
-table(basecor$perc_trabajo_duro_est==basecor$perc_trabajo_duro_ap)
-```
-
-```{r eval=FALSE, include=FALSE}
-table(ap_est$rbd_est)
-```
-
-```{r eval=FALSE, include=FALSE}
-base218<- ap_est %>% filter(rbd_est==218)
-table(is.na(base218$ingresos_esc))
-table(base218$ingresos_esc)
-table(base218$ingresos)
-```
-
-```{r eval=FALSE, include=FALSE}
-baseafc<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap, perc_falta_talento_ap, perc_falta_talento_est, perc_falta_esfuerzo_est, perc_falta_esfuerzo_ap,sj_indirect_noln, ingresos_pc, rbd_est)
-baseafc <- set_na(baseafc, na = c(5,9), drop.levels = TRUE, as.tag = FALSE)
-baseafc=na.omit(baseafc)
-
-
-
-model01 <- 'perc_merit_est=~perc_trabajo_duro_est + perc_esfuerzo_est  
-            atri_merit_est=~perc_falta_talento_est+perc_falta_esfuerzo_est
-            perc_merit_ap=~perc_trabajo_duro_ap + perc_esfuerzo_ap  
-            atri_merit_ap=~perc_falta_talento_ap+perc_falta_esfuerzo_ap
-            '
-
-fit1_o <- cfa(model = model01,data = baseafc,
-            ordered = c("perc_trabajo_duro_est","perc_esfuerzo_est","perc_falta_talento_est", "perc_falta_esfuerzo_est","perc_trabajo_duro_ap","perc_esfuerzo_ap","perc_falta_talento_ap","perc_falta_esfuerzo_ap"))
-
-#---------------------------------------------------#
-fitMeasures(fit1_o, c("chisq", "df", "pvalue", "cfi", "tli", "rmsea"))
-summary(fit1_o, fit.measures=T, standardized=T)
-```
-
-```{r eval=FALSE, include=FALSE}
-p1a <- predict(fit1_o)
-scores_apod = as.data.frame(p1a)
-# Merge with factor scores
-apod_cfa2_sco = cbind(baseafc, scores_apod)
-# Check
-stargazer(apod_cfa2_sco, type = "text")
-# Save  factor scores
-```
-
-```{r eval=FALSE, include=FALSE}
-basecor<- apod_cfa2_sco[,9:15]
-basecor<- basecor[-c(3)]
-
-#basecor=na.omit(basecor)
-cormat=cor(basecor, use = "na.or.complete")
-
-#save
-#png("output/results/corplot_totscores.png",width=600,height=600)
-windowsFonts(A = windowsFont("Times New Roman"))
-rownames(cormat) <-c(
-    "A. Sentido de justicia notas",
-    "B. Ingreso familiar",
-    "C. Percepción meritocratica Estudiante",
-    "D. Atribución de pobreza meritocratica Estudiante",
-    "E. Percepción meritocratica Apoderado",
-    "F. Atribución de pobreza meritocratica Apoderado")
-colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)")
-corrplot(
-cormat,
-  method = "color",
-  type = "upper",
-  tl.col = "black",
-  addCoef.col = "black",
-  diag = TRUE,
-  family = "A",
-  number.font = 6,
-  tl.cex =0.75,
-  number.cex = 1)
-```
-
 ## Parte 4: Análisis multivariado
-### Modelos con promedios de indicadores como dependiente sin centrar
-#### Modelo 0: nulo con promedio indicadores sin centrar
-```{r}
-# Percepción meritocracia
-mmn_p <- lmer(prom_percmer_est ~ 1 + (1|rbd_est), data = ap_est)
+En la primera versión de los resultados multivariados se realizaron dos tandas de modelos, una con los predictores tipo factor, y otra con las variables centradas. Las tandas siguieron la secuencia típica de análisis multinivel: Modelo Nulo - Modelo con predictores N1 - Modelo con predictores N2 - Modelo con preditores N1 y N2 + Modelos con controles y una interacción - Modelo con controles y con otra interacción. En total fueron seis modelos los testeados, dicho sea de paso, con el rbd reportado por los estudiantes. Los resultados más significativos con este formato de presentación fueron los siguientes:
 
-#summary(mmn_p)
-
-# Correlación Intra Clase
-reghelper::ICC(mmn_p)
-```
 El modelo nulo con rbd reportado por estudiantes da una correlación intraclase baja (0.05). Llama la atención que al utilizar el rbd reportado por apoderados esta sube (0.09), aunque sigue por abajo del 10% de la varianza relacionada a N2.
 
-#### Modelo 1: L1 con promedio indicadores sin centrar
-```{r}
-# Percepción meritocracia
-mml1_p <- lmer(prom_percmer_est ~ 1 + prom_percmer_ap + 
-                 sj_indirect_ln + 
-                 sj_direct_factor + 
-                 quintiles_ingresos_pc_factor + 
-                 (1|rbd_est), data = ap_est)
-
-#summary(mml1_p)
-```
-
-#### Modelo 2: L2 con promedio indicadores sin centrar
-```{r}
-# Percepción meritocracia
-mml2_p <- lmer(prom_percmer_est ~ 1 + ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc +
-                 dependencia_factor_ap
-              + (1|rbd_est), data = ap_est)
-
-#summary(mml2_p)
-```
-
-#### Modelo 3: L1+L2 con promedio indicadores sin centrar
-```{r}
-# Percepción meritocracia
-mml1l2_p <- lmer(prom_percmer_est ~ prom_percmer_ap + 
-                 sj_indirect_ln + 
-                 sj_direct_factor + 
-                 quintiles_ingresos_pc_factor + 
-                 ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc +
-                 dependencia_factor_ap 
-                + (1|rbd_est), data = ap_est)
-
-#summary(mml1l2_p)
-```
-
-#### Modelo 4: interacción 1 y controles con promedio indicadores sin centrar
-```{r}
-# Percepción meritocracia
-mmin1_p <- lmer(prom_percmer_est ~ prom_percmer_ap + 
-                 sj_indirect_ln + 
-                 sj_direct_factor + 
-                 quintiles_ingresos_pc_factor + 
-                 ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc + 
-                 dependencia_factor_ap +
-                 prom_percmer_ap*sj_indirect_ln + # Interacción
-                 region_factor_est +
-                 pos_pol_factor_est + 
-                 genero_factor_est +
-                 recompensa_factor_est + 
-                 pos_pol_factor_ap +
-                 genero_factor_ap +
-                 educ_factor_ap +
-                 libros_hogar_factor_ap +
-                 recompensa_factor_ap +
-                 edad_ap +
-                 (1|rbd_est), data = ap_est)
-
-#summary(mmin1_p)
-```
-
-#### Modelo 4: interacción 2 y controles con promedio indicadores sin centrar
-```{r}
-# Percepción meritocracia
-mmin2_p <- lmer(prom_percmer_est ~ prom_percmer_ap +
-                 sj_indirect_ln + 
-                 sj_direct_factor + 
-                 quintiles_ingresos_pc_factor + 
-                 ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc +
-                 dependencia_factor_ap +
-                 prom_percmer_ap*sj_direct_factor + # Interacción
-                 region_factor_est +
-                 pos_pol_factor_est + 
-                 recompensa_factor_est + 
-                 pos_pol_factor_ap +
-                 genero_factor_ap +
-                 educ_factor_ap +
-                 libros_hogar_factor_ap +
-                 recompensa_factor_ap +
-                 edad_ap +
-                 (1|rbd_est), data = ap_est)
-
-#summary(mmin2_p)
-```
-
-### Tabla de modelos con promedio de indicadores sin centrar
-```{r Tabla de modelos con promedio de indicadores, results='asis'}
-
-htmlreg(list(mmn_p, mml1_p, mml2_p, mml1l2_p, mmin1_p, mmin2_p), custom.model.names = c("Nulo", "L1", "L2", "L1+L2", "I1", "I2"),
-        
-#custom.coef.names = c("Intercepto", "Perc. Esfuerzo Ap.", "Perc.Trabajo duro Ap.", "Sj Indirecto", "Sj Directo", "Ingreso tramos", "Ingresos por escuela", "Ed. Universitaria por escuela", "Heterogeneidad económica por escuela", "Perc. Esfuerzo Ap.*Sj Indirecto", "Perc. Trabajo duro Ap.*Sj Indirecto", "Perc. Esfuerzo. Ap*Sj Directo","Perc. Trabajo duro*Sj Directo", "Región", "Dependencia", "Posición política Est.", "Género Est.", "Ed. Padre", "Ed. Madre", "Libros hogar Est.", "Recompensa Est.", "Posición Política Ap.", "Género Ap.", "Ed. Ap", "Libros hogar Ap.", "Recompensa Ap.", "Edad Ap."), 
-
-omit.coef = "(sj_indirect_ln)(sj_direct_factor)(quintiles_ingresos_pc_factor)(ingresos_esc)(univ_esc)heterogen_esc(dependencia_factor_ap)(region_factor_est)(pos_pol_factor_ap)(genero_factor_ap)(educ_factor_ap)(recompensa_factor_ap)(edad_ap)",
-
-star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (factores)")
-```
-
-Destacan los siguientes resultados:
+1. Modelos sin centrar (factores)
 
 - El promedio de percepción meritocrática en apoderados se mantiene significativo al 95% en todos los modelos, a excepción del último. El último modelo (I2) incluye la interacción entre el promedio de percepción meritocrática de apoderados y el factor del sentido de justicia directo. En esta última interacción ninguna categoría demuestra ser significativa.
 
@@ -512,124 +297,7 @@ Destacan los siguientes resultados:
 
 - Las variables de sentido de justicia (directo a indirecto), los quintiles de ingresos en factores, las variables de nivel 2, la región, la posición política del apoderado, el nivel educacional del apoderado, el indicador de recompensa reportado por el apoderado y las interacciones no muestran ningún resultado significativo.
 
-
-
-### Modelos con promedios de indicadores como dependiente con L1 centrado al grupo
-#### Modelo 0: nulo con promedio indicadores CWC
-```{r}
-# Percepción meritocracia
-mmn_p_cwc <- lmer(prom_percmer_est ~ 1 + (1|rbd_est), data = ap_est)
-
-#summary(mmn_p)
-```
-
-#### Modelo 1: L1 con promedio indicadores CWC
-```{r}
-# Percepción meritocracia
-mml1_p_cwc <- lmer(prom_percmer_est ~ 1 + prom_percmer_ap_cwc + 
-                 sj_indirect_ln_cwc + 
-                 sj_direct_cwc + 
-                 quintiles_ingresos_pc_factor + 
-                 (1|rbd_est), data = ap_est)
-
-#summary(mml1_p)
-```
-
-#### Modelo 2: L2 con promedio indicadores CWC
-```{r}
-# Percepción meritocracia
-mml2_p_cwc <- lmer(prom_percmer_est ~ 1 + ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc +
-                 dependencia_factor_ap
-              + (1|rbd_est), data = ap_est)
-
-#summary(mml2_p)
-```
-
-#### Modelo 3: L1+L2 con promedio indicadores CWC
-```{r}
-# Percepción meritocracia
-mml1l2_p_cwc <- lmer(prom_percmer_est ~ prom_percmer_ap_cwc + 
-                 sj_indirect_ln_cwc + 
-                 sj_direct_cwc + 
-                 quintiles_ingresos_pc_factor + 
-                 ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc +
-                 dependencia_factor_ap
-                + (1|rbd_est), data = ap_est)
-
-#summary(mml1l2_p)
-```
-
-#### Modelo 4: interacción 1 y controles con promedio indicadores CWC
-```{r}
-# Percepción meritocracia
-mmin1_p_cwc <- lmer(prom_percmer_est ~ prom_percmer_ap_cwc + 
-                 sj_indirect_ln_cwc + 
-                 sj_direct_cwc + 
-                 quintiles_ingresos_pc_factor + 
-                 ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc + 
-                 dependencia_factor_ap +
-                 prom_percmer_ap_cwc*sj_indirect_ln_cwc + # Interacción
-                 region_factor_est +
-                 pos_pol_est_cwc + 
-                 genero_est_cwc +
-                 recompensa_est_cwc + 
-                 pos_pol_ap_cwc +
-                 genero_ap_cwc +
-                 educ_ap_cwc +
-                 libros_hogar_ap_cwc +
-                 recompensa_ap_cwc +
-                 edad_ap_cwc +
-                 (1|rbd_est), data = ap_est)
-
-#summary(mmin1_p)
-```
-
-#### Modelo 4: interacción 2 y controles con promedio indicadores CWC
-```{r}
-# Percepción meritocracia
-mmin2_p_cwc <- lmer(prom_percmer_est ~ prom_percmer_ap_cwc +
-                 sj_indirect_ln_cwc + 
-                 sj_direct_cwc + 
-                 quintiles_ingresos_pc_factor + 
-                 ingresos_esc + 
-                 univ_esc + 
-                 heterogen_esc + 
-                 dependencia_factor_ap +
-                 prom_percmer_ap_cwc*sj_direct_cwc + # Interacción
-                 region_factor_est +
-                 pos_pol_est_cwc +
-                 genero_est_cwc +
-                 recompensa_est_cwc + 
-                 pos_pol_ap_cwc +
-                 genero_ap_cwc +
-                 educ_ap_cwc +
-                 libros_hogar_ap_cwc +
-                 recompensa_ap_cwc +
-                 edad_ap_cwc +
-                 (1|rbd_est), data = ap_est)
-
-#summary(mmin2_p)
-```
-
-
-
-### Tabla de modelos con promedio de indicadores
-```{r results='asis'}
-
-htmlreg(list(mmn_p_cwc, mml1_p_cwc, mml2_p_cwc, mml1l2_p_cwc, mmin1_p_cwc, mmin2_p_cwc), custom.model.names = c("Nulo", "L1", "L2", "L1+L2", "I1", "I2"),
-        
-#custom.coef.names = c("Intercepto", "Perc. Esfuerzo Ap.", "Perc.Trabajo duro Ap.", "Sj Indirecto", "Sj Directo", "Ingreso tramos", "Ingresos por escuela", "Ed. Universitaria por escuela", "Heterogeneidad económica por escuela", "Perc. Esfuerzo Ap.*Sj Indirecto", "Perc. Trabajo duro Ap.*Sj Indirecto", "Perc. Esfuerzo. Ap*Sj Directo","Perc. Trabajo duro*Sj Directo", "Región", "Dependencia", "Posición política Est.", "Género Est.", "Ed. Padre", "Ed. Madre", "Libros hogar Est.", "Recompensa Est.", "Posición Política Ap.", "Género Ap.", "Ed. Ap", "Libros hogar Ap.", "Recompensa Ap.", "Edad Ap."),  
-
-star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (CWC)")
-```
-
-Destacan los siguientes resultado:
+2. Modelos CWC
 
 - La percepción meritocrática de los apoderados pasa a ser significativa al 95% en todos los modelos
 
@@ -641,6 +309,113 @@ Destacan los siguientes resultado:
 
 - Todas las demás variables no presentan resultados significativos.
 
+En esta segunda versión de los resultados se mantendrá la división de sin centrar/CWC, pero esta vez la secuencia será distinta. Existirá un modelo por cada introducción de variables principales, quedando de la siguiente manera: Modelo nulo - Modelo B1 + Modelo B2 + Modelo B3 + Modelo B4 + Modelo con controles e interacción + Modelo con controles y otra interacción. Además, se testeará el uso del rbd reportado por apoderados, asi como también la introducción o no de la variable recompensa.
+
+### Modelos con promedios de indicadores como dependiente con L1 centrado al grupo
+#### Modelo 0: nulo con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mmn_p <- lmer(prom_percmer_est ~ 1 + (1|rbd_est), data = ap_est)
+
+# Correlación Intra Clase
+reghelper::ICC(mmn_p)
+```
+El modelo nulo con rbd reportado por estudiantes da una correlación intraclase baja (0.05). Llama la atención que al utilizar el rbd reportado por apoderados esta sube (0.09), aunque sigue por abajo del 10% de la varianza relacionada a N2.
+
+#### Modelo 1: B1 (Percepción meritocrática apoderados) promedio indicadores sin centrar
+```{r}
+# Percepción meritocracia
+mmb1_p <- lmer(prom_percmer_est ~ 1 + prom_percmer_ap_cwc + 
+                 (1|rbd_est), data = ap_est)
+```
+
+#### Modelo 2:  B2 (Sentidos de justicia) con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mmb2_p <- lmer(prom_percmer_est ~ 1 + sj_indirect_ln_cwc + sj_direct_cwc
+              + (1|rbd_est), data = ap_est)
+```
+
+#### Modelo 3: B3 (Quintiles de ingreso) con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mmb3_p <- lmer(prom_percmer_est ~ 1 + quintiles_ingresos_pc_factor
+                + (1|rbd_est), data = ap_est)
+```
+
+#### Modelo 4: B1+B2+B3 con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mmb1b2b3_p <- lmer(prom_percmer_est ~ prom_percmer_ap_cwc + 
+                 sj_indirect_ln_cwc + 
+                 sj_direct_cwc + 
+                 quintiles_ingresos_pc_factor +
+                 prom_obt_cwc +
+                 prom_mer_cwc +
+                 (1|rbd_est), data = ap_est)
+```
+
+#### Modelo 5: Controles e I1 con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mmin1_p <- lmer(prom_percmer_est ~ prom_percmer_ap_cwc +
+                 sj_indirect_ln_cwc + 
+                 sj_direct_cwc + 
+                 quintiles_ingresos_pc_factor +
+                 prom_obt_cwc +
+                 prom_mer_cwc +
+                 region_factor_est +
+                 pos_pol_est_cwc + 
+                 recompensa_est_cwc + 
+                 pos_pol_ap_cwc +
+                 genero_factor_ap +
+                 educ_factor_ap +
+                 libros_hogar_ap_cwc +
+                 recompensa_ap_cwc +
+                 edad_ap_cwc +
+                 ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc +
+                 dependencia_factor_ap +
+                 porc_muj_esc_ap +
+                 porc_muj_esc_est +
+                 prom_percmer_ap*sj_indirect_ln + # Interacción
+                 (1|rbd_est), data = ap_est)
+```
+
+#### Modelo 6: Controles e I2 con promedio indicadores CWC
+```{r}
+# Percepción meritocracia
+mmin2_p <- lmer(prom_percmer_est ~ prom_percmer_ap_cwc +
+                 sj_indirect_ln_cwc + 
+                 sj_direct_cwc + 
+                 quintiles_ingresos_pc_factor + 
+                 prom_obt_cwc +
+                 prom_mer_cwc +
+                 region_factor_est +
+                 pos_pol_est_cwc + 
+                 recompensa_est_cwc + 
+                 pos_pol_ap_cwc +
+                 genero_factor_ap +
+                 educ_factor_ap +
+                 libros_hogar_ap_cwc +
+                 recompensa_ap_cwc +
+                 edad_ap_cwc +
+                 ingresos_esc + 
+                 univ_esc + 
+                 heterogen_esc +
+                 dependencia_factor_ap +
+                 porc_muj_esc_ap +
+                 porc_muj_esc_est +
+                 prom_percmer_ap*sj_direct_factor + # Interacción
+                 (1|rbd_est), data = ap_est)
+```
+
+### Tabla de modelos con promedio de indicadores CWC
+```{r Tabla de modelos con promedio de indicadores CWC, results='asis'}
+
+htmlreg(list(mmn_p, mmb1_p, mmb2_p, mmb3_p, mmb1b2b3_p, mmin1_p, mmin2_p), custom.model.names = c("Nulo", "B1", "B2", "B3", "B1+B2+B3", "I1", "I2"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (CWC)")
+```
 
 ### Modelos con indicadores separados como dependiente
 ```{r Modelos 0: nulos con indicadores separados, eval=FALSE, include=FALSE}
@@ -956,56 +731,66 @@ mmin4_td <- clmm(perc_trabajo_duro_est ~ perc_esfuerzo_ap +
 
 ```
 
-
-```{r eval=FALSE, include=FALSE, results='asis'}
-results_0_accum  = lmer(perc_merit_est ~ 1 + (1| rbd_est), data = apod_cfa2_sco, REML=F)
-results_1_accum  = lmer(perc_merit_est ~ 1 + ingresos_pc + (1| rbd_est), data = apod_cfa2_sco, REML=F)
-results_2_accum  = lmer(perc_merit_est ~ 1 + sj_indirect_noln + (1| rbd_est), data = apod_cfa2_sco, REML=F)
-results_3_accum  = lmer(perc_merit_est ~ 1 +  perc_merit_ap + (1| rbd_est), data = apod_cfa2_sco, REML=F)
-results_4_accum  = lmer(perc_merit_est ~ 1 + atri_merit_ap + (1| rbd_est), data = apod_cfa2_sco, REML=F)
-
-results_5_accum  = lmer(perc_merit_est ~ 1 + perc_merit_ap + atri_merit_ap +  sj_indirect_noln + ingresos_pc + (1| rbd_est), data = apod_cfa2_sco, REML=F)
-
-htmlreg(list(results_0_accum, results_1_accum,results_2_accum, results_3_accum,results_4_accum,results_5_accum), custom.coef.names = c("Intercepto", "Ingresos Percapita", "Sentido de justicia", "Percepción Meritocratica Apoderados", "Atribución Meritocratica Apoderados"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica")
-
-```
-
-
 # Analisis en detalle
 
 
-```{r}
+```{r, results='asis'}
 # Percepción meritocracia modelo nulo
 
 mmn_p_cwc <- lmer(prom_percmer_est ~ 1 + (1|rbd_est), data = ap_est)
 mml1_p_cwc <- lmer(prom_percmer_est ~ 1 + prom_percmer_ap_cwc + (1|rbd_est), data = ap_est)
 mml1_p_cwc2 <- lmer(prom_percmer_est ~ 1 + sj_direct_cwc + (1|rbd_est), data = ap_est)
-mml1_p_cwc2 <- lmer(prom_percmer_est ~ 1 + resp_porf + (1|rbd_est), data = ap_est)
-mml1_p_cwc3 <- lmer(prom_percmer_est ~ 1 + quintiles_ingresos_pc_factor + (1|rbd_est), data = ap_est)
+mml1_p_cwc3 <- lmer(prom_percmer_est ~ 1 + resp_prof + (1|rbd_est), data = ap_est)
+mml1_p_cwc4 <- lmer(prom_percmer_est ~ 1 + quintiles_ingresos_pc_factor + (1|rbd_est), data = ap_est)
 
-screenreg(list(mmn_p_cwc,mml1_p_cwc, mml1_p_cwc2, mml1_p_cwc3 ))
-
+htmlreg(list(mmn_p_cwc, mml1_p_cwc, mml1_p_cwc2, mml1_p_cwc3, mml1_p_cwc4), custom.model.names = c("Nulo", "Model 1", "Model 2", "Model 3", "Model 4"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (CWC)")
 ```
 
-```{r}
+```{r, results='asis'}
 # Percepción meritocracia modelo nulo
 
-basereg <- ap_est %>% select(prom_percmer_est, rbd_est, prom_percmer_ap_cwc, sj_direct_cwc, quintiles_ingresos_pc_factor, recompensa_est_cwc, resp_porf_cwc, pos_pol_ap)
+basereg <- ap_est %>% select(prom_percmer_est, rbd_est, prom_percmer_ap_cwc, sj_direct_cwc, quintiles_ingresos_pc_factor, recompensa_est_cwc, resp_prof_cwc, pos_pol_ap)
 
 basereg <- na.omit(basereg)
 
 mmn_p_cwc <- lmer(prom_percmer_est ~ 1 + (1|rbd_est), data = basereg)
-mml1_p_cwc <- lmer(prom_percmer_est ~ 1 + prom_percmer_ap_cwc + quintiles_ingresos_pc_factor + pos_pol_ap +  (1|rbd_est), data = basereg)
-mml1_p_cwc1 <- lmer(prom_percmer_est ~ 1 + sj_direct_cwc + quintiles_ingresos_pc_factor + pos_pol_ap + (1|rbd_est), data = basereg)
-mml1_p_cwc2 <- lmer(prom_percmer_est ~ 1 + recompensa_est_cwc + quintiles_ingresos_pc_factor + pos_pol_ap + (1|rbd_est), data = basereg)
-mml1_p_cwc3 <- lmer(prom_percmer_est ~ 1 + resp_porf_cwc + quintiles_ingresos_pc_factor + pos_pol_ap + (1|rbd_est), data = basereg)
-mml1_p_cwc4 <- lmer(prom_percmer_est ~ 1 + quintiles_ingresos_pc_factor + pos_pol_ap + (1|rbd_est), data = basereg)
-mml1_p_cwc5 <- lmer(prom_percmer_est ~ 1 + prom_percmer_ap_cwc +   sj_direct_cwc + recompensa_est_cwc + resp_porf_cwc + quintiles_ingresos_pc_factor + pos_pol_ap   + (1|rbd_est), data = basereg)
 
-screenreg(list(mmn_p_cwc,mml1_p_cwc,mml1_p_cwc1, mml1_p_cwc2, mml1_p_cwc3,mml1_p_cwc4, mml1_p_cwc5), omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap)", custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos y posicion politica de los padres",  custom.coef.names = c("Intercept", "Percepción meritocratica de los padres", "Sentido de justicia en las notas", "Sensacion de recompenza justa en la escuela", "Justicia procesal del profesor"))
+mml1_p_cwc <- lmer(prom_percmer_est ~ 1 + 
+                     prom_percmer_ap_cwc + 
+                     quintiles_ingresos_pc_factor + 
+                     pos_pol_ap +  (1|rbd_est), data = basereg)
+
+mml1_p_cwc1 <- lmer(prom_percmer_est ~ 1 + 
+                      sj_direct_cwc + 
+                      quintiles_ingresos_pc_factor + 
+                      pos_pol_ap + (1|rbd_est), data = basereg)
+
+mml1_p_cwc2 <- lmer(prom_percmer_est ~ 1 + 
+                      recompensa_est_cwc + 
+                      quintiles_ingresos_pc_factor +
+                      pos_pol_ap + (1|rbd_est), data = basereg)
+
+mml1_p_cwc3 <- lmer(prom_percmer_est ~ 1 + 
+                      resp_prof_cwc + 
+                      quintiles_ingresos_pc_factor + 
+                      pos_pol_ap + (1|rbd_est), data = basereg)
+
+mml1_p_cwc4 <- lmer(prom_percmer_est ~ 1 + 
+                      quintiles_ingresos_pc_factor + 
+                      pos_pol_ap + (1|rbd_est), data = basereg)
+
+mml1_p_cwc5 <- lmer(prom_percmer_est ~ 1 + 
+                      prom_percmer_ap_cwc +   
+                      sj_direct_cwc + recompensa_est_cwc + 
+                      resp_prof_cwc + 
+                      quintiles_ingresos_pc_factor + 
+                      pos_pol_ap   + (1|rbd_est), data = basereg)
+
+htmlreg(list(mmn_p_cwc,mml1_p_cwc,mml1_p_cwc1, mml1_p_cwc2, mml1_p_cwc3,mml1_p_cwc4, mml1_p_cwc5), omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap)", custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos y posicion politica de los padres",  custom.coef.names = c("Intercept", "Percepción meritocratica de los padres", "Sentido de justicia en las notas", "Sensacion de recompenza justa en la escuela", "Justicia procesal del profesor"))
 
 
 ```
+
 ```{r}
 save(mmn_p_cwc, file ="../output/tables/mmn_p_cwc.R")
 save(mml1_p_cwc, file ="../output/tables/mml1_p_cwc.R")
@@ -1021,12 +806,12 @@ save(mml1_p_cwc5, file ="../output/tables/mml1_p_cwc5.R")
 
 
 ```{r}
-basecor <- ap_est %>% select(prom_percmer_est,prom_percmer_ap_cwc, sj_direct_cwc, recompensa_est_cwc, resp_porf_cwc)
+basecor <- ap_est %>% select(prom_percmer_est,prom_percmer_ap_cwc, sj_direct_cwc, recompensa_est_cwc, resp_prof_cwc)
 basecor <- na.omit(basecor)
 correcom <- cor(basecor)
 
 
-png("../output/images/corplot.png",width=600,height=600)
+#png("../output/images/corplot.png",width=600,height=600)
 
 windowsFonts(A = windowsFont("Times New Roman"))
 rownames(correcom) <-c(
@@ -1048,7 +833,7 @@ correcom,
   tl.cex =0.75,
   number.cex = 1)
 
-dev.off()
+#dev.off()
 
 ```
 
