@@ -64,7 +64,8 @@ pacman::p_load(dplyr, #Manipulacion de datos
               lme4, # Modelos mixtos,
               lavaan, # CFA
               texreg, # Tablas modelos
-              reghelper # ICC
+              reghelper, # ICC,
+              table1 #Tabla bonita
 )
 # Cargar datos
 load(file = "../input/data/ap_est.RData") # Base conjunta
@@ -162,6 +163,198 @@ select(ap_est, sj_indirect_ln, sj_indirect_noln) %>% summarytools::descr()
 ```
 
 ## Parte 3: Análisis descriptivo bivariado
+### Tablas y gráficos bivariados de variables principales
+
+```{r}
+## Variables numericas x genero estudiante
+table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
+table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
+table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
+table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | genero_factor_est, data = ap_est)
+```
+
+```{r}
+## Variables numericas x posicion politica estudiantes
+table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
+table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
+table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
+table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | pos_pol_factor_est, data = ap_est)
+```
+
+```{r}
+## Variables numericas x posicion politica estudiantes
+table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
+table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
+table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
+table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | pos_pol_factor_est, data = ap_est)
+```
+
+```{r}
+## Variables numericas x posicion politica estudiantes
+table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
+table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
+table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
+table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | quintiles_ingresos_pc_factor, data = ap_est)
+```
+
+```{r}
+## Variables numericas x sentido de justicia directo
+table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
+table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
+table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
+table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | sj_direct_factor, data = ap_est)
+```
+
+```{r}
+## Variables numericas x recompensa estudiantes
+table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
+table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
+table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
+table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | recompensa_factor_est, data = ap_est)
+```
+
+```{r}
+## Variables numericas x dependencia administrativa
+table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
+table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
+table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
+table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | dependencia_factor_est, data = ap_est)
+```
+
+
+```{r}
+# Sentido de justicia directo x genero estudiante
+sjt.xtab(ap_est$genero_factor_est, ap_est$sj_direct_factor, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+```{r}
+# Sentido de justicia directo x posicion política estudiantes
+sjt.xtab(ap_est$pos_pol_factor_est, ap_est$sj_direct_factor, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+```{r}
+# Sentido de justicia directo x quintiles
+sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$sj_direct_factor, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+
+```{r}
+# Sentido de justicia directo x dependencia administrativa
+sjt.xtab(ap_est$dependencia_factor_est, ap_est$sj_direct_factor, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+
+```{r}
+# Percepcion esfuerzo estudiante x genero estudiante
+sjt.xtab(ap_est$genero_factor_est, ap_est$perc_esfuerzo_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+```{r}
+# Percepcion esfuerzo estudiante x posicion política estudiantes
+sjt.xtab(ap_est$pos_pol_factor_est, ap_est$perc_esfuerzo_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+```{r}
+# Percepcion esfuerzo estudiante x quintiles
+sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$perc_esfuerzo_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+
+```{r}
+# Percepcion esfuerzo estudiante x dependencia administrativa
+sjt.xtab(ap_est$dependencia_factor_est, ap_est$perc_esfuerzo_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+```{r}
+# Percepcion trabajo duro estudiante x genero estudiante
+sjt.xtab(ap_est$genero_factor_est, ap_est$perc_trabajo_duro_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+```{r}
+# Percepcion trabajo duro estudiante x posicion política estudiantes
+sjt.xtab(ap_est$pos_pol_factor_est, ap_est$perc_trabajo_duro_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+```{r}
+# Percepcion trabajo duro estudiante x quintiles
+sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$perc_trabajo_duro_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+
+```{r}
+# Percepcion trabajo duro estudiante x dependencia administrativa
+sjt.xtab(ap_est$dependencia_factor_est, ap_est$perc_trabajo_duro_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+```{r}
+# Recompensa justa estudiantes x genero estudiante
+sjt.xtab(ap_est$genero_factor_est, ap_est$recompensa_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+```{r}
+# Recompensa justa estudiantes x posicion política estudiantes
+sjt.xtab(ap_est$pos_pol_factor_est, ap_est$recompensa_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+```{r}
+# Recompensa justa estudiantes x quintiles
+sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$recompensa_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
+
+```{r}
+# Recompensa justa estudiantes x dependencia administrativa
+sjt.xtab(ap_est$dependencia_factor_est, ap_est$recompensa_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=FALSE
+)
+```
+
 ### Matriz de correlación entre variales principales
 
 ```{r}
@@ -358,7 +551,6 @@ basereg <- ap_est %>% select(prom_percmer_est,
                              resp_prof_cwc,
                              pos_pol_ap_cwc,
                              pos_pol_est_cwc,
-                             genero_factor_ap,
                              genero_factor_est,
                              libros_hogar_ap_cwc,
                              dependencia_factor_ap)
@@ -414,7 +606,6 @@ mml1_p_cwc7 <- lmer(prom_percmer_est ~ 1 +
                       quintiles_ingresos_pc_factor + 
                       pos_pol_ap_cwc +
                       pos_pol_est_cwc +
-                      genero_factor_ap +
                       genero_factor_est +
                       libros_hogar_ap_cwc +
                       dependencia_factor_ap + 
@@ -428,7 +619,6 @@ mml1_p_cwc8 <- lmer(prom_percmer_est ~ 1 +
                       quintiles_ingresos_pc_factor + 
                       pos_pol_ap_cwc +
                       pos_pol_est_cwc +
-                      genero_factor_ap +
                       genero_factor_est +
                       libros_hogar_ap_cwc +
                       dependencia_factor_ap + 
@@ -438,7 +628,7 @@ mml1_p_cwc8 <- lmer(prom_percmer_est ~ 1 +
 # Tabla de modelos
 htmlreg(list(mmn_p_cwc,mml1_p_cwc1, mml1_p_cwc2, mml1_p_cwc3,mml1_p_cwc4, mml1_p_cwc5, mml1_p_cwc6, mml1_p_cwc7, mml1_p_cwc8), custom.model.names = c("Nulo","Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8"), star.symbol = "\\*", center = T , caption.above = T, caption = "Var. Dep.: Promedio Percepción percepción meritocratica estudiantes",
         
-        omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(genero_factor_ap)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)" 
+        omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)" 
         
         ,custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos y posicion politica de los padres" 
         
@@ -505,7 +695,6 @@ basereg <- ap_est %>% select(perc_esfuerzo_factor_est,
                              resp_prof_cwc,
                              pos_pol_ap_cwc,
                              pos_pol_est_cwc,
-                             genero_factor_ap,
                              genero_factor_est,
                              libros_hogar_ap_cwc,
                              dependencia_factor_ap)
@@ -569,7 +758,6 @@ mml1_e_cwc7 <- clmm(perc_esfuerzo_factor_est ~ 1 +
                       quintiles_ingresos_pc_factor + 
                       pos_pol_ap_cwc +
                       pos_pol_est_cwc +
-                      genero_factor_ap +
                       genero_factor_est +
                       libros_hogar_ap_cwc +
                       dependencia_factor_ap + 
@@ -584,7 +772,6 @@ mml1_e_cwc8a <- clmm(perc_esfuerzo_factor_est ~ 1 +
                       quintiles_ingresos_pc_factor + 
                       pos_pol_ap_cwc +
                       pos_pol_est_cwc +
-                      genero_factor_ap +
                       genero_factor_est +
                       libros_hogar_ap_cwc +
                       dependencia_factor_ap + 
@@ -600,7 +787,6 @@ mml1_e_cwc8b <- clmm(perc_esfuerzo_factor_est ~ 1 +
                       quintiles_ingresos_pc_factor + 
                       pos_pol_ap_cwc +
                       pos_pol_est_cwc +
-                      genero_factor_ap +
                       genero_factor_est +
                       libros_hogar_ap_cwc +
                       dependencia_factor_ap + 
@@ -609,9 +795,9 @@ mml1_e_cwc8b <- clmm(perc_esfuerzo_factor_est ~ 1 +
 
 # Tabla de modelos
 htmlreg(list(mmn_e_cwc,mml1_e_cwc1a,mml1_e_cwc1b, mml1_e_cwc2, mml1_e_cwc3,mml1_e_cwc4, mml1_e_cwc5, mml1_e_cwc6, mml1_e_cwc7,mml1_e_cwc8a, mml1_e_cwc8b), custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8a", "Modelo 8b"), 
-        #omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(genero_factor_ap)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)", 
+        #omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|()|(libros_hogar_ap_cwc)|(dependencia_factor_ap)", 
         custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos y posicion politica de los padres",
-        custom.coef.names = c("Muy en desacuerdo|En desacuerdo", "En desacuerdo|De acuerdo", "De acuerdo|Muy de acuerdo","Percepcion Esfuerzo Ap|En desacuerdo", "Percepcion Esfuerzo Ap|De acuerdo", "Percepcion Esfuerzo Ap|Muy de acuerdo", "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", "Posicion politica apoderados", "Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes", "Justicia en el trato profesores", "Posicion politica estudiantes", "Genero apoderados|Mujer", "Genero apoderados|Otro", "Genero estudiantes|Mujer", "Genero estudiantes|Otro", "Libros en el hogar", "Dependencia administrativa|Part. Subvencionado", "Dependencia administrativa|Part. Privado", "Percepcion esfuerzo Ap| En desacuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| De acuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| Muy de acuerdo x Sentido justicia notas", "Percepcion trabajo duro Ap|Algo importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Muy importante x Sentido justicia notas")
+        custom.coef.names = c("Muy en desacuerdo|En desacuerdo", "En desacuerdo|De acuerdo", "De acuerdo|Muy de acuerdo","Percepcion Esfuerzo Ap|En desacuerdo", "Percepcion Esfuerzo Ap|De acuerdo", "Percepcion Esfuerzo Ap|Muy de acuerdo", "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", "Posicion politica apoderados", "Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes", "Justicia en el trato profesores", "Posicion politica estudiantes","Genero estudiantes|Mujer", "Genero estudiantes|Otro", "Libros en el hogar", "Dependencia administrativa|Part. Subvencionado", "Dependencia administrativa|Part. Privado", "Percepcion esfuerzo Ap| En desacuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| De acuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| Muy de acuerdo x Sentido justicia notas", "Percepcion trabajo duro Ap|Algo importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Muy importante x Sentido justicia notas")
         )
 
 
@@ -670,7 +856,6 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              resp_prof_cwc,
                              pos_pol_ap_cwc,
                              pos_pol_est_cwc,
-                             genero_factor_ap,
                              genero_factor_est,
                              libros_hogar_ap_cwc,
                              dependencia_factor_ap)
@@ -734,7 +919,6 @@ mml1_td_cwc7 <- clmm(perc_trabajo_duro_factor_est ~ 1 +
                       quintiles_ingresos_pc_factor + 
                       pos_pol_ap_cwc +
                       pos_pol_est_cwc +
-                      genero_factor_ap +
                       genero_factor_est +
                       libros_hogar_ap_cwc +
                       dependencia_factor_ap + 
@@ -749,7 +933,6 @@ mml1_td_cwc8a <- clmm(perc_trabajo_duro_factor_est ~ 1 +
                       quintiles_ingresos_pc_factor + 
                       pos_pol_ap_cwc +
                       pos_pol_est_cwc +
-                      genero_factor_ap +
                       genero_factor_est +
                       libros_hogar_ap_cwc +
                       dependencia_factor_ap + 
@@ -765,7 +948,6 @@ mml1_td_cwc8b <- clmm(perc_trabajo_duro_factor_est ~ 1 +
                       quintiles_ingresos_pc_factor + 
                       pos_pol_ap_cwc +
                       pos_pol_est_cwc +
-                      genero_factor_ap +
                       genero_factor_est +
                       libros_hogar_ap_cwc +
                       dependencia_factor_ap + 
@@ -776,14 +958,81 @@ mml1_td_cwc8b <- clmm(perc_trabajo_duro_factor_est ~ 1 +
 # Tablas de modelos
 htmlreg(list(mmn_td_cwc,mml1_td_cwc1a,mml1_td_cwc1b, mml1_td_cwc2, mml1_td_cwc3,mml1_td_cwc4, mml1_td_cwc5, mml1_td_cwc6, mml1_td_cwc7, mml1_td_cwc8a, mml1_td_cwc8b), custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8a", "Modelo 8b"), 
         star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
-        #,omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(genero_factor_ap)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)", custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos y posicion politica de los padres" 
+        #,omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|()|(libros_hogar_ap_cwc)|(dependencia_factor_ap)", custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos y posicion politica de los padres" 
         
         custom.coef.names = c("Nada importante|Algo importante", "Algo importante|Importante", "Importante|Muy importante",
-"Percepcion Esfuerzo Ap|En desacuerdo", "Percepcion Esfuerzo Ap|De acuerdo", "Percepcion Esfuerzo Ap|Muy de acuerdo", "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", "Posicion politica apoderados", "Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes", "Justicia en el trato profesores", "Posicion politica estudiantes", "Genero apoderados|Mujer", "Genero apoderados|Otro", "Genero estudiantes|Mujer", "Genero estudiantes|Otro", "Libros en el hogar", "Dependencia administrativa|Part. Subvencionado", "Dependencia administrativa|Part. Privado", "Percepcion esfuerzo Ap| En desacuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| De acuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| Muy de acuerdo x Sentido justicia notas", "Percepcion trabajo duro Ap|Algo importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Muy importante x Sentido justicia notas")
+"Percepcion Esfuerzo Ap|En desacuerdo", "Percepcion Esfuerzo Ap|De acuerdo", "Percepcion Esfuerzo Ap|Muy de acuerdo", "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", "Posicion politica apoderados", "Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes", "Justicia en el trato profesores", "Posicion politica estudiantes", "Genero estudiantes|Mujer", "Genero estudiantes|Otro", "Libros en el hogar", "Dependencia administrativa|Part. Subvencionado", "Dependencia administrativa|Part. Privado", "Percepcion esfuerzo Ap| En desacuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| De acuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| Muy de acuerdo x Sentido justicia notas", "Percepcion trabajo duro Ap|Algo importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Muy importante x Sentido justicia notas")
         )
 
 
 ```
+
+```{r results='asis'}
+# Modelos para presentación
+
+# Seleccionar variables a utilizar
+basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             rbd_est,
+                             perc_esfuerzo_factor_ap,
+                             perc_trabajo_duro_factor_ap,
+                             sj_direct_cwc,
+                             quintiles_ingresos_pc_factor,
+                             recompensa_est_cwc,
+                             resp_prof_cwc,
+                             pos_pol_ap_cwc,
+                             pos_pol_est_cwc,
+                             genero_factor_est,
+                             libros_hogar_ap_cwc,
+                             dependencia_factor_ap)
+
+# Homogeneizar N para modelos
+basereg <- na.omit(basereg)
+
+# Modelo 0: Nulo
+mmn_td_cwc <- clmm(perc_trabajo_duro_factor_est ~ 1 + (1|rbd_est), data = basereg)
+
+# Modelo 1: Quintiles de ingresos
+mml1_td_cwc1 <- clmm(perc_trabajo_duro_factor_est ~ 1 + 
+                     quintiles_ingresos_pc_factor +
+                     (1|rbd_est), data = basereg)
+
+# Modelo 2: Percepción trabajo duro
+mml1_td_cwc2 <- clmm(perc_trabajo_duro_factor_est ~ 1 +
+                     perc_trabajo_duro_factor_ap +
+                     (1|rbd_est), data = basereg)
+
+# Modelo 3: Sentido de justicia y recompensa justa
+mml1_td_cwc3 <- clmm(perc_trabajo_duro_factor_est ~ 1 + 
+                     sj_direct_cwc +
+                     recompensa_est_cwc +
+                     (1|rbd_est), data = basereg)
+
+# Modelo 4: Sentido de justicia y recompensa justa
+mml1_td_cwc4 <- clmm(perc_trabajo_duro_factor_est ~ 1 +
+                     quintiles_ingresos_pc_factor +
+                     perc_trabajo_duro_factor_ap +
+                     sj_direct_cwc +
+                     recompensa_est_cwc +
+                     perc_esfuerzo_factor_ap +
+                     resp_prof_cwc + 
+                     quintiles_ingresos_pc_factor + 
+                     pos_pol_ap_cwc +
+                     pos_pol_est_cwc +
+                     genero_factor_est +
+                     libros_hogar_ap_cwc +
+                     dependencia_factor_ap + 
+                     (1|rbd_est), data = basereg)
+
+# Tablas modelos
+htmlreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), custom.model.names = c("Nulo", "Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"), 
+        star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
+        omit.coef = "(perc_esfuerzo_factor_ap)|(resp_prof_cwc)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(genero_factor_est)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)" 
+        
+        ,custom.coef.names = c("Nada importante|Algo importante", "Algo importante|Importante", "Importante|Muy importante",  "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", "Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes"
+        ))
+
+
+
 
 ```{r eval=FALSE, include=FALSE}
 save(mmn_p_cwc, file ="../output/tables/mmn_p_cwc.R")
