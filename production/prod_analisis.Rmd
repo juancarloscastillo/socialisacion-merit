@@ -1015,6 +1015,14 @@ mml1_td_cwc4 <- clmm(perc_trabajo_duro_factor_est ~ 1 +
                      dependencia_factor_ap + 
                      (1|rbd_est), data = basereg)
 
+
+save(mmn_td_cwc, file="../output/tables/mmn_td_cwc.R")
+save(mml1_td_cwc1, file="../output/tables/mml1_td_cwc1.R")
+save(mml1_td_cwc2, file="../output/tables/mml1_td_cwc2.R")
+save(mml1_td_cwc3, file="../output/tables/mml1_td_cwc3.R")
+save(mml1_td_cwc4, file="../output/tables/mml1_td_cwc4.R")
+
+
 # Tablas modelos
 htmlreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), custom.model.names = c("Nulo", "Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"), 
         star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
