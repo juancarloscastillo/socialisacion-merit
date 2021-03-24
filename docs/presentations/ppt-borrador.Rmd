@@ -150,6 +150,9 @@ Dos indicadores:
 --
 
 ### Variables independientes
+
+- **Percepción meritocrática apoderados:** Indicadores separados y promedio
+
 - **Sentido de justicia indirecto:** Logaritmo natural de la razón entre el promedio obtenido y el promedio justo reportado por el estudiante.
 
 - **Sentido de justicia directo:** "Tomando en cuenta el tiempo que le dedico a mis estudios, las notas que me saco son... - Menos de las que merezco| Las que merezco| Más de las que merezco"
