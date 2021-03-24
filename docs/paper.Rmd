@@ -295,12 +295,13 @@ load(file="../output/tables/mml1_td_cwc2.R")
 load(file="../output/tables/mml1_td_cwc3.R")
 load(file="../output/tables/mml1_td_cwc4.R")
 
-texreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), custom.model.names = c("Nulo", "Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"), 
-        star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
-        omit.coef = "(perc_esfuerzo_factor_ap)|(resp_prof_cwc)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(genero_factor_est)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)" 
-        
-        ,custom.coef.names = c("Nada importante|Algo importante", "Algo importante|Importante", "Importante|Muy importante",  "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", "Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes"
-        ))
+library(texreg)
+#htmlreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), custom.model.names = c("Nulo", "Modelo 1", "Modelo #2", "Modelo 3", "Modelo 4"), 
+#        star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ #0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
+#        omit.coef = "(perc_esfuerzo_factor_ap)|(resp_prof_cwc)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(genero_factor_est)|(libros_hoga#r_ap_cwc)|(dependencia_factor_ap)" 
+#        
+#        ,custom.coef.names = c("Nada importante|Algo importante", "Algo importante|Importante", "Importante|Muy importante",  #"Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", #"Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy #importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes"
+#        ))
 ```
 
 
