@@ -1015,7 +1015,7 @@ mml1_td_cwc4 <- clmm(perc_trabajo_duro_factor_est ~ 1 +
                      dependencia_factor_ap + 
                      (1|rbd_est), data = basereg)
 
-
+save(basereg, file="../output/tables/basereg.RData")
 save(mmn_td_cwc, file="../output/tables/mmn_td_cwc.R")
 save(mml1_td_cwc1, file="../output/tables/mml1_td_cwc1.R")
 save(mml1_td_cwc2, file="../output/tables/mml1_td_cwc2.R")

@@ -1,8 +1,7 @@
 ---
 title: "Socialización de la meritocracia"
-subtitle: "Transmisión intergeneracional y sensación de justicia en la escuela."
 author: "Juan Carlos Castillo, Julio Iturra, Francisco Meneses, Martín Venegas"
-date: '`r Sys.Date()`'
+date: "`r Sys.Date()`"
 output:
   pdf_document:
     keep_tex: no
@@ -13,6 +12,10 @@ output:
   bookdown::html_document2:
     toc: no
     df_print: paged
+  html_document:
+    toc: no
+    df_print: paged
+subtitle: Transmisión intergeneracional y sensación de justicia en la escuela.
 geometry: margin=0.55in
 bibliography: ../input/bib/Educación-ciudadana-PACES.bib
 csl: ../input/bib/apa.csl
@@ -289,19 +292,58 @@ A partir del gráfico de barras se puede observar que la mayoría de las persona
 
 
 ```{r results='asis', echo=FALSE}
-load(file="../output/tables/mmn_td_cwc.R")
-load(file="../output/tables/mml1_td_cwc1.R")
-load(file="../output/tables/mml1_td_cwc2.R")
-load(file="../output/tables/mml1_td_cwc3.R")
-load(file="../output/tables/mml1_td_cwc4.R")
+#load(file="../output/tables/mmn_td_cwc.R")
+#load(file="../output/tables/mml1_td_cwc1.R")
+#load(file="../output/tables/mml1_td_cwc2.R")
+#load(file="../output/tables/mml1_td_cwc3.R")
+#load(file="../output/tables/mml1_td_cwc4.R")
+
+library(ordinal)
+load(file="../output/tables/basereg.RData")
 
 library(texreg)
-#htmlreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), custom.model.names = c("Nulo", "Modelo 1", "Modelo #2", "Modelo 3", "Modelo 4"), 
-#        star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ #0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
-#        omit.coef = "(perc_esfuerzo_factor_ap)|(resp_prof_cwc)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(genero_factor_est)|(libros_hoga#r_ap_cwc)|(dependencia_factor_ap)" 
-#        
-#        ,custom.coef.names = c("Nada importante|Algo importante", "Algo importante|Importante", "Importante|Muy importante",  #"Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", #"Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy #importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes"
-#        ))
+
+# Modelo 0: Nulo
+mmn_td_cwc <- clmm(perc_trabajo_duro_factor_est ~ 1 + (1|rbd_est), data = basereg)
+
+# Modelo 1: Quintiles de ingresos
+mml1_td_cwc1 <- clmm(perc_trabajo_duro_factor_est ~ 1 + 
+                     quintiles_ingresos_pc_factor +
+                     (1|rbd_est), data = basereg)
+
+# Modelo 2: Percepción trabajo duro
+mml1_td_cwc2 <- clmm(perc_trabajo_duro_factor_est ~ 1 +
+                     perc_trabajo_duro_factor_ap +
+                     (1|rbd_est), data = basereg)
+
+# Modelo 3: Sentido de justicia y recompensa justa
+mml1_td_cwc3 <- clmm(perc_trabajo_duro_factor_est ~ 1 + 
+                     sj_direct_cwc +
+                     recompensa_est_cwc +
+                     (1|rbd_est), data = basereg)
+
+# Modelo 4: Sentido de justicia y recompensa justa
+mml1_td_cwc4 <- clmm(perc_trabajo_duro_factor_est ~ 1 +
+                     quintiles_ingresos_pc_factor +
+                     perc_trabajo_duro_factor_ap +
+                     sj_direct_cwc +
+                     recompensa_est_cwc +
+                     perc_esfuerzo_factor_ap +
+                     resp_prof_cwc + 
+                     quintiles_ingresos_pc_factor + 
+                     pos_pol_ap_cwc +
+                     pos_pol_est_cwc +
+                     genero_factor_est +
+                     libros_hogar_ap_cwc +
+                     dependencia_factor_ap + 
+                     (1|rbd_est), data = basereg)
+
+# Tablas modelos
+texreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), custom.model.names = c("Nulo", "Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"), center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
+        omit.coef = "(perc_esfuerzo_factor_ap)|(resp_prof_cwc)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(genero_factor_est)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)" 
+        
+        ,custom.coef.names = c("Nada importante|Algo importante", "Algo importante|Importante", "Importante|Muy importante",  "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", "Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes"
+        ))
 ```
 
 
