@@ -1,5 +1,5 @@
 ---
-title: "Análisis descriptivo de datos - Socialización de la meritocracia"
+title: "Análisis de datos - Socialización de la meritocracia"
 author: "Castillo, J.C., Iturra, J., Meneses, F. & Venegas, M."
 date: '`r Sys.Date()`'
 output:
@@ -7,7 +7,7 @@ output:
     df_print: paged
     theme: paper
     toc: yes
-    toc_float: no
+    toc_float: yes
     numbersections: true
 editor_options:
   chunk_output_type: inline
@@ -22,23 +22,28 @@ knitr::opts_chunk$set(
 
 # Introducción
 
-El presente documento tiene por finalidad el análisis incial de datos para el artículo "La socialización de la meritocracia: el rol de la familia y la escuela" a cargo de Juan Carlos Castillo. El artículo se desarrolla en el marco del proyecto FONDECYT Regular N°1181239: "Socialización política y educación para la ciudadanía: el rol de la familia y de la escuela".
+El presente documento tiene por finalidad la exploración y el análisis de datos para el artículo "La socialización de la meritocracia: el rol de la familia y la escuela" a cargo de Juan Carlos Castillo. El artículo se desarrolla en el marco del proyecto FONDECYT Regular N°1181239: "Socialización política y educación para la ciudadanía: el rol de la familia y de la escuela".
 
 El documento se estructurará en cuatro apartados. El primero corresponde a la carga de datos y las librerías. El segundo a los análisis descriptivos univariados. El tercero a la sección de análisis descriptivos bivariados. Por último, la cuarta sección estará dedicada al análisis multivariado.
 
 # Resumen ejecutivo:
 
 ## Sobre el analisis:
+### Univariado
 - Las variables de percepción concentran más del 80% en las dos categorías más altas.
+
+### Bivariado
 - En general, las correlaciones de las variables de interés al nivel 1 son bajas.
 - Las correlaciones entre porcentaje ed. univ. escuela e ingresos del hogar son de 0.4.
+
+### Multivariado
 
 ## Registro de cambios principales
 - Uso de nueva base a partir de cambios en el procesamiento.
 - Cambio en el nombre de variable *get ahead* por *esfuerzo*
 - na.omit eliminado en gráficos Likert
-- na.omit sustituido por listwise deletion en correlaciones. NOTA: Se agrega el argumento *complete.obs*
-- Incorporación propuesta Francisco
+- na.omit sustituido por *listwise deletion* en correlaciones. NOTA: Se agrega el argumento *complete.obs*
+- Incorporación propuesta Francisco (análisis en base a CFA)
 - Agrega variables promedio de percepción de meritocracia (en estudiantes y apoderados) a la matriz de correlaciones principales.
 - Agrega matriz de correlaciones sobre variables de ingresos y controles
 - Agrega sección de análisis mulivariado
@@ -65,22 +70,24 @@ pacman::p_load(dplyr, #Manipulacion de datos
               lavaan, # CFA
               texreg, # Tablas modelos
               reghelper, # ICC,
-              table1 #Tabla bonita
+              table1, #Tabla bonita
+              car, #Varios
+              polycor #Correlaciones policloricas
 )
 # Cargar datos
-load(file = "../input/data/ap_est.RData") # Base conjunta
+load(file = "../input/data/ap_est.RData") # Base conjunta (apoderados y estudiantes)
 
 # Orden para modelos ordinales (mixor package)
 
 ap_est_rbd<-ap_est[order(ap_est$rbd_est),]
 
-# Remover etiquetas para rende
+# Remover etiquetas para renderizar sin problemas
 ap_est <- sjlabelled::remove_all_labels(ap_est)
 ```
 
 
 ## Parte 2: Análisis descriptivos univariados
-### Descriptivos univariados generales
+### Tabla de descriptivos univariados: todas las variables
 
 A continuación se presentan los descriptivos de la base de datos completa:
 
@@ -88,9 +95,9 @@ A continuación se presentan los descriptivos de la base de datos completa:
 sjPlot::view_df(ap_est, show.type = T, show.prc = T, show.na = T)
 ```
 
-### Descriptivos univariados variables de hipotesis
+Se realizan dos gráficos para variables likert. El primero corresponde a la comparación de percepción del trabajo duro en estudiantes y apoderados. El segundo es la misma comparación pero para la percepción de esfuerzo.
 
-Se realizan dos gráficos para variables likert. El primero corresponde a la comparación de percepción del trabajo duro en estudiates y apoderados. El segundo es la misma comparación pero para la percepción de esfuerzo.
+### Gráfico de barras: percepción trabajo duro esutudiantes y apoderados
 
 ```{r fig.width= 10}
 # Plot Likert: perc. trabajo duro apoderados y estudiantes
@@ -124,6 +131,9 @@ sjPlot::plot_likert(baselik,
 ```
 Las respuestas de estudiantes y apoderados sobre la importancia del trabajo duro se concentran en las categorías más altas de la escala Likert. Un 81.2% de apoderados considera importante o muy importante el trabajo duro para surgir en la vida. En la misma linea, un 83.4% de los estudiantes comparte tal afirmación.
 
+### Gráfico de barras: Percepción esfuerzo esutudiantes y apoderados
+
+
 ```{r fig.width= 10}
 # Plot Likert: perc. esfuerzo apoderados y estudiantes
 
@@ -154,24 +164,52 @@ sjPlot::plot_likert(baselik,
 #dev.off()
 
 ```
-Para el caso del grado de acuerdo con respecto a la afirmación "En Chile, los que se esfuerzan salen adelante" los resultados son similares al indicador anterior. Tanto en estudiantes como apoderados más del 80% de las respuestas se concentran en las categorías "De acuerdo" y "Muy de acuerdo".
+Para el caso del grado de acuerdo con respecto a la afirmación "En Chile, los que se esfuerzan salen adelante" los resultados son similares al indicador anterior. Tanto en estudiantes como apoderados más del 80% de las respuestas se concentran en las categorías más altas, en este caso: "De acuerdo" y "Muy de acuerdo".
 
-### Descriptivos sentidos de justicia
-
+### Tabla de descriptivos univariados: sentido de justicia indirecto (logaritmico y no logaritmico) 
 ```{r}
 select(ap_est, sj_indirect_ln, sj_indirect_noln) %>% summarytools::descr()
 ```
 
-## Parte 3: Análisis descriptivo bivariado
-### Tablas y gráficos bivariados de variables principales
+Llama la atención que los datos del sentido de justicia indirecto logaritmico y el sin logaritmo son exactamente iguales.
+
+### Gráfico de densidad: Sentido de justicia indirecto
+```{r}
+# Density plot 
+ggplot(ap_est, aes(x=sj_indirect_ln))+
+  geom_density(color="darkblue", fill="lightblue")
+```
+Tanto los estadísticos como el gráfico de densidad sobre el sentido de justicia indirecto dan cuenta de una distribución con alta concentración de casos al medio (leptocúrtica) y asimetría positiva moderada (s=1.82). La mediana de -0.03 indica que al menos la mitad de los estudiantes de la muestra se siente subrecompensado con respecto a sus notas.
+
+### Tabla de frecuencias: sentido de justicia directo
 
 ```{r}
-## Variables numericas x genero estudiante
+frq(ap_est$sj_direct_factor)
+```
+Respecto al indicador sobre sentido de justicia directo resalta que más del 60% de los estudiantes (datos validos) considera que merece sus notas de acuerdo al tiempo de estudio invertido. Por otro lado, poco más de un quinto de la muestra considera que sus notas son menos de las que merece, y un 13% restante se siente sobre recompensado.
+
+Estos datos son contradictorios con los obtenidos a partir del sentido de justicia indirecto, lo que lleva a pensar que quizás no están midiendo el mismo constructo.
+
+## Parte 3: Análisis descriptivo bivariado
+
+A continuación se presenta una serie de tablas bivariadas. Primero, tablas de estadísticos descriptivos de las principales variables númericas (percepción meritocrática de estudiantes y apoderados y sentido de justicia indirecto) y variables categoricas de interés. Segundo, tablas de contingencia entre variables categoricas de interés.
+
+### Tabla descriptivos bivariados: variables númericas x genero estudiante
+
+```{r}
+## Variables númericas x genero estudiante
 table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
 table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
 table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
 table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | genero_factor_est, data = ap_est)
 ```
+
+**Promedios percepción meritocrática estudiantes y apoderados:** A nivel de muestra no existen grandes diferencias en las medias del puntaje de percepcion meritocrática entre estudiantes hombres y mujeres. Si existe una diferencia un tanto más grande en la media (3.00) de aquellos estudian que se identifican con "Otro". En el caso de los apoderados no hay grandes diferencias.
+ 
+**Sentido de justicia estudiantes:** A nivel de muestra, estudiantes que se identifican con el genero Otro se sienten menos subrecompensados que hombres y mujeres. De todos modos el N de este grupo de estudiantes es considerablemente bajo (N=33).
+
+
+### Tabla descriptivos bivariados: variables númericas x posición política estudiantes
 
 ```{r}
 ## Variables numericas x posicion politica estudiantes
@@ -181,14 +219,29 @@ table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
 table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | pos_pol_factor_est, data = ap_est)
 ```
 
+**Percepción meritocrática estudiantes y apoderados:** Llama la atención que el mayor contraste entre las medias del promedio de percepción meritocrática en estudiantes se da entre los polos del espectro político. Estudiantes de derecha cuentan con .4 puntos más que estudiantes de izquierda, o en otras palabras, los estudiantes de izquierda encuestados tienden a percibir menos meritocracia que los estudiantes de derecha. De todos modos, los N por cada grupo siguen siendo bajos en comparación a las categorías "Ninguno" y "Ns/Nr". En el caso de los apoderados los valores extremos también se separan entre si por .4 pnntos, solo que esta vez son los apoderados de Centro quienes muestran mayor percepción meritocrática y los apoderados de izquierda siguen siendo los más bajos en este indicador.
+
+*NOTA: La posición política es del estudiante, por lo que la interpretación en el caso de los apoderados no tiene mucho sentido a priori*
+
+**Sentido de justicia indirecto:** Estudiantes que se identifican con la derecha y la centro derecha tienden a sentirse más subrecompensados en sus notas, con una media de -0.0464 y -0.0439 respectivamente. Estudiantes que reportan ser independientes son el grupo que reporta indices de subrecompensabilidad más bajos (-0.0189).
+
+### Tabla descriptivos bivariados: variables númericas x quintiles de ingresos
 
 ```{r}
-## Variables numericas x posicion politica estudiantes
+## Variables numericas x quintiles de ingresos
 table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
 table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
 table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
 table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | quintiles_ingresos_pc_factor, data = ap_est)
+
+
 ```
+
+**Promedio percepción meritocracia estudiantes y apoderados:** No parecen haber grandes diferencias entre los promedios de perepción meritocrática por quintil, tanto en estudiantes como en apoderados.
+
+**Sentido de justicia indirecto:** Estudiantes de quintil 1 se sienten más subrecompensados que estudiantes de quintil 5, sin embargo, no se puede hablar de una tendencia progresiva ya que estudiantes de quintil 2 reportan valores similares a los de quintil 5.
+
+### Tabla descriptivos bivariados: variables númericas x sentido de justicia directo
 
 ```{r}
 ## Variables numericas x sentido de justicia directo
@@ -198,6 +251,12 @@ table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
 table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | sj_direct_factor, data = ap_est)
 ```
 
+**Percepción meritocratica estudiantes y apoderados:** No hay grandes cambios entre grupos.
+
+**Sentido de justicia indirecta:** En general, se condice el valor del indicador de sentido de justicia indirecto con los grupos del sentido de justicia directo, comparativamente hablando. Estudiantes que creen que no reciben las notas que merecen se sienten más subrecompensados que los demás grupos. Esta tendencia se sustenta considerando la correlación pequeña de 0.1, aunque probablemente la correlación no es mayor ya que estudiantes que si creen merecer sus notas y que se sacan mejores notas de las que merecen aun mantienen valores negativos en el indicador de sentido de justicia indirecto.
+
+###  Tabla descriptivos bivariados: variables númericas x recompensa estudiantes
+
 ```{r}
 ## Variables numericas x recompensa estudiantes
 table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
@@ -205,6 +264,15 @@ table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
 table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
 table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | recompensa_factor_est, data = ap_est)
 ```
+
+**Percepción meritocracia estudiantes y apoderados:** Se logra apreciar una tendencia a nivel muestra en la percepción meritocrática de estudiantes. Estudiantes que están muy en desacuerdo con que los esfuerzos son recompensados en su escuela perciben menos meritocracia. En el otro polo y con casi 0.6 puntos de diferencia, estudiantes que están muy de acuerdo con que en su escuela los esfuerzos son recompensados perciben más meritocracia. En el caso de los apoderados no se da esta tendencia en las medias (considerando que la variable de recompensa es de estudiantes tiene sentido tal aleatoriedad).
+
+*NOTA: La sensación de recompensa es del estudiante, por lo que la interpretación en el caso de los apoderados no tiene mucho sentido a priori*
+
+
+**Sentido de justicia indirecto:** Estudiantes que están en desacuerdo con que los esfuerzos son recompensados en la escuela presentan un alto sentido de subrecompensación, aunque no se puede hablar de una tendencia.
+
+### Tabla descriptivos bivariados:  variables númericas x dependencia administrativa
 
 ```{r}
 ## Variables numericas x dependencia administrativa
@@ -214,146 +282,259 @@ table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
 table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | dependencia_factor_est, data = ap_est)
 ```
 
+**Percepción meritocratica estudiantes y apoderados:** No se aprecian grandes cambios entre los promedios de percepcion meritocraticas por tipo de dependencia administrativa.
+
+**Sentido de justicia indirecto:** Parece existir una tendencia, estudiantes de escuelas municipales se sientes más subrecompensados que estudiantes de escuelas particulares privadas.
+
+### Tabla descriptivos bivariados: variables númericas x respuesta del profesor
+
+```{r}
+## Variables numericas x respuesta profesor
+table1::label(ap_est$prom_percmer_est) <- "Percepcion meritocratica estudiantes"
+table1::label(ap_est$prom_percmer_ap) <- "Percepcion meritocratica apoderados"
+table1::label(ap_est$sj_indirect_ln) <- "Sentido de justicia indirecto"
+table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | resp_prof_factor, data = ap_est)
+```
+
+**Percepción meritocrática estudiantes y apoderados:** Parece hacer una tendencia gradual en la que a mayor grado de acuerdo respecto a la afirmación "El profesor toma en cuenta mi opinión" existe una mayor percepción de meritocracia en estudiantes. Estudiantes que están muy en desacuerdo presentan una media de 3, en cambio estudiantes que están muy de acuerdo presentan una media de 3.44. En el caso de los apoderados los valores no siguen una tendencia, aunque la media del grupo "Muy en desacuerdo" es comaprativamente baja.
+
+**Sentido de justicia indirecto:** No parece haber una tendencia entre la relación del sentido de justicia indirecto y el hecho de que el profesor considere la opinión de los estudiantes. Sin embargo, si resalta que estudiantes que están muy de acuerdo con la sentencia presentan menos sensación de subrecompensa (app .6 puntos) que los otros grupos.
+
+### Tabla de contingencia: sentido de justicia directo x genero estudiantes 
 
 ```{r}
 # Sentido de justicia directo x genero estudiante
 sjt.xtab(ap_est$genero_factor_est, ap_est$sj_direct_factor, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
+
+# Comprobar
+chisq.test(ap_est$genero_factor_est, ap_est$sj_direct_factor)
+
+# Ojo, hay una casilla con menos de 5 casos.
 ```
+
+### Tabla de contingencia: sentido de justicia directo x posición política estudiantes 
 
 ```{r}
 # Sentido de justicia directo x posicion política estudiantes
 sjt.xtab(ap_est$pos_pol_factor_est, ap_est$sj_direct_factor, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
+
+chisq.test(ap_est$pos_pol_factor_est, ap_est$sj_direct_factor)
 ```
+### Tabla de contingencia: sentido de justicia directo x quintiles de ingreso
 
 ```{r}
 # Sentido de justicia directo x quintiles
 sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$sj_direct_factor, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
-```
 
+chisq.test(ap_est$quintiles_ingresos_pc_factor, ap_est$sj_direct_factor)
+```
+### Tabla de contingencia: sentido de justicia directo x dependencia administrativa
 
 ```{r}
 # Sentido de justicia directo x dependencia administrativa
 sjt.xtab(ap_est$dependencia_factor_est, ap_est$sj_direct_factor, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
 
+### Tabla de contingencia: Percepcion esfuerzo estudiante x genero estudiante
 
 ```{r}
 # Percepcion esfuerzo estudiante x genero estudiante
 sjt.xtab(ap_est$genero_factor_est, ap_est$perc_esfuerzo_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
+
+### Tabla de contingencia: percepcion esfuerzo estudiante x posición política estudiantes
 
 ```{r}
 # Percepcion esfuerzo estudiante x posicion política estudiantes
 sjt.xtab(ap_est$pos_pol_factor_est, ap_est$perc_esfuerzo_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
+
+### Tabla de contingencia: percepción esfuerzo estudiante x quintiles de ingreso
 
 ```{r}
 # Percepcion esfuerzo estudiante x quintiles
 sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$perc_esfuerzo_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
+
+
 ```
 
+### Tabla de contingencia: percepción esfuerzo estudiante x dependencia administrativa
 
 ```{r}
 # Percepcion esfuerzo estudiante x dependencia administrativa
 sjt.xtab(ap_est$dependencia_factor_est, ap_est$perc_esfuerzo_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
+
+### Tabla de contingencia: percepción esfuerzo estudiante x percepción esfuerzo apoderados
+
+```{r}
+# Percepcion esfuerzo estudiante x percepción esfuerzo apoderados
+sjt.xtab(ap_est$perc_esfuerzo_factor_ap, ap_est$perc_esfuerzo_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=TRUE,
+        show.exp = TRUE
+)
+```
+
+### Tabla de contingencia: percepción esfuerzo estudiante x percepción trabajo duro apoderados
+
+```{r}
+# Percepcion esfuerzo estudiante x percepción trabajo duro apoderados
+sjt.xtab(ap_est$perc_trabajo_duro_factor_ap, ap_est$perc_esfuerzo_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=TRUE,
+        show.exp = TRUE
+)
+```
+
+#### Tabla de contingencia: percepcion trabajo duro estudiante x genero estudiante
 
 ```{r}
 # Percepcion trabajo duro estudiante x genero estudiante
 sjt.xtab(ap_est$genero_factor_est, ap_est$perc_trabajo_duro_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
+
+### Tabla de contingencia: percepcion trabajo duro estudiante x posición política estudiante
 
 ```{r}
 # Percepcion trabajo duro estudiante x posicion política estudiantes
 sjt.xtab(ap_est$pos_pol_factor_est, ap_est$perc_trabajo_duro_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
+
+### Tabla de contingencia: percepcion trabajo duro estudiante x quintiles de ingreso
 
 ```{r}
 # Percepcion trabajo duro estudiante x quintiles
 sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$perc_trabajo_duro_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
 
+### Tabla de contingencia: Percepcion trabajo duro estudiante x dependencia administrativa
 
 ```{r}
 # Percepcion trabajo duro estudiante x dependencia administrativa
 sjt.xtab(ap_est$dependencia_factor_est, ap_est$perc_trabajo_duro_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
+
+### Tabla de contingencia: percepcion trabajo duro estudiante x percepción trabajo duro apoderados
+
+```{r}
+# Percepcion trabajo duro estudiante x percepción trabajo duro apoderados
+sjt.xtab(ap_est$perc_trabajo_duro_factor_ap, ap_est$perc_trabajo_duro_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=TRUE,
+        show.exp = TRUE
+)
+```
+
+### Tabla de contingencia: percepcion trabajo duro estudiante x percepción esfuerzo apoderados
+
+```{r}
+# Percepcion trabajo duro estudiante x percepción esfuerzo apoderados
+sjt.xtab(ap_est$perc_esfuerzo_factor_ap, ap_est$perc_trabajo_duro_factor_est, 
+        show.col.prc=TRUE,
+        show.summary=TRUE,
+        show.exp = TRUE
+)
+```
+
+### Tabla de contingencia: recompensa justa estudiantes x genero estudiante
 
 ```{r}
 # Recompensa justa estudiantes x genero estudiante
 sjt.xtab(ap_est$genero_factor_est, ap_est$recompensa_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
+
+### Tabla de contingencia: recompensa justa estudiantes x posición política estudiantes
 
 ```{r}
 # Recompensa justa estudiantes x posicion política estudiantes
 sjt.xtab(ap_est$pos_pol_factor_est, ap_est$recompensa_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
+
+### Tabla de contingencia: recompensa justa estudiantes x quintiles de ingresos
 
 ```{r}
 # Recompensa justa estudiantes x quintiles
 sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$recompensa_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
 
+### Tabla de contingencia: recompensa justa estudiantes x dependencia administrativa
 
 ```{r}
 # Recompensa justa estudiantes x dependencia administrativa
 sjt.xtab(ap_est$dependencia_factor_est, ap_est$recompensa_factor_est, 
         show.col.prc=TRUE,
-        show.summary=FALSE
+        show.summary=TRUE,
+        show.exp = TRUE
 )
 ```
 
-### Matriz de correlación entre variales principales
+### Matriz de correlación entre variales principales (pearson)
 
 ```{r}
-# Matriz de correlación entre variales principales
+# Matriz de correlación entre variales principales (pearson)
 
-basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap,prom_percmer_est,prom_percmer_ap,sj_indirect_ln,sj_direct,ingresos_pc, recompensa_est, recompensa_ap, prom_obt, prom_mer)
+basecor<- ap_est %>% select(perc_trabajo_duro_est,perc_trabajo_duro_ap,perc_esfuerzo_est,perc_esfuerzo_ap,prom_percmer_est,prom_percmer_ap,sj_indirect_ln,sj_direct,ingresos_pc, recompensa_est, recompensa_ap, prom_obt, prom_mer, resp_prof)
 cormat=cor(basecor, use = "complete.obs")
 #save
 #png("../output/images/correlacionl1.png",width=600,height=600)
@@ -371,8 +552,9 @@ rownames(cormat) <-c(
     "J. Recompensa estudiantes",
     "K. Recompensa apoderados",
     "L. Promedio obtenido",
-    "M. Promedio merecido")
-colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)", "(G)", "(H)", "(I)", "(J)", "(K)", "(L)", "(M)")
+    "M. Promedio merecido",
+    "N. Respuesta profes")
+colnames(cormat) <-c("(A)", "(B)","(C)","(D)","(E)","(F)", "(G)", "(H)", "(I)", "(J)", "(K)", "(L)", "(M)", "(N)")
 corrplot(
 cormat,
   method = "color",
@@ -388,6 +570,55 @@ cormat,
 ```
 
 La matriz de correlación para las variables principales del estudio muestran dos tendencias: bajas correlaciones (la mayoría menos a 0.1) y positivas.Destaca la correlación entre los indicadores de esfuerzo y trabajo duro en el caso de estudiantes (0.29). Con menor magnitud, los indicadores de esfuerzo y trabajo duro en el caso de los apoderados arrojan un coeficiente de 0.1. En el caso de la correlación entre los promedios de indicadores de estudiantes y apoderados la correlación también es baja (0.13). Por último, los dos indicadores de sentido de justicia (directo e indirecto) muestran una correlación de un 0.13.
+
+### Correlaciones policloricas variables principales
+
+```{r}
+# Perc. Esfuerzo. Est x Resp prof
+polychor(ap_est$perc_esfuerzo_factor_est, ap_est$resp_prof_factor, std.err = TRUE)
+
+# Perc. Esfuerzo. Est x Quintiles ingresos
+polychor(ap_est$perc_esfuerzo_factor_est, ap_est$quintiles_ingresos_pc_factor, std.err = TRUE)
+
+# Perc. Esfuerzo. Est x Recompensa apoderado
+polychor(ap_est$perc_esfuerzo_factor_est, ap_est$recompensa_factor_ap, std.err = TRUE)
+
+# Perc. Esfuerzo. Est x Recompensa estudiante
+polychor(ap_est$perc_esfuerzo_factor_est, ap_est$recompensa_factor_est, std.err = TRUE)
+
+# Perc. Esfuerzo. Est x Sentido de justucia directo
+polychor(ap_est$perc_esfuerzo_factor_est, ap_est$sj_direct_factor, std.err = TRUE)
+
+# Perc. Esfuerzo. Est x Perc. Esfuerzo. Ap
+polychor(ap_est$perc_esfuerzo_factor_est, ap_est$perc_esfuerzo_factor_ap, std.err = TRUE)
+
+# Perc. Esfuerzo. Est x Perc. Trabajo Duro Ap
+polychor(ap_est$perc_esfuerzo_factor_est, ap_est$perc_trabajo_duro_factor_ap, std.err = TRUE)
+
+#---------------------------------------------------------------------------------------------
+
+# Perc. Trabajo Duro. Est x Resp prof
+polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$resp_prof_factor, std.err = TRUE)
+
+# Perc. Trabajo Duro. Est x Quintiles ingresos
+polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$quintiles_ingresos_pc_factor, std.err = TRUE)
+
+# Perc. Trabajo Duro. Est x Recompensa apoderado
+polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$recompensa_factor_ap, std.err = TRUE)
+
+# Perc. Trabajo Duro. Est x Recompensa estudiante
+polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$recompensa_factor_est, std.err = TRUE)
+
+# Perc. Trabajo Duro. Est x Sentido de justicia directo
+polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$sj_direct_factor, std.err = TRUE)
+
+# Perc. Trabajo Duro Est x Perc. Esfuerzo. Ap
+polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$perc_esfuerzo_factor_ap, std.err = TRUE)
+
+# Perc. Trabajo Duro Est x Perc. Trabajo Duro AP
+polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$perc_trabajo_duro_factor_ap, std.err = TRUE)
+```
+
 
 ### Matriz de correlación entre variables nivel 2
 ```{r}
@@ -464,7 +695,8 @@ cormat,
 ```
 
 ## Parte 4: Análisis multivariado
-En la primera versión de los resultados multivariados se realizaron dos tandas de modelos, una con los predictores tipo factor, y otra con las variables centradas. Las tandas siguieron la secuencia típica de análisis multinivel: Modelo Nulo - Modelo con predictores N1 - Modelo con predictores N2 - Modelo con preditores N1 y N2 + Modelos con controles y una interacción - Modelo con controles y con otra interacción. En total fueron seis modelos los testeados, dicho sea de paso, con el rbd reportado por los estudiantes. Los resultados más significativos con este formato de presentación fueron los siguientes:
+
+En la primera versión de los resultados multivariados se realizaron dos tandas de modelos multinivel (lmer), una con los predictores tipo factor, y otra con las variables centradas. Las tandas siguieron la secuencia típica de análisis multinivel: Modelo Nulo - Modelo con predictores N1 - Modelo con predictores N2 - Modelo con preditores N1 y N2 + Modelos con controles y una interacción - Modelo con controles y con otra interacción. En total fueron seis modelos los testeados, dicho sea de paso, con el rbd reportado por los estudiantes. Los resultados más significativos con este formato de presentación fueron los siguientes:
 
 El modelo nulo con rbd reportado por estudiantes da una correlación intraclase baja (0.05). Llama la atención que al utilizar el rbd reportado por apoderados esta sube (0.09), aunque sigue por abajo del 10% de la varianza relacionada a N2.
 
@@ -494,10 +726,10 @@ El modelo nulo con rbd reportado por estudiantes da una correlación intraclase 
 
 - Todas las demás variables no presentan resultados significativos.
 
-En esta segunda versión de los resultados nos centraremos en explorar solamente una tanda de modelos con el promedio de percepción de meritocracia, introduciendo predictores centrados y en factores según corresponda a la naturaleza del predictor. Primero analizaremos los modelos en formato de regresión simple, luego introduciendo los predictores en forma creciente con tal de analizar la disipación de efectos.
+En esta segunda versión de los resultados nos centraremos en explorar solamente una tanda de modelos con el promedio de percepción de meritocracia, introduciendo predictores centrados y en factores según corresponda a la naturaleza del predictor. Primero analizaremos los modelos en formato de regresión simple, luego introduciendo los predictores en forma creciente con tal de analizar la disipación de efectos. También, exploraremos los modelos
 
-### Modelos de regresión lmer
-```{r Modelos Percepcion Meritocratica, eval=FALSE, include=FALSE, results='asis'}
+### Modelos de regresión lmer: reg. simples con n diferido
+```{r Modelos Percepcion Meritocratica, results='asis'}
 # Regresiones simples
 
 # Modelo 0: Nulo
@@ -529,6 +761,8 @@ mml1_p_cwc8 <- lmer(prom_percmer_est ~ 1 + prom_mer_cwc + (1|rbd_est), data = ap
 
 htmlreg(list(mmn_p_cwc, mml1_p_cwc1, mml1_p_cwc2, mml1_p_cwc3, mml1_p_cwc4, mml1_p_cwc5, mml1_p_cwc6,  mml1_p_cwc7, mml1_p_cwc8), custom.model.names = c("Nulo", "Model 1", "Model 2", "Model 3", "Model 4", "Model 5", "Model 6", "Model 7", "Model 8"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (CWC)", custom.coef.names = c("Intercepto", "Percepción meritocratica de los padres", "Sentido de justicia en las notas directo", "Sentido de justicia en las notas indirecto","Ingresos PC|Quintil 2","Ingresos PC|Quintil 3","Ingresos PC|Quintil 4","Ingresos PC|Quintil 5","Ingresos PC|Ns/Nr","Sensacion de recompensa justa en la escuela", "Justicia procesal del profesor", "Promedio obtenido", "Promedio merecido"))
 ```
+
+### Modelos de regresión lmer: reg. multiples con n homogeneo
 
 ```{r, Regresiones multiple con promedios, results='asis'}
 # Regresiones multiples: comparación de modelos.
@@ -630,8 +864,9 @@ htmlreg(list(mmn_p_cwc,mml1_p_cwc1, mml1_p_cwc2, mml1_p_cwc3,mml1_p_cwc4, mml1_p
 
 ```
 
-### Modelos de regresión clmm (esfuerzo)
-```{r Modelos Indicadores por separado: Esfuerzo, eval=FALSE, include=FALSE, results='asis'}
+### Modelos de regresión clmm (esfuerzo): reg. simple con n diferido
+
+```{r Modelos Indicadores por separado: Esfuerzo, results='asis'}
 # Regresiones simples
 
 # Modelo 0: Nulo
@@ -672,6 +907,8 @@ htmlreg(list(mmn_e_cwc, mml1_e_cwc1a, mml1_e_cwc1b, mml1_e_cwc2, mml1_e_cwc3, mm
         custom.coef.names = c("Muy en desacuerdo|En desacuerdo", "En desacuerdo|De acuerdo", "De acuerdo|Muy de acuerdo", "Percepcion Esfuerzo Ap|En desacuerdo", "Percepcion Esfuerzo Ap|De acuerdo", "Percepcion Esfuerzo Ap|Muy de acuerdp", "Percepcion Trabajo duro Ap|Algo importante", "Percepcion Trabajo duro Ap|Importante", "Percepcion Trabajo duro Ap| Muy importante", "Sentido de justicia en notas directo", "Sentido de justicia en notas indirecto", "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC| NS/Nr", "Sensacion recompensa estudiante", "Justicia en el trato profesores", "Promedio obtenido", "Promedio merecido")
                               )
 ```
+
+### Modelos de regresión clmm (esfuerzo): reg. multiple con n homogeneo
 
 ```{r, results='asis'}
 # Regresiones multiples: comparación de modelos
@@ -795,8 +1032,9 @@ htmlreg(list(mmn_e_cwc,mml1_e_cwc1a,mml1_e_cwc1b, mml1_e_cwc2, mml1_e_cwc3,mml1_
 
 ```
 
-### Modelos de regresión clmm (trabajo duro)
-```{r Modelos Indicadores por separado: Trabajo duro, eval=FALSE, include=FALSE, results='asis'}
+### Modelos de regresión clmm (trabajo duro): reg. simple con n diferido
+
+```{r Modelos Indicadores por separado: Trabajo duro, results='asis'}
 # Regresiones simples
 
 # Modelo 0: Nulo
@@ -833,6 +1071,8 @@ mml1_td_cwc8 <- clmm(perc_trabajo_duro_factor_est ~ 1 + prom_mer_cwc + (1|rbd_es
 htmlreg(list(mmn_td_cwc, mml1_td_cwc1a, mml1_td_cwc1b, mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4, mml1_td_cwc5, mml1_td_cwc6,  mml1_td_cwc7, mml1_td_cwc8), custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Regresiones simples: Percepción trabajo duro", custom.coef.names = c("Muy en desacuerdo|En desacuerdo", "En desacuerdo|De acuerdo", "De acuerdo|Muy de acuerdo", "Percepcion Esfuerzo Ap|En desacuerdo", "Percepcion Esfuerzo Ap|De acuerdo", "Percepcion Esfuerzo Ap|Muy de acuerdp", "Percepcion Trabajo duro Ap|Algo importante", "Percepcion Trabajo duro Ap|Importante", "Percepcion Trabajo duro Ap| Muy importante", "Sentido de justicia en notas directo", "Sentido de justicia en notas indirecto", "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC| NS/Nr", "Sensacion recompensa estudiante", "Justicia en el trato profesores", "Promedio obtenido", "Promedio merecido")
                               )
 ```
+
+### Modelos de regresión clmm (trabajo duro): reg. multiple con n homogeneo
 
 ```{r, results='asis'}
 # Regresiones múltiples: comparación de modelos
@@ -959,6 +1199,8 @@ htmlreg(list(mmn_td_cwc,mml1_td_cwc1a,mml1_td_cwc1b, mml1_td_cwc2, mml1_td_cwc3,
 
 ```
 
+### ### Modelos de regresión clmm (trabajo duro): versión minimalista
+
 ```{r results='asis'}
 # Modelos para presentación
 
@@ -1022,7 +1264,6 @@ save(mml1_td_cwc2, file="../output/tables/mml1_td_cwc2.R")
 save(mml1_td_cwc3, file="../output/tables/mml1_td_cwc3.R")
 save(mml1_td_cwc4, file="../output/tables/mml1_td_cwc4.R")
 
-
 # Tablas modelos
 htmlreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), custom.model.names = c("Nulo", "Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"), 
         star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
@@ -1035,6 +1276,7 @@ htmlreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), 
 
 > Como se puede ver en la diferencia entre ambas tablas la sensación de justicia en las notas medida directamente si posee un efecto cuando trabajamos con la muestra completa de estudiantes ( n = 1400)  pero este efecto se pierde al incorporar a los apoderados.  Por el contrario cuando se utiliza na.omit para equiparar el n en las regresiones y hacerlas comparables este efecto se pierda. SERIA CUIDADOSO AL DECIR QUE NO GENERA UN EFECTO. 
 
+### Matriz de correlación con variables de interés post-modelos
 
 ```{r}
 basecor <- ap_est %>% select(prom_percmer_est,prom_percmer_ap_cwc, sj_direct_cwc, recompensa_est_cwc, resp_prof_cwc)

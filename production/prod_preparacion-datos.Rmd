@@ -7,7 +7,7 @@ output:
     df_print: paged
     theme: paper
     toc: yes
-    toc_float: no
+    toc_float: yes
 editor_options:
   chunk_output_type: inline
 ---
@@ -18,9 +18,9 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 
 # Introducción
 
-El presente documento tiene por finalidad la preparación de datos del artículo en proceso "La socialización de la meritocracia: el rol de la familia y la escuela" a cargo de Juan Carlos Castillo. El artículo se desarrolla en el marco del proyecto FONDECYT Regular N°1181239: "Socialización política y educación para la ciudadanía: el rol de la familia y de la escuela."  
+El presente documento tiene por finalidad la preparación de datos del artículo en proceso "La socialización de la meritocracia: el rol de la familia y la escuela" a cargo de Juan Carlos Castillo. El artículo se desarrolla en el marco del proyecto FONDECYT Regular N°1181239: "Socialización política y educación para la ciudadanía: el rol de la familia y de la escuela." que cuenta con Cristian Cox como investigador principal.  
 
-La estructura para la preparación consistirá en cinco partes. La primera corresponde a cargar las librerías de R para la elaboración del documento. En la segunda se cargará la base de datos. En la tercera se seleccionarán las variables a utilizar. En la cuarta, dónde estará el grueso del documento, se procesarán las variables. El procesamiento se divirá en torno a variables relacionadas a padres y a estudiantes. Para ambas, se seguirá el siguiente orden: descriptivo, recodificación, etiquetado, descriptivo post-rec y otros ajustes. Además, al lado de cada variable figurará un entreparentesis indicando si corresponde a una variable independiente (Var. Indep.), dependiente (Var. Dep.) o un control (Control) de nivel uno (N1) o dos (N2) Por último, se generará una base de datos procesada para los análisis posteriores, en conjunto a una tabla de descriptivos para la base completa.
+La estructura para la preparación consistirá en cinco partes. La primera corresponde a cargar las librerías de R para la elaboración del documento. En la segunda se cargarán las bases de datos, información generada desde el proyoecto. En la tercera se seleccionarán las variables a utilizar. En la cuarta, dónde estará el grueso del documento, se procesarán las variables. El procesamiento se divirá en torno a variables relacionadas a apoderados y a estudiantes. Para ambas, se seguirá el siguiente orden: descriptivo, recodificación, etiquetado, descriptivo post-rec y otros ajustes. Además, al lado de cada variable figurará un entreparentesis indicando si corresponde a una variable independiente (Var. Indep.), dependiente (Var. Dep.) o un control (Control) de nivel uno (N1) o dos (N2) Por último, se generará una base de datos procesada para los análisis posteriores, en conjunto a una tabla de descriptivos para la base completa.
 
 # Resumen ejecutivo:
 Se listan los puntos mas importantes:
@@ -81,6 +81,8 @@ ap$FOLIO_EST[ap$FOLIO_EST == 897] <- 892
 
 ```
 
+Cabe señalar que dentro de la base de datos existe un caso mal pareado (relación folio estudiante-apoderado). Esto se arregla cambiando el folio erroneo (897 del apoderaod) por su correspondiente.
+
 ## Parte 3: Seleccionar variables
 
 ```{r}
@@ -99,10 +101,10 @@ ap_proc <- ap %>% dplyr::select(rbd = RBD,
                                libros_hogar = P47,
                                perc_trabajo_duro = P9D,
                                perc_esfuerzo = P10D,
-                               dem_desig = P10A,
+                               dem_desig = P10A,# Exploración
                                recompensa = P10C) 
 
-# Seleccionar y renonbrar variables de la base de datos de estudiantes.                               
+# Seleccionar y renombrar variables de la base de datos de estudiantes.                               
 est_proc <- est  %>% dplyr::select(rbd = RBD,
                                  region = REGION,
                                  folio = FOLIO,
@@ -426,7 +428,7 @@ ap_proc$porc_muj_ap_esc <- set_label(x = ap_proc$porc_muj_ap_esc, label = "Porce
 #Etiquetado  perdidos
 
 est_proc$resp_prof <- set_na(est_proc$resp_prof, na = c(5,9), drop.levels = TRUE, as.tag = FALSE)
-est_proc$rest_prof <- set_label(x = est_proc$resp_prof, label = "Siento que mi opinión es tomada en cuenta por mis profesores")
+est_proc$resp_prof <- set_label(x = est_proc$resp_prof, label = "Siento que mi opinión es tomada en cuenta por mis profesores")
 
 ```
 
