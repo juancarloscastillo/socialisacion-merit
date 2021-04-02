@@ -48,8 +48,13 @@ El documento se estructurará en cuatro apartados. El primero corresponde a la c
 - Agrega variables promedio de percepción de meritocracia (en estudiantes y apoderados) a la matriz de correlaciones principales.
 - Agrega matriz de correlaciones sobre variables de ingresos y controles
 - Agrega sección de análisis mulivariado
+- Descarte trabajo con factores (CFA)
 - Cambio de orden en seccion multivariada: primero lmer, luego clmm.
-- Elaboración modelos lmer con promedios de percepción meritocrática como dependiente en dos series de modelos. La primera con coeficientes en factores, la segunda con coeficientes centrados a la media grupal.
+- Primera versión análisis: elaboración modelos lmer con promedios de percepción meritocrática como dependiente en dos series de modelos. La primera con coeficientes en factores, la segunda con coeficientes centrados a la media grupal.
+- Segunda versión modelos: modelos simples con n diferido y modelos multiples con n homogeneo (lmer y clmm)
+- Añadir tabla para presentación: modelo clmm de indicador trabajo duro minimalista.
+- Expansión de descriptivos: tablas bivariadas, tablas de contingencia y correlaciones policloricas.
+
 
 ## Parte 1: Cargar librerías y datos
 
@@ -161,7 +166,7 @@ Para el caso del grado de acuerdo con respecto a la afirmación "En Chile, los q
 
 ### Tabla de descriptivos univariados: sentido de justicia indirecto (logaritmico y no logaritmico) 
 ```{r}
-select(ap_est, sj_indirect_ln, sj_indirect_noln) %>% summarytools::descr() %>% kable( format = "markdown",digits = 2,col.names = c("Sentido de justicia en las notas (Log)","Sentido de justicia en las notas (no Log)"), caption = "Factor loadings")
+select(ap_est, sj_indirect_ln, sj_indirect_noln) %>% summarytools::descr() %>% kable( format = "markdown",digits = 2,col.names = c("Sentido de justicia en las notas (Log)","Sentido de justicia en las notas (no Log)"), caption = "Freqs. Sentido Justicia Indirecto")
 ```
 
 Llama la atención que los datos del sentido de justicia indirecto logaritmico y el sin logaritmo son exactamente iguales.
@@ -1196,7 +1201,7 @@ htmlreg(list(mmn_td_cwc,mml1_td_cwc1a,mml1_td_cwc1b, mml1_td_cwc2, mml1_td_cwc3,
 
 ```
 
-### ### Modelos de regresión clmm (trabajo duro): versión minimalista
+### Modelos de regresión clmm (trabajo duro): versión minimalista
 
 ```{r results='asis'}
 # Modelos para presentación
