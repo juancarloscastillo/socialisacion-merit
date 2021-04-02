@@ -87,16 +87,7 @@ ap_est <- sjlabelled::remove_all_labels(ap_est)
 ```
 
 
-## Parte 2: Análisis descriptivos univariados
-### Tabla de descriptivos univariados: todas las variables
-
-A continuación se presentan los descriptivos de la base de datos completa:
-
-```{r}
-sjPlot::view_df(ap_est, show.type = T, show.prc = T, show.na = T)
-```
-
-Se realizan dos gráficos para variables likert. El primero corresponde a la comparación de percepción del trabajo duro en estudiantes y apoderados. El segundo es la misma comparación pero para la percepción de esfuerzo.
+## Parte 2: Análisis descriptivos univariados {.tabset}
 
 ### Gráfico de barras: percepción trabajo duro esutudiantes y apoderados
 
@@ -196,7 +187,18 @@ Respecto al indicador sobre sentido de justicia directo resalta que más del 60%
 
 Estos datos son contradictorios con los obtenidos a partir del sentido de justicia indirecto, lo que lleva a pensar que quizás no están midiendo el mismo constructo.
 
-## Parte 3: Análisis descriptivo bivariado
+### Tabla de descriptivos univariados: todas las variables
+
+A continuación se presentan los descriptivos de la base de datos completa:
+
+```{r}
+sjPlot::view_df(ap_est, show.type = T, show.prc = T, show.na = T)
+```
+
+Se realizan dos gráficos para variables likert. El primero corresponde a la comparación de percepción del trabajo duro en estudiantes y apoderados. El segundo es la misma comparación pero para la percepción de esfuerzo.
+
+
+## Parte 3: Análisis descriptivo bivariado {.tabset}
 
 A continuación se presenta una serie de tablas bivariadas. Primero, tablas de estadísticos descriptivos de las principales variables númericas (percepción meritocrática de estudiantes y apoderados y sentido de justicia indirecto) y variables categoricas de interés. Segundo, tablas de contingencia entre variables categoricas de interés.
 
