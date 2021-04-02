@@ -120,7 +120,8 @@ est_proc <- est  %>% dplyr::select(rbd = RBD,
                                  prom_obt = P27,
                                  prom_mer = P28,
                                  sj_direct = P29,
-                                 recompensa = P25C) 
+                                 recompensa = P25C,
+                                 tiempo_compartido = P36) 
                                  
                                  
 ```   
@@ -1463,5 +1464,54 @@ save(ap_proc, file = "../input/data/ap_proc.RData")
 
 # Guardar base de datos estudiantes
 save(est_proc, file = "../input/data/est_proc.RData")
+```
+
+# Evaluar perdida de casos y representatividad de la muestra 
+
+```{r}
+dim(est)
+
+dim(ap_est) # ap_est posee todos los estudiantes. 
+
+```
+
+```{r}
+table(is.na(ap_est$genero_ap)) # 919 padres no responden.  
+
+ap_est$ap_responde <- ifelse(is.na(ap_est$genero_ap),0,1)
+
+table(ap_est$ap_responde)
+
+
+table(ap_est$educ_padre)
+
+ap_est_sinap<- ap_est %>% filter(ap_responde==0)
+ap_est_conap<- ap_est %>% filter(ap_responde==1)
+
+freq(ap_est_sinap$educ_padres_factor)
+freq(ap_est_conap$educ_padres_factor)
+sjPlot::tab_xtab(var.row = ap_est$educ_padres_factor, var.col = ap_est$ap_responde, title = "Table Title", show.row.prc = TRUE,show.exp=T)
+
+sjPlot::tab_xtab(var.row = ap_est$educ_madre, var.col = ap_est$ap_responde, title = "Table Title", show.row.prc = TRUE,show.exp=T)
+
+
+```
+
+
+> A partir de la educación de los padres señalada por los estudiantes se puede decir que no hay un desajuste socioeconomico de la muestra a partir de la perdida por apoderados. 
+
+
+```{r}
+
+sjPlot::tab_xtab(var.row = ap_est$tiempo_compartido, var.col = ap_est$ap_responde, title = "Table Title", show.row.prc = TRUE, show.exp=T)
+
+ap_est$tiempo_compartido <- set_na(ap_est$tiempo_compartido, na = c(5,9), drop.levels = TRUE, as.tag = FALSE)
+
+# Cuestionario apoderados
+ap_est$tiempo_compartido <- set_label(x = ap_est$tiempo_compartido, label = "Tiempo compartido")
+
+sjPlot::tab_xtab(var.row = ap_est$tiempo_compartido, var.col = ap_est$ap_responde, title = "Tiempo compartido segun si el apoderado responde", show.row.prc = TRUE, show.exp=T)
+
+table(ap_est$tiempo_compartido)
 ```
 
