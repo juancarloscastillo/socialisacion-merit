@@ -9,6 +9,7 @@ output:
     toc: yes
     toc_float: yes
     numbersections: true
+    code_folding: "hide"
 editor_options:
   chunk_output_type: inline
 ---
@@ -164,11 +165,12 @@ sjPlot::plot_likert(baselik,
 #dev.off()
 
 ```
+
 Para el caso del grado de acuerdo con respecto a la afirmación "En Chile, los que se esfuerzan salen adelante" los resultados son similares al indicador anterior. Tanto en estudiantes como apoderados más del 80% de las respuestas se concentran en las categorías más altas, en este caso: "De acuerdo" y "Muy de acuerdo".
 
 ### Tabla de descriptivos univariados: sentido de justicia indirecto (logaritmico y no logaritmico) 
 ```{r}
-select(ap_est, sj_indirect_ln, sj_indirect_noln) %>% summarytools::descr()
+select(ap_est, sj_indirect_ln, sj_indirect_noln) %>% summarytools::descr() %>% kable( format = "markdown",digits = 2,col.names = c("Sentido de justicia en las notas (Log)","Sentido de justicia en las notas (no Log)"), caption = "Factor loadings")
 ```
 
 Llama la atención que los datos del sentido de justicia indirecto logaritmico y el sin logaritmo son exactamente iguales.
@@ -184,7 +186,11 @@ Tanto los estadísticos como el gráfico de densidad sobre el sentido de justici
 ### Tabla de frecuencias: sentido de justicia directo
 
 ```{r}
-frq(ap_est$sj_direct_factor)
+
+
+frq(ap_est$sj_direct_factor) %>% kable( format = "markdown",digits = 2, caption = "Factor loadings", 
+                                        col.names = c("Alternativas","", "frecuencia", "Porcentaje", "Porcentje valido", "Porcentaje acumulado")
+                                        )
 ```
 Respecto al indicador sobre sentido de justicia directo resalta que más del 60% de los estudiantes (datos validos) considera que merece sus notas de acuerdo al tiempo de estudio invertido. Por otro lado, poco más de un quinto de la muestra considera que sus notas son menos de las que merece, y un 13% restante se siente sobre recompensado.
 
@@ -574,49 +580,38 @@ La matriz de correlación para las variables principales del estudio muestran do
 ### Correlaciones policloricas variables principales
 
 ```{r}
-# Perc. Esfuerzo. Est x Resp prof
-polychor(ap_est$perc_esfuerzo_factor_est, ap_est$resp_prof_factor, std.err = TRUE)
+basecor<- ap_est %>% select(perc_esfuerzo_est,perc_esfuerzo_ap,perc_trabajo_duro_est, perc_trabajo_duro_ap,resp_prof,quintiles_ingresos_pc,recompensa_ap,recompensa_est,sj_direct)
 
-# Perc. Esfuerzo. Est x Quintiles ingresos
-polychor(ap_est$perc_esfuerzo_factor_est, ap_est$quintiles_ingresos_pc_factor, std.err = TRUE)
+polycor <- psych::polychoric(basecor)
+polycor$rho
 
-# Perc. Esfuerzo. Est x Recompensa apoderado
-polychor(ap_est$perc_esfuerzo_factor_est, ap_est$recompensa_factor_ap, std.err = TRUE)
+windowsFonts(A = windowsFont("Times New Roman"))
+rownames(polycor$rho) <-c("A. Percepción meritocracia esfuerzo (Estudiantes)",
+    "B. Percepción meritocracia esfuerzo (Apoderados)",
+    "C. Trabajo Duro Estudiantes",
+    "D. Trabajo Duro Apoderados",
+    "E. Justicia procesal profesor (opinion)",
+    "F. Quintiles de ingreso",
+    "G. Sensación de recompenza justa colegio (Apoderados)", 
+    "H. Sensación de recompenza justa colegio (Estudiantes)",
+    "I. Sensación de justicia en la nota estudiante"
+    )
+    
+    
+colnames(polycor$rho) <-c("(A)", "(B)","(C)","(D)","(E)","(F)", "(G)", "(H)", "(I)")
 
-# Perc. Esfuerzo. Est x Recompensa estudiante
-polychor(ap_est$perc_esfuerzo_factor_est, ap_est$recompensa_factor_est, std.err = TRUE)
 
-# Perc. Esfuerzo. Est x Sentido de justucia directo
-polychor(ap_est$perc_esfuerzo_factor_est, ap_est$sj_direct_factor, std.err = TRUE)
+corrplot(polycor$rho,
+  method = "color",
+  type = "upper",
+  tl.col = "black",
+  addCoef.col = "black",
+  diag = TRUE,
+  family = "A",
+  number.font = 6,
+  tl.cex =0.75,
+  number.cex = 1)
 
-# Perc. Esfuerzo. Est x Perc. Esfuerzo. Ap
-polychor(ap_est$perc_esfuerzo_factor_est, ap_est$perc_esfuerzo_factor_ap, std.err = TRUE)
-
-# Perc. Esfuerzo. Est x Perc. Trabajo Duro Ap
-polychor(ap_est$perc_esfuerzo_factor_est, ap_est$perc_trabajo_duro_factor_ap, std.err = TRUE)
-
-#---------------------------------------------------------------------------------------------
-
-# Perc. Trabajo Duro. Est x Resp prof
-polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$resp_prof_factor, std.err = TRUE)
-
-# Perc. Trabajo Duro. Est x Quintiles ingresos
-polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$quintiles_ingresos_pc_factor, std.err = TRUE)
-
-# Perc. Trabajo Duro. Est x Recompensa apoderado
-polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$recompensa_factor_ap, std.err = TRUE)
-
-# Perc. Trabajo Duro. Est x Recompensa estudiante
-polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$recompensa_factor_est, std.err = TRUE)
-
-# Perc. Trabajo Duro. Est x Sentido de justicia directo
-polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$sj_direct_factor, std.err = TRUE)
-
-# Perc. Trabajo Duro Est x Perc. Esfuerzo. Ap
-polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$perc_esfuerzo_factor_ap, std.err = TRUE)
-
-# Perc. Trabajo Duro Est x Perc. Trabajo Duro AP
-polychor(ap_est$perc_trabajo_duro_factor_est, ap_est$perc_trabajo_duro_factor_ap, std.err = TRUE)
 ```
 
 
@@ -1275,40 +1270,4 @@ htmlreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), 
 
 
 > Como se puede ver en la diferencia entre ambas tablas la sensación de justicia en las notas medida directamente si posee un efecto cuando trabajamos con la muestra completa de estudiantes ( n = 1400)  pero este efecto se pierde al incorporar a los apoderados.  Por el contrario cuando se utiliza na.omit para equiparar el n en las regresiones y hacerlas comparables este efecto se pierda. SERIA CUIDADOSO AL DECIR QUE NO GENERA UN EFECTO. 
-
-### Matriz de correlación con variables de interés post-modelos
-
-```{r}
-basecor <- ap_est %>% select(prom_percmer_est,prom_percmer_ap_cwc, sj_direct_cwc, recompensa_est_cwc, resp_prof_cwc)
-basecor <- na.omit(basecor)
-correcom <- cor(basecor)
-
-
-#png("../output/images/corfin.png",width=600,height=600)
-
-windowsFonts(A = windowsFont("Times New Roman"))
-rownames(correcom) <-c(
-    "A. Percepción de meritocracia estudiantes",
-    "B. Percepción de meritocracia apoderados",
-    "C. Sentido de justicia en las notas",
-    "D. Recompensa estudiantes",
-    "E. Justicia en el trato profesor")
-colnames(correcom) <-c("(A)", "(B)","(C)","(D)","(E)")
-corrplot(
-correcom,
-  method = "color",
-  type = "upper",
-  tl.col = "black",
-  addCoef.col = "black",
-  diag = TRUE,
-  family = "A",
-  number.font = 6,
-  tl.cex =0.75,
-  number.cex = 1)
-
-#dev.off()
-
-```
-
-> se realiza una tabla de correlaciones para comprender  con que se asocia con que el estudiante sienta que su colegio premia los esfuerzos.  Curiosamente,  el que un estudiante sienta dicha justicia en su colegio se asocia más con que suprofesor considere su opinion más que con cuan justa considera sus calificaciones. 
 
