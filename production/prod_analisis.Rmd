@@ -11,7 +11,7 @@ output:
     numbersections: true
     code_folding: "hide"
 editor_options:
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -432,7 +432,7 @@ sjt.xtab(ap_est$perc_trabajo_duro_factor_ap, ap_est$perc_esfuerzo_factor_est,
 )
 ```
 
-#### Tabla de contingencia: percepcion trabajo duro estudiante x genero estudiante
+### Tabla de contingencia: percepcion trabajo duro estudiante x genero estudiante
 
 ```{r}
 # Percepcion trabajo duro estudiante x genero estudiante
@@ -730,7 +730,9 @@ El modelo nulo con rbd reportado por estudiantes da una correlación intraclase 
 
 En esta segunda versión de los resultados nos centraremos en explorar solamente una tanda de modelos con el promedio de percepción de meritocracia, introduciendo predictores centrados y en factores según corresponda a la naturaleza del predictor. Primero analizaremos los modelos en formato de regresión simple, luego introduciendo los predictores en forma creciente con tal de analizar la disipación de efectos. También, exploraremos los modelos
 
-### Modelos de regresión lmer: reg. simples con n diferido
+
+## Modelos para variable dependiente promedio
+### Modelo simple (n diferido)
 ```{r Modelos Percepcion Meritocratica, results='asis'}
 # Regresiones simples
 
@@ -761,10 +763,31 @@ mml1_p_cwc7 <- lmer(prom_percmer_est ~ 1 + prom_obt_cwc + (1|rbd_est), data = ap
 # Modelo 8: Promedio de notas merecido
 mml1_p_cwc8 <- lmer(prom_percmer_est ~ 1 + prom_mer_cwc + (1|rbd_est), data = ap_est)
 
-htmlreg(list(mmn_p_cwc, mml1_p_cwc1, mml1_p_cwc2, mml1_p_cwc3, mml1_p_cwc4, mml1_p_cwc5, mml1_p_cwc6,  mml1_p_cwc7, mml1_p_cwc8), custom.model.names = c("Nulo", "Model 1", "Model 2", "Model 3", "Model 4", "Model 5", "Model 6", "Model 7", "Model 8"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (CWC)", custom.coef.names = c("Intercepto", "Percepción meritocratica de los padres", "Sentido de justicia en las notas directo", "Sentido de justicia en las notas indirecto","Ingresos PC|Quintil 2","Ingresos PC|Quintil 3","Ingresos PC|Quintil 4","Ingresos PC|Quintil 5","Ingresos PC|Ns/Nr","Sensacion de recompensa justa en la escuela", "Justicia procesal del profesor", "Promedio obtenido", "Promedio merecido"))
+knitreg(list(mmn_p_cwc, mml1_p_cwc1, mml1_p_cwc2, mml1_p_cwc3, mml1_p_cwc4, mml1_p_cwc5, mml1_p_cwc6,  mml1_p_cwc7, mml1_p_cwc8),
+        custom.model.names = c("Nulo", "Model 1", "Model 2", "Model 3", "Model 4", "Model 5", "Model 6", "Model 7", "Model 8"), 
+        # star.symbol = "\\*", 
+        center = T, 
+        custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , 
+        caption.above = T, 
+        caption = "Socialización de la percepción meritocratica: Promedio percepción meritocrática estudiantes (CWC)", 
+        custom.coef.names = c(
+          "Intercepto",
+          "Percepción meritocratica de los padres (cwc)",
+          "Sentido de justicia en las notas directo (cwc)",
+          "Sentido de justicia en las notas indirecto (cwc)",
+          "Ingresos PC|Quintil 2",
+          "Ingresos PC|Quintil 3",
+          "Ingresos PC|Quintil 4",
+          "Ingresos PC|Quintil 5",
+          "Ingresos PC|Ns/Nr",
+          "Sensacion de recompensa justa en la escuela (cwc)",
+          "Justicia procesal del profesor",
+          "Promedio obtenido (cwc)",
+          "Promedio merecido (cwc)"
+        ))
 ```
 
-### Modelos de regresión lmer: reg. multiples con n homogeneo
+### Modelo simple (n homogéneo)
 
 ```{r, Regresiones multiple con promedios, results='asis'}
 # Regresiones multiples: comparación de modelos.
@@ -854,19 +877,51 @@ mml1_p_cwc8 <- lmer(prom_percmer_est ~ 1 +
                       (1|rbd_est), data = basereg)
 
 # Tabla de modelos
-htmlreg(list(mmn_p_cwc,mml1_p_cwc1, mml1_p_cwc2, mml1_p_cwc3,mml1_p_cwc4, mml1_p_cwc5, mml1_p_cwc6, mml1_p_cwc7, mml1_p_cwc8), custom.model.names = c("Nulo","Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8"), star.symbol = "\\*", center = T , caption.above = T, caption = "Var. Dep.: Promedio Percepción percepción meritocratica estudiantes",
-        
-        omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)" 
-        
-        ,custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos y posicion politica de los padres" 
-        
-       ,custom.coef.names = c("Intercepto", "Percepción meritocratica apoderados", "Sentido de justicia en las notas", "Recompensa justa en la escuela", "Justicia en el trato profesor", "Genero estudiantes|Mujer", "Genero estudiantes| Otro", "Percepción meritocratica apoderados x sentido de justicia en las notas")
+knitreg(list(mmn_p_cwc,mml1_p_cwc1, mml1_p_cwc2, mml1_p_cwc3,mml1_p_cwc4, mml1_p_cwc5, mml1_p_cwc6, mml1_p_cwc7, mml1_p_cwc8), 
+        custom.model.names = c("Nulo","Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8"), 
+
+        center = T , 
+        caption.above = T, 
+        caption = "Var. Dep.: Promedio Percepción percepción meritocratica estudiantes",
+        omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)" ,
+        custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos, posicion politica de los padres y estudiantes, libros en el hogar (cwc) y dependencia administrativa del establecimiento",
+        custom.coef.names = c(
+          "Intercepto",
+          "Percepción meritocratica apoderados (cwc)",
+          "Sentido de justicia en las notas directo  (cwc)",
+          "Recompensa justa en la escuela (cwc)",
+          "Justicia en el trato profesor (cwc)",
+          "Genero estudiantes|Mujer",
+          "Genero estudiantes| Otro",
+          "Percepción meritocratica apoderados x sentido de justicia en las notas (directo)"
+        )
        )
-
-
 ```
 
-### Modelos de regresión clmm (esfuerzo): reg. simple con n diferido
+### Modelo minimalista
+
+```{r regresiones multiple con promedios - minimal, results='asis'}
+knitreg(list(mmn_p_cwc,mml1_p_cwc1, mml1_p_cwc2, mml1_p_cwc3,mml1_p_cwc4, mml1_p_cwc5, mml1_p_cwc6, mml1_p_cwc7, mml1_p_cwc8), 
+        custom.model.names = c("Nulo","Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8"), 
+
+        center = T , caption.above = T, caption = "Var. Dep.: Promedio Percepción percepción meritocratica estudiantes",
+        omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)|(genero_factor_es)" ,
+        custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos, posicion politica de los padres y estudiantes, libros en el hogar (cwc) y dependencia administrativa del establecimiento",
+        custom.coef.names = c(
+          "Intercepto",
+          "Percepción meritocratica apoderados (cwc)",
+          "Sentido de justicia en las notas directo (cwc)",
+          "Recompensa justa en la escuela (cwc)",
+          "Justicia en el trato profesor (cwc)",
+          "Percepción meritocratica apoderados x sentido de justicia en las notas (directo)"
+        )
+       )
+```
+
+
+## Modelos para variable dependiente categórica (Esfuerzo)
+
+### Modelo ordinal (n diferido)
 
 ```{r Modelos Indicadores por separado: Esfuerzo, results='asis'}
 # Regresiones simples
@@ -902,15 +957,39 @@ mml1_e_cwc7 <- clmm(perc_esfuerzo_factor_est ~ 1 + prom_obt_cwc + (1|rbd_est), d
 mml1_e_cwc8 <- clmm(perc_esfuerzo_factor_est ~ 1 + prom_mer_cwc + (1|rbd_est), data = ap_est)
 
 # Tabla de modelos
-htmlreg(list(mmn_e_cwc, mml1_e_cwc1a, mml1_e_cwc1b, mml1_e_cwc2, mml1_e_cwc3, mml1_e_cwc4, mml1_e_cwc5, mml1_e_cwc6,  mml1_e_cwc7, mml1_e_cwc8), 
-        
-        custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Esfuerzo Estudiantes", 
-        
-        custom.coef.names = c("Muy en desacuerdo|En desacuerdo", "En desacuerdo|De acuerdo", "De acuerdo|Muy de acuerdo", "Percepcion Esfuerzo Ap|En desacuerdo", "Percepcion Esfuerzo Ap|De acuerdo", "Percepcion Esfuerzo Ap|Muy de acuerdp", "Percepcion Trabajo duro Ap|Algo importante", "Percepcion Trabajo duro Ap|Importante", "Percepcion Trabajo duro Ap| Muy importante", "Sentido de justicia en notas directo", "Sentido de justicia en notas indirecto", "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC| NS/Nr", "Sensacion recompensa estudiante", "Justicia en el trato profesores", "Promedio obtenido", "Promedio merecido")
-                              )
+knitreg(list(mmn_e_cwc, mml1_e_cwc1a, mml1_e_cwc1b, mml1_e_cwc2, mml1_e_cwc3, mml1_e_cwc4, mml1_e_cwc5, mml1_e_cwc6,  mml1_e_cwc7, mml1_e_cwc8),
+        custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8"), 
+
+        center = T, 
+        custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , 
+        caption.above = T, 
+        caption = "Var. Dep.: Percepción Esfuerzo Estudiantes",
+        custom.coef.names = c(
+          "Muy en desacuerdo|En desacuerdo",
+          "En desacuerdo|De acuerdo",
+          "De acuerdo|Muy de acuerdo",
+          "Percepcion Esfuerzo Ap|En desacuerdo",
+          "Percepcion Esfuerzo Ap|De acuerdo",
+          "Percepcion Esfuerzo Ap|Muy de acuerdp",
+          "Percepcion Trabajo duro Ap|Algo importante",
+          "Percepcion Trabajo duro Ap|Importante",
+          "Percepcion Trabajo duro Ap| Muy importante",
+          "Sentido de justicia en notas directo (cwc)",
+          "Sentido de justicia en notas indirecto (cwc)",
+          "Ingresos PC|Quintil 2",
+          "Ingresos PC|Quintil 3",
+          "Ingresos PC|Quintil 4",
+          "Ingresos PC|Quintil 5",
+          "Ingresos PC| NS/Nr",
+          "Sensacion recompensa estudiante (cwc)",
+          "Justicia en el trato profesores (cwc)",
+          "Promedio obtenido (cwc)",
+          "Promedio merecido (cwc)"
+        )
+        )
 ```
 
-### Modelos de regresión clmm (esfuerzo): reg. multiple con n homogeneo
+### Modelo ordinal (n homogéneo)
 
 ```{r, results='asis'}
 # Regresiones multiples: comparación de modelos
@@ -1025,16 +1104,90 @@ mml1_e_cwc8b <- clmm(perc_esfuerzo_factor_est ~ 1 +
                       (1|rbd_est), data = basereg)
 
 # Tabla de modelos
-htmlreg(list(mmn_e_cwc,mml1_e_cwc1a,mml1_e_cwc1b, mml1_e_cwc2, mml1_e_cwc3,mml1_e_cwc4, mml1_e_cwc5, mml1_e_cwc6, mml1_e_cwc7,mml1_e_cwc8a, mml1_e_cwc8b), custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8a", "Modelo 8b"), 
-        #omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|()|(libros_hogar_ap_cwc)|(dependencia_factor_ap)", 
+knitreg(list(mmn_e_cwc,mml1_e_cwc1a,mml1_e_cwc1b, mml1_e_cwc2, mml1_e_cwc3,mml1_e_cwc4, mml1_e_cwc5, mml1_e_cwc6, mml1_e_cwc7,mml1_e_cwc8a, mml1_e_cwc8b),
+        custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8a", "Modelo 8b"), 
+        omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)|(genero_factor_es)",
         custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos y posicion politica de los padres",
-        custom.coef.names = c("Muy en desacuerdo|En desacuerdo", "En desacuerdo|De acuerdo", "De acuerdo|Muy de acuerdo","Percepcion Esfuerzo Ap|En desacuerdo", "Percepcion Esfuerzo Ap|De acuerdo", "Percepcion Esfuerzo Ap|Muy de acuerdo", "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", "Posicion politica apoderados", "Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes", "Justicia en el trato profesores", "Posicion politica estudiantes","Genero estudiantes|Mujer", "Genero estudiantes|Otro", "Libros en el hogar", "Dependencia administrativa|Part. Subvencionado", "Dependencia administrativa|Part. Privado", "Percepcion esfuerzo Ap| En desacuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| De acuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| Muy de acuerdo x Sentido justicia notas", "Percepcion trabajo duro Ap|Algo importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Muy importante x Sentido justicia notas")
+        custom.coef.names = c(
+          "Muy en desacuerdo|En desacuerdo",
+          "En desacuerdo|De acuerdo",
+          "De acuerdo|Muy de acuerdo",
+          "Percepcion Esfuerzo Ap|En desacuerdo",
+          "Percepcion Esfuerzo Ap|De acuerdo",
+          "Percepcion Esfuerzo Ap|Muy de acuerdo",
+          "Ingresos PC|Quintil 2",
+          "Ingresos PC|Quintil 3",
+          "Ingresos PC|Quintil 4",
+          "Ingresos PC|Quintil 5",
+          "Ingresos PC|Ns/Nr",
+          "Posicion politica apoderados (cwc)",
+          "Percepcion Trabajo Duro Ap|Algo importante",
+          "Percepcion Trabajo Duro Ap|Importante",
+          "Percepcion Trabajo Duro Ap|Muy importante",
+          "Sentido de justicia en las notas directo (cwc)",
+          "Recompensa justa estudiantes (cwc)",
+          "Justicia en el trato profesores (cwc)",
+          "Posicion politica estudiantes (cwc)",
+          "Genero estudiantes|Mujer",
+          "Genero estudiantes|Otro",
+          "Libros en el hogar (cwc)",
+          "Dependencia administrativa|Part. Subvencionado",
+          "Dependencia administrativa|Part. Privado",
+          "Percepcion esfuerzo Ap| En desacuerdo x Sentido justicia notas",
+          "Percepcion esfuerzo Ap| De acuerdo x Sentido justicia notas",
+          "Percepcion esfuerzo Ap| Muy de acuerdo x Sentido justicia notas",
+          "Percepcion trabajo duro Ap|Algo importante x Sentido justicia notas",
+          "Percepcion trabajo duro Ap|Importante x Sentido justicia notas",
+          "Percepcion trabajo duro Ap|Muy importante x Sentido justicia notas"
         )
-
-
+        )
 ```
 
-### Modelos de regresión clmm (trabajo duro): reg. simple con n diferido
+### Modelo minimalista 
+
+```{r, results='asis'}
+knitreg(list(mmn_e_cwc,mml1_e_cwc1a,mml1_e_cwc1b, mml1_e_cwc2, mml1_e_cwc3,mml1_e_cwc4, mml1_e_cwc5, mml1_e_cwc6, mml1_e_cwc7,mml1_e_cwc8a, mml1_e_cwc8b),
+        custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8a", "Modelo 8b"), 
+        omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)|(genero_factor_es)",
+        custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos, posicion politica de los padres y estudiantes, libros en el hogar (cwc) y dependencia administrativa del establecimiento",
+        custom.coef.names = c(
+          "Muy en desacuerdo|En desacuerdo",
+          "En desacuerdo|De acuerdo",
+          "De acuerdo|Muy de acuerdo",
+          "Percepcion Esfuerzo Ap|En desacuerdo",
+          "Percepcion Esfuerzo Ap|De acuerdo",
+          "Percepcion Esfuerzo Ap|Muy de acuerdo",
+          # "Ingresos PC|Quintil 2",
+          # "Ingresos PC|Quintil 3",
+          # "Ingresos PC|Quintil 4",
+          # "Ingresos PC|Quintil 5",
+          # "Ingresos PC|Ns/Nr",
+          # "Posicion politica apoderados",
+          "Percepcion Trabajo Duro Ap|Algo importante",
+          "Percepcion Trabajo Duro Ap|Importante",
+          "Percepcion Trabajo Duro Ap|Muy importante",
+          "Sentido de justicia en las notas directo (cwc)",
+          "Recompensa justa estudiantes (cwc)",
+          "Justicia en el trato profesores (cwc)",
+          # "Posicion politica estudiantes",
+          # "Genero estudiantes|Mujer",
+          # "Genero estudiantes|Otro",
+          # "Libros en el hogar",
+          # "Dependencia administrativa|Part. Subvencionado",
+          # "Dependencia administrativa|Part. Privado",
+          "Percepcion esfuerzo Ap| En desacuerdo x Sentido justicia notas",
+          "Percepcion esfuerzo Ap| De acuerdo x Sentido justicia notas",
+          "Percepcion esfuerzo Ap| Muy de acuerdo x Sentido justicia notas",
+          "Percepcion trabajo duro Ap|Algo importante x Sentido justicia notas",
+          "Percepcion trabajo duro Ap|Importante x Sentido justicia notas",
+          "Percepcion trabajo duro Ap|Muy importante x Sentido justicia notas"
+        )
+        )
+```
+
+## Modelos para variable dependiente categórica (Trabajo duro)
+
+### Modelo ordinal (n diferido)
 
 ```{r Modelos Indicadores por separado: Trabajo duro, results='asis'}
 # Regresiones simples
@@ -1070,11 +1223,38 @@ mml1_td_cwc7 <- clmm(perc_trabajo_duro_factor_est ~ 1 + prom_obt_cwc + (1|rbd_es
 mml1_td_cwc8 <- clmm(perc_trabajo_duro_factor_est ~ 1 + prom_mer_cwc + (1|rbd_est), data = ap_est)
 
 # Tablas de modelos
-htmlreg(list(mmn_td_cwc, mml1_td_cwc1a, mml1_td_cwc1b, mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4, mml1_td_cwc5, mml1_td_cwc6,  mml1_td_cwc7, mml1_td_cwc8), custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8"), star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Regresiones simples: Percepción trabajo duro", custom.coef.names = c("Muy en desacuerdo|En desacuerdo", "En desacuerdo|De acuerdo", "De acuerdo|Muy de acuerdo", "Percepcion Esfuerzo Ap|En desacuerdo", "Percepcion Esfuerzo Ap|De acuerdo", "Percepcion Esfuerzo Ap|Muy de acuerdp", "Percepcion Trabajo duro Ap|Algo importante", "Percepcion Trabajo duro Ap|Importante", "Percepcion Trabajo duro Ap| Muy importante", "Sentido de justicia en notas directo", "Sentido de justicia en notas indirecto", "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC| NS/Nr", "Sensacion recompensa estudiante", "Justicia en el trato profesores", "Promedio obtenido", "Promedio merecido")
-                              )
+knitreg(list(mmn_td_cwc, mml1_td_cwc1a, mml1_td_cwc1b, mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4, mml1_td_cwc5, mml1_td_cwc6,  mml1_td_cwc7, mml1_td_cwc8),
+        custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8"), 
+
+        center = T, 
+        custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , 
+        caption.above = T, caption = "Regresiones simples: Percepción trabajo duro", 
+        custom.coef.names = c(
+          "Muy en desacuerdo|En desacuerdo",
+          "En desacuerdo|De acuerdo",
+          "De acuerdo|Muy de acuerdo",
+          "Percepcion Esfuerzo Ap|En desacuerdo",
+          "Percepcion Esfuerzo Ap|De acuerdo",
+          "Percepcion Esfuerzo Ap|Muy de acuerdp",
+          "Percepcion Trabajo duro Ap|Algo importante",
+          "Percepcion Trabajo duro Ap|Importante",
+          "Percepcion Trabajo duro Ap| Muy importante",
+          "Sentido de justicia en notas directo",
+          "Sentido de justicia en notas indirecto",
+          "Ingresos PC|Quintil 2",
+          "Ingresos PC|Quintil 3",
+          "Ingresos PC|Quintil 4",
+          "Ingresos PC|Quintil 5",
+          "Ingresos PC| NS/Nr",
+          "Sensacion recompensa estudiante",
+          "Justicia en el trato profesores",
+          "Promedio obtenido",
+          "Promedio merecido"
+        )
+        )
 ```
 
-### Modelos de regresión clmm (trabajo duro): reg. multiple con n homogeneo
+### Modelo ordinal (n homogéneo)
 
 ```{r, results='asis'}
 # Regresiones múltiples: comparación de modelos
@@ -1190,18 +1370,49 @@ mml1_td_cwc8b <- clmm(perc_trabajo_duro_factor_est ~ 1 +
 
 
 # Tablas de modelos
-htmlreg(list(mmn_td_cwc,mml1_td_cwc1a,mml1_td_cwc1b, mml1_td_cwc2, mml1_td_cwc3,mml1_td_cwc4, mml1_td_cwc5, mml1_td_cwc6, mml1_td_cwc7, mml1_td_cwc8a, mml1_td_cwc8b), custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8a", "Modelo 8b"), 
-        star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
-        #,omit.coef = "(quintiles_ingresos_pc_factor)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|()|(libros_hogar_ap_cwc)|(dependencia_factor_ap)", custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos y posicion politica de los padres" 
-        
-        custom.coef.names = c("Nada importante|Algo importante", "Algo importante|Importante", "Importante|Muy importante",
-"Percepcion Esfuerzo Ap|En desacuerdo", "Percepcion Esfuerzo Ap|De acuerdo", "Percepcion Esfuerzo Ap|Muy de acuerdo", "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", "Posicion politica apoderados", "Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes", "Justicia en el trato profesores", "Posicion politica estudiantes", "Genero estudiantes|Mujer", "Genero estudiantes|Otro", "Libros en el hogar", "Dependencia administrativa|Part. Subvencionado", "Dependencia administrativa|Part. Privado", "Percepcion esfuerzo Ap| En desacuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| De acuerdo x Sentido justicia notas", "Percepcion esfuerzo Ap| Muy de acuerdo x Sentido justicia notas", "Percepcion trabajo duro Ap|Algo importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Importante x Sentido justicia notas", "Percepcion trabajo duro Ap|Muy importante x Sentido justicia notas")
+knitreg(list(mmn_td_cwc,mml1_td_cwc1a,mml1_td_cwc1b, mml1_td_cwc2, mml1_td_cwc3,mml1_td_cwc4, mml1_td_cwc5, mml1_td_cwc6, mml1_td_cwc7, mml1_td_cwc8a, mml1_td_cwc8b), 
+        custom.model.names = c("Nulo", "Modelo 1a", "Modelo 1b", "Modelo 2", "Modelo 3", "Modelo 4", "Modelo 5", "Modelo 6", "Modelo 7", "Modelo 8a", "Modelo 8b"), 
+
+        center = T, 
+        custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , 
+        caption.above = T, 
+        caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
+        custom.coef.names = c(
+          "Nada importante|Algo importante",
+          "Algo importante|Importante",
+          "Importante|Muy importante",
+          "Percepcion Esfuerzo Ap|En desacuerdo",
+          "Percepcion Esfuerzo Ap|De acuerdo",
+          "Percepcion Esfuerzo Ap|Muy de acuerdo",
+          "Ingresos PC|Quintil 2",
+          "Ingresos PC|Quintil 3",
+          "Ingresos PC|Quintil 4",
+          "Ingresos PC|Quintil 5",
+          "Ingresos PC|Ns/Nr",
+          "Posicion politica apoderados",
+          "Percepcion Trabajo Duro Ap|Algo importante",
+          "Percepcion Trabajo Duro Ap|Importante",
+          "Percepcion Trabajo Duro Ap|Muy importante",
+          "Sentido de justicia en las notas",
+          "Recompensa justa estudiantes",
+          "Justicia en el trato profesores",
+          "Posicion politica estudiantes",
+          "Genero estudiantes|Mujer",
+          "Genero estudiantes|Otro",
+          "Libros en el hogar",
+          "Dependencia administrativa|Part. Subvencionado",
+          "Dependencia administrativa|Part. Privado",
+          "Percepcion esfuerzo Ap| En desacuerdo x Sentido justicia notas",
+          "Percepcion esfuerzo Ap| De acuerdo x Sentido justicia notas",
+          "Percepcion esfuerzo Ap| Muy de acuerdo x Sentido justicia notas",
+          "Percepcion trabajo duro Ap|Algo importante x Sentido justicia notas",
+          "Percepcion trabajo duro Ap|Importante x Sentido justicia notas",
+          "Percepcion trabajo duro Ap|Muy importante x Sentido justicia notas"
         )
-
-
+        )
 ```
 
-### Modelos de regresión clmm (trabajo duro): versión minimalista
+### Modelo minimalista 
 
 ```{r results='asis'}
 # Modelos para presentación
@@ -1267,11 +1478,26 @@ save(mml1_td_cwc3, file="../output/tables/mml1_td_cwc3.R")
 save(mml1_td_cwc4, file="../output/tables/mml1_td_cwc4.R")
 
 # Tablas modelos
-htmlreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), custom.model.names = c("Nulo", "Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"), 
-        star.symbol = "\\*", center = T, custom.note = " <div style='text-align: justify'> $***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br>" , caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
-        omit.coef = "(perc_esfuerzo_factor_ap)|(resp_prof_cwc)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(genero_factor_est)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)" 
-        
-        ,custom.coef.names = c("Nada importante|Algo importante", "Algo importante|Importante", "Importante|Muy importante",  "Ingresos PC|Quintil 2", "Ingresos PC|Quintil 3", "Ingresos PC|Quintil 4", "Ingresos PC|Quintil 5", "Ingresos PC|Ns/Nr", "Percepcion Trabajo Duro Ap|Algo importante", "Percepcion Trabajo Duro Ap|Importante", "Percepcion Trabajo Duro Ap|Muy importante", "Sentido de justicia en las notas", "Recompensa justa estudiantes"
+knitreg(list(mmn_td_cwc,mml1_td_cwc1,mml1_td_cwc2, mml1_td_cwc3, mml1_td_cwc4), 
+        custom.model.names = c("Nulo", "Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"), 
+center = T, 
+        custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Todos los modelos estan controlados por quintiles de ingresos, posicion politica de los padres y estudiantes, libros en el hogar (cwc) y dependencia administrativa del establecimiento",
+        caption.above = T, caption = "Var. Dep.: Percepción Trabajo Duro Estudiantes", 
+        omit.coef = "(quintiles_ingresos_pc_factor)|(perc_esfuerzo_factor_ap)|(resp_prof_cwc)|(pos_pol_ap_cwc)|(pos_pol_est_cwc)|(genero_factor_est)|(libros_hogar_ap_cwc)|(dependencia_factor_ap)",
+        custom.coef.names = c(
+          "Nada importante|Algo importante",
+          "Algo importante|Importante",
+          "Importante|Muy importante",
+          # "Ingresos PC|Quintil 2",
+          # "Ingresos PC|Quintil 3",
+          # "Ingresos PC|Quintil 4",
+          # "Ingresos PC|Quintil 5",
+          # "Ingresos PC|Ns/Nr",
+          "Percepcion Trabajo Duro Ap|Algo importante",
+          "Percepcion Trabajo Duro Ap|Importante",
+          "Percepcion Trabajo Duro Ap|Muy importante",
+          "Sentido de justicia en las notas directo (cwc)",
+          "Recompensa justa estudiantes (cwc)"
         ))
 ```
 
