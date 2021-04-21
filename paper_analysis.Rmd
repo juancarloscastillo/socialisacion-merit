@@ -1,0 +1,91 @@
+---
+title: "Paper analysis"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Descriptivos
+
+## Univariado 
+```{r echo=FALSE, results='asis',message=F, error=F}
+pacman::p_load(summarytools,haven,sjPlot,dplyr,htmlwidgets)
+load(file = "input/data/ap_est.RData")
+basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             sj_direct,
+                             quintiles_ingresos_pc_factor,
+                             libros_hogar_factor_ap,
+                             recompensa_factor_est,
+                             resp_prof_factor,
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             # rbd_est
+                             ) %>% na.omit(basereg)
+view(dfSummary(basereg,
+               plain.ascii = FALSE,
+               style = "grid",
+               tmp.img.dir = "/tmp",
+               graph.magnif = 0.75,
+               headings = F,  # encabezado
+               varnumbers = F, # num variable
+               labels.col = T, # etiquetas
+               na.col = F,    # missing
+               graph.col = T, # plot
+               valid.col = T, # n valido
+               # col.widths = c(5,5,10,10,10,10)
+               ),
+     method = "render")
+```
+
+## Bivariado
+
+```{r echo=FALSE}
+pacman::p_load(summarytools,haven,sjPlot,dplyr,sjlabelled,rvest,knitr,kableExtra)
+load(file = "input/data/ap_est.RData")
+basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             sj_direct,
+                             quintiles_ingresos_pc_factor,
+                             libros_hogar_factor_ap,
+                             recompensa_est,
+                             resp_prof_factor,
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             # rbd_est
+                             ) %>% na.omit(basereg)
+
+cor.df<- data.frame(lapply(basereg[,c("perc_trabajo_duro_factor_est",
+                                       "perc_esfuerzo_factor_est",
+                                       "perc_trabajo_duro_factor_ap",
+                                       "perc_esfuerzo_factor_ap",
+                                       "sj_direct")], function(x) as_numeric(x))) 
+cor.label <- as.character(get_label(cor.df))
+cor.tab<-sjt.corr(cor.df,
+                  triangle = "lower",
+                  digits = 2,
+                  string.diag = rep(x = "$-$",max(length(cor.df))))
+cor.mat <- as.data.frame(read_html(x = cor.tab[["page.content"]]) %>% 
+                           html_table(fill=FALSE))
+cor.mat <- cor.mat[-max(length(cor.mat)),] 
+cor.mat$Var.1 <- paste0(1:length(cor.label),". ",cor.label)
+colnames(cor.mat) <- as.character(c(" ",1:length(cor.label)))
+
+kable(cor.mat,
+      align = c("l",rep(x = "c",max(length(cor.df)))),
+      caption = "Correlaciones de Pearson" ) %>% 
+  kable_classic(full_width = T) %>%  
+  footnote(paste0("$N=$ ",dim(basereg)[1],", ","$^{***}$p< 0.001, $^{**}$p< 0.01, $^{*}$p< 0.05"),
+           footnote_as_chunk = T,
+           general_title = "Nota: " )
+```
+
+# Modelos
