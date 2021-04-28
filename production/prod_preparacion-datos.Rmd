@@ -65,7 +65,7 @@ Las librerías a utilizar para la elaboración del documento serán:
 - *misty* funciones miscelaneas
 
 ```{r}
-pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, SciViews, summarytools, misty)
+pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, SciViews, summarytools, misty,sjPlot)
 ```
 
 ## Parte 2: Cargar datos
@@ -86,7 +86,6 @@ Cabe señalar que dentro de la base de datos existe un caso mal pareado (relaci�
 ## Parte 3: Seleccionar variables
 
 ```{r}
-
 # Seleccionar  y renombrar variables de la base de datos de apoderados
 ap_proc <- ap %>% dplyr::select(rbd = RBD,
                                 folio = FOLIO_EST,
@@ -122,8 +121,6 @@ est_proc <- est  %>% dplyr::select(rbd = RBD,
                                  sj_direct = P29,
                                  recompensa = P25C,
                                  tiempo_compartido = P36) 
-                                 
-                                 
 ```   
 
 ## Parte 4: Procesamiento
@@ -147,7 +144,8 @@ est_proc$perc_trabajo_duro <- set_na(est_proc$perc_trabajo_duro, na = c(5,9), dr
 ##### Etiquetado
 
 ```{r}
-est_proc$perc_trabajo_duro <- set_label(x = est_proc$perc_trabajo_duro,label = "Percepción meritocracia: Importancia trabajo duro estudiantes") # Etiquetar
+est_proc$perc_trabajo_duro <- set_label(x = est_proc$perc_trabajo_duro,
+                                        label = "Percepción meritocracia: Importancia trabajo duro estudiantes") # Etiquetar
 ```
 
 ##### Descriptivo post-rec
@@ -193,7 +191,7 @@ est_proc$prom_percmer_est <- ((est_proc$perc_trabajo_duro + est_proc$perc_esfuer
 est_proc$prom_percmer_est <- set_label(x = est_proc$prom_percmer_est, label = "Promedio Percepción meritocratica estudiantes")
 ```
 
-Creación variables factores
+Creación variables factores 
 ```{r}
 # Esfuerzo
 est_proc$perc_esfuerzo_factor <- factor(est_proc$perc_esfuerzo, levels = c(1,2,3,4), labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo"))
@@ -224,7 +222,7 @@ frq(est_proc$prom_mer)
 ##### Recodificación
 Se recodifica a NA las siguientes situaciones:
 - Datos 99, correspondiente a No responde.
-- Datos menores a 1
+- Datos menores a 1s
 - Datos mayores a 7
 
 ```{r}
@@ -279,7 +277,31 @@ summary(est_proc$sj_indirect_noln)
 est_proc$sj_indirect_ln <- set_label(x = est_proc$sj_indirect_ln, label = "Sentido de Justicia indirecto")
 
 # Sentido de justicia sin ln
-est_proc$sj_indirect_noln <- set_label(x = est_proc$sj_indirect_ln, label = "Sentido de Justicia indirecto SIN LN")
+est_proc$sj_indirect_noln <- set_label(x = est_proc$sj_indirect_noln, label = "Sentido de Justicia indirecto SIN LN")
+```
+
+* recodificamos sentido de justicia indirecto en grupos:
+  * < 0 son "Nota subrecompensada"
+  * = 1 son "Nota justa"
+  * > 1 son "Nota sobrerecompensada"
+  
+```{r}
+est_proc$sj_indirect_cat<- car::recode(var = est_proc$sj_indirect_noln,
+                                       "lo:0.99='Nota subrecompensada';1='Nota justa';1.01:hi='Nota sobrerecompensada'",
+                                       as.factor = T) 
+est_proc$sj_indirect_cat<- set_label(x = est_proc$sj_indirect_cat, label = "Sentido de Justicia indirecto (categórico)")
+frq(est_proc$sj_indirect_cat)
+```  
+
+* Sentido de justicia indirecto en cuartiles
+
+```{r}
+est_proc$sj_indirect_qtil <- ntile(est_proc$sj_indirect_noln,n = 4)
+est_proc$sj_indirect_qtil <- factor(est_proc$sj_indirect_qtil,
+                                    levels = c(1:4),
+                                    labels = c("Cuartil 1","Cuartil 2","Cuartil 3","Cuartil 4"))
+est_proc$sj_indirect_qtil<- set_label(x = est_proc$sj_indirect_qtil, label = "Sentido de Justicia indirecto (cuartiles)")
+frq(est_proc$sj_indirect_qtil)
 ```
 
 #### Sentido de justicia (directo) (Var. Indep. N1)
@@ -312,6 +334,9 @@ Crear variable factor
 # Factor
 est_proc$sj_direct_factor <- factor(est_proc$sj_direct, levels = c(1,2,3), labels = c("Menos de las que merezco", "Las que merezco", "Más de las que merezco"))
 
+est_proc$sj_direct_factor <- relevel(est_proc$sj_direct_factor,ref = 2)
+
+frq(est_proc$sj_direct_factor)
 # Etiquetar
 est_proc$sj_direct_factor <- set_label(x = est_proc$sj_direct_factor, label = "Sentido de justicia directo factor")
 ```
@@ -754,7 +779,8 @@ Se construyen cuatro variables nuevas. La primera es el ingreso a partir de las 
 ```{r}
 # Construcción ingresos numerico
 
-ap_proc$ingresos[ap_proc$ingresos_tramos == 1] <- 50500 
+
+ap_proc$ingresos[ap_proc$ingresos_tramos == 1] <- 50500
 ap_proc$ingresos[ap_proc$ingresos_tramos == 2] <- 117500
 ap_proc$ingresos[ap_proc$ingresos_tramos == 3] <- 156500
 ap_proc$ingresos[ap_proc$ingresos_tramos == 4] <- 201500
@@ -771,18 +797,20 @@ ap_proc$ingresos_pc <- ap_proc$ingresos/ap_proc$personas_hogar
 ap_proc$ingresos_pc <- trunc(ap_proc$ingresos_pc)
 
 # Construcción ingreso tramos como factor
-ap_proc$ingresos_tramos_factor <- factor(ap_proc$ingresos_tramos, levels = c(1,2,3,4,5,6,7,8,9,10,11,99), labels = c("Menos de $101.000 mensuales líquidos",
-                                                                                              "De $101.001 a $134.000 mensuales líquidos",
-                                                                                              "De $134.001 a $179.000 mensuales líquidos",
-                                                                                              "De $179.001 a $224.000 mensuales líquidos",
-                                                                                              "De $224.001 a $291.000 mensuales líquidos",
-                                                                                              "De $291.001 a $358.000 mensuales líquidos",
-                                                                                              "De $358.001 a $448.000 mensuales líquidos",
-                                                                                              "De $448.001 a $1.000.000 mensuales líquidos",
-                                                                                              "De $1.000.001 a $2.000.000 mensuales líquidos",
-                                                                                              "De $2.000.001 a $3.000.000 mensuales líquidos",
-                                                                                              "Más de $3.000.000 mensuales líquidos",
-                                                                                              "Ns/Nr"))
+ap_proc$ingresos_tramos_factor <- factor(ap_proc$ingresos_tramos, 
+                                         levels = c(1,2,3,4,5,6,7,8,9,10,11,99), 
+                                         labels = c("Menos de $101.000 mensuales líquidos",
+                                                    "De $101.001 a $134.000 mensuales líquidos",
+                                                    "De $134.001 a $179.000 mensuales líquidos",
+                                                    "De $179.001 a $224.000 mensuales líquidos",
+                                                    "De $224.001 a $291.000 mensuales líquidos",
+                                                    "De $291.001 a $358.000 mensuales líquidos",
+                                                    "De $358.001 a $448.000 mensuales líquidos",
+                                                    "De $448.001 a $1.000.000 mensuales líquidos",
+                                                    "De $1.000.001 a $2.000.000 mensuales líquidos",
+                                                    "De $2.000.001 a $3.000.000 mensuales líquidos",
+                                                    "Más de $3.000.000 mensuales líquidos",
+                                                    "Ns/Nr"))
 
 # Construccion ingresos per capita quintiles
 ap_proc <- ap_proc %>% mutate(quintiles_ingresos_pc = ntile(ingresos_pc,5))
@@ -1278,7 +1306,9 @@ ap_est$educ_ap <- set_label(x = ap_est$educ,label = "Nivel educacional de los ap
 Crear variable factor para educación
 ```{r}
 # Transformacion a factor
-ap_est$educ_factor_ap <- factor(ap_est$educ_ap, levels = c(1,2,3,4), labels = c("8vo básico o menos", "Educación media", "Educación Técnica Superior", "Educación universitaria o posgrado"))
+ap_est$educ_factor_ap <- factor(ap_est$educ_ap, 
+                                levels = c(1,2,3,4), 
+                                labels = c("8vo básico o menos", "Educación media", "Educación Técnica Superior", "Educación universitaria o posgrado"))
 ap_est$educ_factor_ap <- set_label(x = ap_est$educ_factor_ap,label = "Nivel educacional de los apoderados factor") # Etiquetar
 ```
 
@@ -1404,13 +1434,50 @@ ap_est$dem_desig_cwc <- center(ap_est$dem_desig, type = "CWC", group = ap_est$rb
 ap_est$dem_desig_cwc <- set_label(x = ap_est$dem_desig_cwc, label = "Percepción desigualdad apoderados (CWC)")
 ```
 
+### Dummy percepción meritocracia padres
+
+```{r}
+ap_est$perc_tduro_bi_ap <- car::recode(ap_est$perc_trabajo_duro_ap,recodes = "1=0;2:4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi_ap)
+ap_est$perc_tduro_bi_ap <- factor(ap_est$perc_tduro_bi_ap,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi_ap)
+
+ap_est$perc_tduro_bi_ap <- set_label(ap_est$perc_tduro_bi_ap, label = "Importancia del trabajo duro (apoderado)")
+frq(ap_est$perc_tduro_bi_ap)
+
+ap_est$perc_esfuerzo_bi_ap <- car::recode(ap_est$perc_esfuerzo_ap,recodes = "1:2=0;3:4=1",as.factor = T) 
+table(ap_est$perc_esfuerzo_bi_ap)
+ap_est$perc_esfuerzo_bi_ap <- factor(ap_est$perc_esfuerzo_bi_ap,labels = c("En desacuerdo","De acuerdo"))
+table(ap_est$perc_tduro_bi_ap)
+
+ap_est$perc_esfuerzo_bi_ap <- set_label(ap_est$perc_esfuerzo_bi_ap, label = "Esfuerzo es recompensado (apoderado)")
+frq(ap_est$perc_esfuerzo_bi_ap)
+```
+
+
 
 ```{r}
 save(est_proc, file = "../input/data/est_proc.RData",ascii = T)# Guardar base de datos estudiantes
 save(ap_proc, file = "../input/data/ap_proc.RData",ascii = T)  # Guardar base de datos apoderados
 save(ap_est, file = "../input/data/ap_est.RData",ascii = T)    # Guardar base de datos conjunta
-print(dfSummary(ap_est, headings = FALSE,varnumbers = F),method = "render")
 ```
+
+```{r echo=FALSE}
+df<- dfSummary(ap_est,
+               plain.ascii = FALSE,
+               style = "grid",
+               tmp.img.dir = "/tmp",
+               graph.magnif = 0.75,
+               headings = F,  # encabezado
+               varnumbers = F, # num variable
+               labels.col = T, # etiquetas
+               na.col = F,    # missing
+               graph.col = T, # plot
+               valid.col = T, # n valido
+               )
+view(df,method = "render")
+```
+
 
 ```{r eval=FALSE, include=FALSE}
 view_df(est_proc,use.viewer = F) # check base de datos estudiantes
