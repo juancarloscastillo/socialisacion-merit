@@ -1438,6 +1438,7 @@ ap_est$dem_desig_cwc <- set_label(x = ap_est$dem_desig_cwc, label = "Percepción
 ### Dummy percepción meritocracia estudiantes
 
 ```{r}
+#Importancia trabajo duro (estudiante): 1 = 0; 2,3,4 = 1
 ap_est$perc_tduro_bi_est <- car::recode(ap_est$perc_trabajo_duro_est,recodes = "1=0;2:4=1",as.factor = T) 
 table(ap_est$perc_tduro_bi_est)
 ap_est$perc_tduro_bi_est <- factor(ap_est$perc_tduro_bi_est,labels = c("Nada importante","Es importante"))
@@ -1445,6 +1446,23 @@ table(ap_est$perc_tduro_bi_est)
 
 ap_est$perc_tduro_bi_est <- set_label(ap_est$perc_tduro_bi_est, label = "Importancia del trabajo duro (estudiante)")
 frq(ap_est$perc_tduro_bi_est)
+
+# Importancia trabajo duro (estudiante): 1,2 = 0; 3,4 = 1 
+ap_est$perc_tduro_bi2_est <- car::recode(ap_est$perc_trabajo_duro_est,recodes = "1:2=0;3:4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi2_est)
+ap_est$perc_tduro_bi2_est <- factor(ap_est$perc_tduro_bi2_est,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi2_est)
+ap_est$perc_tduro_bi2_est <- set_label(ap_est$perc_tduro_bi2_est, label = "Importancia del trabajo duro (estudiante)")
+frq(ap_est$perc_tduro_bi2_est)
+
+# Importancia trabajo duro (estudiante): 1,2,3 = 0; 4 = 1 
+ap_est$perc_tduro_bi3_est <- car::recode(ap_est$perc_trabajo_duro_est,recodes = "1:3=0;4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi3_est)
+ap_est$perc_tduro_bi3_est <- factor(ap_est$perc_tduro_bi3_est,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi3_est)
+ap_est$perc_tduro_bi3_est <- set_label(ap_est$perc_tduro_bi3_est, label = "Importancia del trabajo duro (estudiante)")
+frq(ap_est$perc_tduro_bi3_est)
+
 
 ap_est$perc_esfuerzo_bi_est <- car::recode(ap_est$perc_esfuerzo_est,recodes = "1:2=0;3:4=1",as.factor = T) 
 table(ap_est$perc_esfuerzo_bi_est)
@@ -1458,6 +1476,7 @@ frq(ap_est$perc_esfuerzo_bi_est)
 ### Dummy percepción meritocracia padres
 
 ```{r}
+#Importancia trabajo duro (apoderado): 1 = 0; 2,3,4 = 1
 ap_est$perc_tduro_bi_ap <- car::recode(ap_est$perc_trabajo_duro_ap,recodes = "1=0;2:4=1",as.factor = T) 
 table(ap_est$perc_tduro_bi_ap)
 ap_est$perc_tduro_bi_ap <- factor(ap_est$perc_tduro_bi_ap,labels = c("Nada importante","Es importante"))
@@ -1466,11 +1485,28 @@ table(ap_est$perc_tduro_bi_ap)
 ap_est$perc_tduro_bi_ap <- set_label(ap_est$perc_tduro_bi_ap, label = "Importancia del trabajo duro (apoderado)")
 frq(ap_est$perc_tduro_bi_ap)
 
+# Importancia trabajo duro (apoderado): 1,2 = 0; 3,4 = 1 
+ap_est$perc_tduro_bi2_ap <- car::recode(ap_est$perc_trabajo_duro_ap,recodes = "1:2=0;3:4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi2_ap)
+ap_est$perc_tduro_bi2_ap <- factor(ap_est$perc_tduro_bi2_ap,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi2_ap)
+
+ap_est$perc_tduro_bi2_ap <- set_label(ap_est$perc_tduro_bi2_ap, label = "Importancia del trabajo duro (apoderado)")
+frq(ap_est$perc_tduro_bi2_ap)
+
+# Importancia trabajo duro (apoderado): 1,2,3 = 0; 4 = 1 
+ap_est$perc_tduro_bi3_ap <- car::recode(ap_est$perc_trabajo_duro_ap,recodes = "1:3=0;4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi3_ap)
+ap_est$perc_tduro_bi3_ap <- factor(ap_est$perc_tduro_bi3_ap,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi3_ap)
+ap_est$perc_tduro_bi3_ap <- set_label(ap_est$perc_tduro_bi3_ap, label = "Importancia del trabajo duro (apoderado)")
+frq(ap_est$perc_tduro_bi3_ap)
+
+
 ap_est$perc_esfuerzo_bi_ap <- car::recode(ap_est$perc_esfuerzo_ap,recodes = "1:2=0;3:4=1",as.factor = T) 
 table(ap_est$perc_esfuerzo_bi_ap)
 ap_est$perc_esfuerzo_bi_ap <- factor(ap_est$perc_esfuerzo_bi_ap,labels = c("En desacuerdo","De acuerdo"))
 table(ap_est$perc_tduro_bi_ap)
-
 ap_est$perc_esfuerzo_bi_ap <- set_label(ap_est$perc_esfuerzo_bi_ap, label = "Esfuerzo es recompensado (apoderado)")
 frq(ap_est$perc_esfuerzo_bi_ap)
 ```
