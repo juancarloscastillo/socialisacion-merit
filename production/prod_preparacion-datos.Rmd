@@ -1434,6 +1434,27 @@ ap_est$dem_desig_cwc <- center(ap_est$dem_desig, type = "CWC", group = ap_est$rb
 ap_est$dem_desig_cwc <- set_label(x = ap_est$dem_desig_cwc, label = "Percepción desigualdad apoderados (CWC)")
 ```
 
+
+### Dummy percepción meritocracia estudiantes
+
+```{r}
+ap_est$perc_tduro_bi_est <- car::recode(ap_est$perc_trabajo_duro_est,recodes = "1=0;2:4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi_est)
+ap_est$perc_tduro_bi_est <- factor(ap_est$perc_tduro_bi_est,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi_est)
+
+ap_est$perc_tduro_bi_est <- set_label(ap_est$perc_tduro_bi_est, label = "Importancia del trabajo duro (estudiante)")
+frq(ap_est$perc_tduro_bi_est)
+
+ap_est$perc_esfuerzo_bi_est <- car::recode(ap_est$perc_esfuerzo_est,recodes = "1:2=0;3:4=1",as.factor = T) 
+table(ap_est$perc_esfuerzo_bi_est)
+ap_est$perc_esfuerzo_bi_est <- factor(ap_est$perc_esfuerzo_bi_est,labels = c("En desacuerdo","De acuerdo"))
+table(ap_est$perc_tduro_bi_est)
+
+ap_est$perc_esfuerzo_bi_est <- set_label(ap_est$perc_esfuerzo_bi_est, label = "Esfuerzo es recompensado (estudiante)")
+frq(ap_est$perc_esfuerzo_bi_est)
+```
+
 ### Dummy percepción meritocracia padres
 
 ```{r}

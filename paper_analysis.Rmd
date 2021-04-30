@@ -40,7 +40,10 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              pos_pol_factor_est,
                              genero_factor_est,
                              dependencia_factor_ap,
-                             # rbd_est
+                             ingresos_esc,
+                             ingresos_pc_esc,
+                             univ_esc,
+                             rbd_est
                              ) %>% na.omit(basereg)
 
 df<- dfSummary(basereg,
@@ -116,6 +119,8 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              perc_esfuerzo_est,
                              perc_trabajo_duro_factor_ap,
                              perc_esfuerzo_factor_ap,
+                             perc_tduro_bi_est,
+                             perc_esfuerzo_bi_est,
                              perc_tduro_bi_ap,
                              perc_esfuerzo_bi_ap,
                              prom_percmer_est,
@@ -126,122 +131,88 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              sj_indirect_qtil,
                              quintiles_ingresos_pc_factor,
                              libros_hogar_factor_ap,
-                             # recompensa_est,
-                             # resp_prof_factor,
+                             recompensa_est,  # recompensa en escuela
+                             resp_prof,# justicia trato profesor  
                              pos_pol_factor_ap,
                              pos_pol_factor_est,
                              genero_factor_est,
                              dependencia_factor_ap,
+                             ingresos_esc,
+                             ingresos_pc_esc,
+                             univ_esc,
                              rbd_est
                              ) %>% na.omit(basereg)
 
-omit_coef="(Intercept)|(quintiles_ingresos_pc_factor)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)|(recompensa_est)|(resp_prof_factor)"
+omit_coef="(Intercept)|(quintiles_ingresos_pc_factor)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
+con <-c(
+  "quintiles_ingresos_pc_factor",
+  "libros_hogar_factor_ap",
+  "pos_pol_factor_ap",
+  "pos_pol_factor_est",
+  "genero_factor_est",
+  "dependencia_factor_ap"
+  )
+ref <- "(1|rbd_est)"
 ```
-
 ## Lineales
 ### Importancia trabajo duro
 ```{r,results='asis'}
-getah.ols1 <- lmer(perc_trabajo_duro_est ~ perc_tduro_bi_ap+ (1|rbd_est), data = basereg)
-getah.ols2 <- lmer(perc_trabajo_duro_est ~ sj_indirect_qtil + (1|rbd_est), data = basereg) 
-getah.ols3 <- lmer(perc_trabajo_duro_est ~ sj_direct_factor + (1|rbd_est), data = basereg) 
-getah.ols4 <- lmer(perc_trabajo_duro_est ~ perc_tduro_bi_ap+ sj_indirect_qtil +sj_direct_factor + (1|rbd_est), data = basereg) 
-getah.ols5 <- lmer(perc_trabajo_duro_est ~ perc_tduro_bi_ap+ sj_indirect_qtil +sj_direct_factor +
-                     quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                     pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                     genero_factor_est+ #sociodemografico
-                     dependencia_factor_ap+
-                     # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                     (1|rbd_est), data = basereg)
+getah.ols1 <- lmer(formula(paste("perc_trabajo_duro_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
+getah.ols2 <- lmer(formula(paste("perc_trabajo_duro_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
+getah.ols3 <- lmer(formula(paste("perc_trabajo_duro_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
+getah.ols4 <- lmer(formula(paste("perc_trabajo_duro_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
+getah.ols5 <- lmer(formula(paste("perc_trabajo_duro_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg)
+getah.ols6 <- lmer(formula(paste("perc_trabajo_duro_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_indirect_noln",ref),collapse="+"))), basereg)
+getah.ols7 <- lmer(formula(paste("perc_trabajo_duro_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+getah.ols8 <- lmer(formula(paste("perc_trabajo_duro_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","univ_esc",ref),collapse="+"))), basereg)
 
 
-getah.ols6 <- lmer(perc_trabajo_duro_est ~ perc_tduro_bi_ap+ sj_indirect_qtil +
-                     quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                     pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                     genero_factor_est+ #sociodemografico
-                     dependencia_factor_ap+
-                     # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                     perc_tduro_bi_ap*sj_indirect_qtil+ # Merit Apoderado x sj indirecto  
-                     (1|rbd_est), data = basereg)
-
-getah.ols7 <- lmer(perc_trabajo_duro_est ~ perc_tduro_bi_ap+ sj_direct_factor +
-                     quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                     pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                     genero_factor_est+ #sociodemografico
-                     dependencia_factor_ap+
-                     # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                     perc_tduro_bi_ap*sj_direct_factor+ # Merit Apoderado x sj directo  
-                     (1|rbd_est), data = basereg)
 
 coef_names <- c(
   # "Algo importante","Importante","Muy importante",
   "Es importante",
-  "SJ indirecto Q2","SJ indirecto Q3","SJ indirecto Q4",
+  "SJ indirecto",
   "Menos de las que merezco","Más de las que merezco",
-  "Es importante x SJ ind. Q2",
-  "Es importante x SJ ind. Q3",
-  "Es importante x SJ ind. Q4",
+  "Es importante x SJ indirecto",
   "Es importante x Menos de las que merezco",
-  "Es importante x Más de las que merezco"
+  "Es importante x Más de las que merezco",
+  "% apoderados Universitarios"
   )
 
-knitreg(list(getah.ols1,getah.ols2,getah.ols3,getah.ols4,getah.ols5,getah.ols6,getah.ols7),
+knitreg(list(getah.ols1,getah.ols2,getah.ols3,getah.ols4,getah.ols5,getah.ols6,getah.ols7,getah.ols8),
         caption = "Modelos lineales multinivel para Socialización de importancia del trabajo duro",
         caption.above=TRUE,        
         omit.coef=omit_coef,
-        custom.gof.rows=list(Controls=c("No","No","No","No","Yes","Yes","Yes")),
+        custom.gof.rows=list(Controls=c("No","No","No","No","Yes","Yes","Yes","Yes")),
         # groups=list("Perc. Meritocracia (apoderado)"=1:3, 
         #             "Setido justicia (indirecto)"=4:6,
         #             "Sentido justicia (directo)"=7:8),
         custom.coef.names=coef_names
         )
-```
 
+```
 
 ```{r}
 plot_model(getah.ols7,type = "pred",terms = c("perc_tduro_bi_ap","sj_direct_factor"))
 ```
 
-
 ### Esfuerzo recompensado 
 ```{r,results='asis'}
-effort.ols1 <- lmer(perc_esfuerzo_est ~ perc_esfuerzo_bi_ap + (1|rbd_est), data = basereg) 
-effort.ols2 <- lmer(perc_esfuerzo_est ~ sj_indirect_qtil + (1|rbd_est), data = basereg) 
-effort.ols3 <- lmer(perc_esfuerzo_est ~ sj_direct_factor + (1|rbd_est), data = basereg) 
-effort.ols4 <- lmer(perc_esfuerzo_est ~ perc_esfuerzo_bi_ap  + sj_indirect_qtil + sj_direct_factor + (1|rbd_est), data = basereg) 
-effort.ols5 <- lmer(perc_esfuerzo_est ~ perc_esfuerzo_bi_ap+ sj_indirect_qtil +sj_direct_factor +
-                     quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                     pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                     genero_factor_est+ #sociodemografico
-                     dependencia_factor_ap+
-                     # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                     (1|rbd_est), data = basereg)
 
-effort.ols6 <- lmer(perc_esfuerzo_est ~ perc_esfuerzo_bi_ap+ sj_indirect_qtil  +
-                     quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                     pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                     genero_factor_est+ #sociodemografico
-                     dependencia_factor_ap+
-                     # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                     perc_esfuerzo_bi_ap*sj_indirect_qtil+ # Merit Apoderado x sj indirecto  
-                     (1|rbd_est), data = basereg)
-
-effort.ols7 <- lmer(perc_esfuerzo_est ~ perc_esfuerzo_bi_ap+ sj_direct_factor +
-                     quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                     pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                     genero_factor_est+ #sociodemografico
-                     dependencia_factor_ap+
-                     # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                     perc_esfuerzo_bi_ap*sj_direct_factor+ # Merit Apoderado x sj directo  
-                     (1|rbd_est), data = basereg)
+effort.ols1 <- lmer(formula(paste("perc_esfuerzo_est~",paste(c("perc_esfuerzo_bi_ap",ref),collapse="+"))), basereg)
+effort.ols2 <- lmer(formula(paste("perc_esfuerzo_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
+effort.ols3 <- lmer(formula(paste("perc_esfuerzo_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
+effort.ols4 <- lmer(formula(paste("perc_esfuerzo_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
+effort.ols5 <- lmer(formula(paste("perc_esfuerzo_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg)
+effort.ols6 <- lmer(formula(paste("perc_esfuerzo_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_indirect_noln",ref),collapse="+"))), basereg)
+effort.ols7 <- lmer(formula(paste("perc_esfuerzo_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
 
 coef_names <- c(
   # "Algo importante","Importante","Muy importante",
   "De acuerdo",
-  "SJ indirecto Q2","SJ indirecto Q3","SJ indirecto Q4",
+  "SJ indirecto",
   "Menos de las que merezco","Más de las que merezco",
-  "De acuerdo x SJ ind. Q2",
-  "De acuerdo x SJ ind. Q3",
-  "De acuerdo x SJ ind. Q4",
+  "De acuerdo x SJ indirecto",
   "De acuerdo x Menos de las que merezco",
   "De acuerdo x Más de las que merezco"
   )
@@ -260,42 +231,18 @@ knitreg(list(effort.ols1,effort.ols2,effort.ols3,effort.ols4,effort.ols5,effort.
 
 ### Promedio: trabajo duro + recomensa 
 ```{r,results='asis'}
-merit.ols1 <- lmer(prom_percmer_est ~ prom_percmer_ap + (1|rbd_est), data = basereg) 
-merit.ols2 <- lmer(prom_percmer_est ~ sj_indirect_qtil + (1|rbd_est), data = basereg) 
-merit.ols3 <- lmer(prom_percmer_est ~ sj_direct_factor + (1|rbd_est), data = basereg) 
-merit.ols4 <- lmer(prom_percmer_est ~ prom_percmer_ap  + sj_indirect_qtil + sj_direct_factor + (1|rbd_est), data = basereg) 
-merit.ols5 <- lmer(prom_percmer_est ~ prom_percmer_ap  + sj_indirect_qtil + sj_direct_factor + 
-                    quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                    pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                    genero_factor_est + #sociodemografico
-                    dependencia_factor_ap +
-                    # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                    (1|rbd_est), data = basereg) 
-
-merit.ols6 <- lmer(prom_percmer_est ~ prom_percmer_ap  + sj_indirect_qtil  +
-                    quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                    pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                    genero_factor_est + #sociodemografico
-                    dependencia_factor_ap +
-                    prom_percmer_ap*sj_indirect_qtil+ # Merit Apoderado x sj indirecto
-                    # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                    (1|rbd_est), data = basereg) 
-
-merit.ols7 <- lmer(prom_percmer_est ~ prom_percmer_ap  + sj_direct_factor + 
-                    quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                    pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                    genero_factor_est + #sociodemografico
-                    dependencia_factor_ap + 
-                    # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                    prom_percmer_ap*sj_direct_factor+ # Merit Apoderado x sj directo
-                    (1|rbd_est), data = basereg) 
+merit.ols1 <- lmer(formula(paste("prom_percmer_est~",paste(c("prom_percmer_ap",ref),collapse="+"))), basereg)
+merit.ols2 <- lmer(formula(paste("prom_percmer_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
+merit.ols3 <- lmer(formula(paste("prom_percmer_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
+merit.ols4 <- lmer(formula(paste("prom_percmer_est~",paste(c("prom_percmer_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
+merit.ols5 <- lmer(formula(paste("prom_percmer_est~",paste(c("prom_percmer_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg)
+merit.ols6 <- lmer(formula(paste("prom_percmer_est~",paste(c("prom_percmer_ap","sj_indirect_noln","sj_direct_factor", con, "prom_percmer_ap*sj_indirect_noln",ref),collapse="+"))), basereg)
+merit.ols7 <- lmer(formula(paste("prom_percmer_est~",paste(c("prom_percmer_ap","sj_indirect_noln","sj_direct_factor", con, "prom_percmer_ap*sj_direct_factor",ref),collapse="+"))), basereg)
 
 coef_merit <- c("Perc. de Meritocracia (apod.)",
-                "SJ indirecto Q2","SJ indirecto Q3","SJ indirecto Q4",
+                "SJ indirecto",
                 "Menos de las que merezco","Más de las que merezco",
-                "Merit x SJ ind. Q2",
-                "Merit x SJ ind. Q3",
-                "Merit x SJ ind. Q4",
+                "Merit x SJ indirecto",
                 "Merit x Menos de las que merezco",
                 "Merit x Más de las que merezco")
 knitreg(list(merit.ols1,merit.ols2,merit.ols3,merit.ols4, merit.ols5,merit.ols6,merit.ols7),
@@ -303,71 +250,38 @@ knitreg(list(merit.ols1,merit.ols2,merit.ols3,merit.ols4, merit.ols5,merit.ols6,
         custom.gof.rows=list(Controls=c("No","No","No","No","Yes","Yes","Yes")),
         # groups=list("Setido justicia (indirecto)"=2:4,
         #             "Sentido justicia (directo)"=5:6),
-        custom.coef.names=coef_merit
+        # custom.coef.names=coef_merit
         )
 ```
 
 ## Ordinal logit
 ### Importancia trabajo duro
 ```{r,results='asis'}
-getah.or1 <- clmm(perc_trabajo_duro_factor_est ~ perc_tduro_bi_ap+ (1|rbd_est), data = basereg) 
-getah.or2 <- clmm(perc_trabajo_duro_factor_est ~ sj_indirect_qtil + (1|rbd_est), data = basereg) 
-getah.or3 <- clmm(perc_trabajo_duro_factor_est ~ sj_direct_factor + (1|rbd_est), data = basereg) 
-getah.or4 <- clmm(perc_trabajo_duro_factor_est ~ perc_tduro_bi_ap+ sj_indirect_qtil+ sj_direct_factor + (1|rbd_est), data = basereg) 
-getah.or5 <- clmm(perc_trabajo_duro_factor_est ~ perc_tduro_bi_ap+ sj_indirect_qtil+ sj_direct_factor + 
-                    quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                    pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                    genero_factor_est + #sociodemografico
-                    dependencia_factor_ap +
-                    # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                    (1|rbd_est), data = basereg) 
-
-getah.or6 <- clmm(perc_trabajo_duro_factor_est ~ perc_tduro_bi_ap+ sj_indirect_qtil +  
-                    quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                    pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                    genero_factor_est + #sociodemografico
-                    dependencia_factor_ap +
-                    perc_tduro_bi_ap*sj_indirect_qtil+ # Merit Apoderado x sj directo
-                    # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                    (1|rbd_est), data = basereg) 
-
-getah.or7 <- clmm(perc_trabajo_duro_factor_est ~ perc_tduro_bi_ap+ sj_direct_factor +  
-                    quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                    pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                    genero_factor_est + #sociodemografico
-                    dependencia_factor_ap +
-                    perc_tduro_bi_ap*sj_direct_factor+ # Merit Apoderado x sj indirecto
-                    # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                    (1|rbd_est), data = basereg) 
-
-
-getah.or7.b <- clmm2(perc_trabajo_duro_factor_est ~ perc_tduro_bi_ap+ sj_direct_factor + 
-                    quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                    pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                    genero_factor_est + #sociodemografico
-                    dependencia_factor_ap +
-                    perc_tduro_bi_ap*sj_direct_factor, # Merit Apoderado x sj indirecto
-                    # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                    random=factor(rbd_est), data = basereg,Hess = TRUE) 
-
+getah.or1 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
+getah.or2 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
+getah.or3 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
+getah.or4 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
+getah.or5 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg)
+getah.or6 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_indirect_noln",ref),collapse="+"))), basereg)
+getah.or7 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+getah.or8 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","univ_esc",ref),collapse="+"))), basereg)
 
 coef_names <- c(
   # "Algo importante","Importante","Muy importante",
   "Es importante",
-  "SJ indirecto Q2","SJ indirecto Q3","SJ indirecto Q4",
+  "SJ indirecto",
   "Menos de las que merezco","Más de las que merezco",
-  "Es importante x SJ ind. Q2",
-  "Es importante x SJ ind. Q3",
-  "Es importante x SJ ind. Q4",
+  "Es importante x SJ indirecto",
   "Es importante x Menos de las que merezco",
-  "Es importante x Más de las que merezco"
+  "Es importante x Más de las que merezco",
+  "% apoderados Universitarios"
   )
-knitreg(list(getah.or1,getah.or2,getah.or3,getah.or4,getah.or5,getah.or6,getah.or7),
+knitreg(list(getah.or1,getah.or2,getah.or3,getah.or4,getah.or5,getah.or6,getah.or7,getah.or8),
         caption = "Modelos ordinal logit multinivel para Socialización de importancia del trabajo duro",
         caption.above=TRUE,
         omit.coef=omit_coef,
         include.thresholds=FALSE,
-        custom.gof.rows=list(Controls=c("No","No","No","No","Yes","Yes","Yes")),
+        custom.gof.rows=list(Controls=c("No","No","No","No","Yes","Yes","Yes","Yes")),
         # groups=list("Perc. Meritocracia (apoderado)"=1:3, 
         #             "Setido justicia (indirecto)"=4:6,
         #             "Sentido justicia (directo)"=7:8),
@@ -392,48 +306,23 @@ ggplot(data=pred_or7, aes(x=perc_tduro_bi_ap, y=yhat,
   facet_grid(~perc_trabajo_duro_factor_est)
 ```
 
-
 ### Esfuerzo recompensado 
 
 ```{r,results='asis'}
-effort.or1 <- clmm(perc_esfuerzo_factor_est ~ perc_esfuerzo_bi_ap + (1|rbd_est), data = basereg) 
-effort.or2 <- clmm(perc_esfuerzo_factor_est ~ sj_indirect_qtil + (1|rbd_est), data = basereg) 
-effort.or3 <- clmm(perc_esfuerzo_factor_est ~ sj_direct_factor + (1|rbd_est), data = basereg) 
-effort.or4 <- clmm(perc_esfuerzo_factor_est ~ perc_esfuerzo_bi_ap  + sj_indirect_qtil+  sj_direct_factor + (1|rbd_est), data = basereg) 
-effort.or5 <- clmm(perc_esfuerzo_factor_est ~ perc_esfuerzo_bi_ap  + sj_indirect_qtil+  sj_direct_factor +
-                     quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                     pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                     genero_factor_est + #sociodemografico
-                     dependencia_factor_ap +
-                    # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                     (1|rbd_est), data = basereg) 
-
-effort.or6 <- clmm(perc_esfuerzo_factor_est ~ perc_esfuerzo_bi_ap  +  sj_indirect_qtil +
-                     quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                     pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                     genero_factor_est + #sociodemografico
-                     dependencia_factor_ap +
-                     perc_esfuerzo_bi_ap*sj_indirect_qtil +# Merit Apoderado x sj idirecto
-                    # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                     (1|rbd_est), data = basereg) 
-
-effort.or7 <- clmm(perc_esfuerzo_factor_est ~ perc_esfuerzo_bi_ap  +  sj_direct_factor +
-                     quintiles_ingresos_pc_factor+libros_hogar_factor_ap+ # socioeconomico
-                     pos_pol_factor_ap + pos_pol_factor_est + # pos politica
-                     genero_factor_est + #sociodemografico
-                     dependencia_factor_ap +
-                     perc_esfuerzo_bi_ap*sj_direct_factor+ # Merit Apoderado x indirecto
-                    # recompensa_est + resp_prof_factor+ # otros: recompensa en escuela + jus trato profe
-                     (1|rbd_est), data = basereg) 
+effort.or1 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap",ref),collapse="+"))), basereg)
+effort.or2 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
+effort.or3 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
+effort.or4 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
+effort.or5 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg)
+effort.or6 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_indirect_noln",ref),collapse="+"))), basereg)
+effort.or7 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
 
 coef_names <- c(
   # "Algo importante","Importante","Muy importante",
   "De acuerdo",
-  "SJ indirecto Q2","SJ indirecto Q3","SJ indirecto Q4",
+  "SJ indirecto",
   "Menos de las que merezco","Más de las que merezco",
-  "De acuerdo x SJ ind. Q2",
-  "De acuerdo x SJ ind. Q3",
-  "De acuerdo x SJ ind. Q4",
+  "De acuerdo x SJ indirecto",
   "De acuerdo x Menos de las que merezco",
   "De acuerdo x Más de las que merezco"
   )
@@ -451,7 +340,87 @@ knitreg(list(effort.or1,effort.or2,effort.or3,effort.or4,effort.or5,effort.or6,e
         )
 ```
 
+## Logit binario
+
+### Importancia trabajo duro
+```{r,results='asis'}
+getah.log1 <- glmer(formula(paste("perc_tduro_bi_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg,family = "binomial")
+getah.log2 <- glmer(formula(paste("perc_tduro_bi_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg,family = "binomial")
+getah.log3 <- glmer(formula(paste("perc_tduro_bi_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg,family = "binomial")
+getah.log4 <- glmer(formula(paste("perc_tduro_bi_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg,family = "binomial")
+getah.log5 <- glmer(formula(paste("perc_tduro_bi_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg,family = "binomial")
+getah.log6 <- glmer(formula(paste("perc_tduro_bi_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_indirect_noln",ref),collapse="+"))), basereg,family = "binomial")
+getah.log7 <- glmer(formula(paste("perc_tduro_bi_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg,family = "binomial")
+
+coef_names <- c(
+  # "Algo importante","Importante","Muy importante",
+  "Es importante",
+  "SJ indirecto",
+  "Menos de las que merezco","Más de las que merezco",
+  "Es importante x SJ indirecto",
+  "Es importante x Menos de las que merezco",
+  "Es importante x Más de las que merezco"
+  )
+knitreg(list(getah.log1,getah.log2,getah.log3,getah.log4,getah.log5,getah.log6,getah.log7),
+        caption = "Modelos binary logit multinivel para Socialización de importancia del trabajo duro",
+        caption.above=TRUE,
+        omit.coef=omit_coef,
+        include.thresholds=FALSE,
+        custom.gof.rows=list(Controls=c("No","No","No","No","Yes","Yes","Yes")),
+        # groups=list("Perc. Meritocracia (apoderado)"=1:3, 
+        #             "Setido justicia (indirecto)"=4:6,
+        #             "Sentido justicia (directo)"=7:8),
+        custom.coef.names=coef_names
+        )
+```
+
+* errores son muy grandes por el n pequeño en la categoría de referencia de variable dependiente binaria
+
+# Otros análisis
+
+```{r,results='asis'}
+getah.or1 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
+getah.or2 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
+getah.or3 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
+getah.or4 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
+getah.or5 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg)
+getah.or6 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_indirect_noln",ref),collapse="+"))), basereg)
+getah.or7 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+getah.or8 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","univ_esc",ref),collapse="+"))), basereg)
+
+getah.or9  <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "recompensa_est","univ_esc",ref),collapse="+"))), basereg)
+getah.or10 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "resp_prof","univ_esc",ref),collapse="+"))), basereg)
+getah.or11 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "recompensa_est","resp_prof","univ_esc",ref),collapse="+"))), basereg)
+getah.or12 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","recompensa_est","univ_esc",ref),collapse="+"))), basereg)
+
+coef_names <- c(
+  # "Algo importante","Importante","Muy importante",
+  "Es importante",
+  "SJ indirecto",
+  "Menos de las que merezco","Más de las que merezco",
+  "Es importante x SJ indirecto",
+  "Es importante x Menos de las que merezco",
+  "Es importante x Más de las que merezco",
+  "% apoderados Universitarios",
+  "Esfuerzo recompensado en escuela",
+  "Justicia en el trato profesores"
+  )
+knitreg(list(getah.or6,getah.or7,getah.or8,getah.or9,getah.or10,getah.or11,getah.or12),
+        caption = "Modelos ordinal logit multinivel para Socialización de importancia del trabajo duro",
+        caption.above=TRUE,
+        omit.coef=omit_coef,
+        include.thresholds=FALSE,
+        custom.gof.rows=list(Controls=c("Yes","Yes","Yes","Yes","Yes","Yes","Yes")),
+        # groups=list("Perc. Meritocracia (apoderado)"=1:3, 
+        #             "Setido justicia (indirecto)"=4:6,
+        #             "Sentido justicia (directo)"=7:8),
+        custom.coef.names=coef_names
+        )
+```
+
+
 # Anexo
+
 ```{r,results='asis'}
 coef_names <- c(
   "Algo importante","Importante","Muy importante",
