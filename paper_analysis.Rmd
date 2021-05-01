@@ -2,6 +2,7 @@
 title: "Paper analysis"
 output: 
   html_document: 
+    css: style.css
     toc: yes
     code_folding: hide
     toc_float: 
@@ -91,7 +92,7 @@ cor.df<- data.frame(lapply(basereg[,c("perc_trabajo_duro_factor_est",
                                        "perc_esfuerzo_factor_ap",
                                        "sj_direct")], function(x) as_numeric(x))) 
 cor.label <- as.character(get_label(cor.df)) # guardar var labels
-cor.tab<-sjt.corr(cor.df,
+cor.tab<-sjPlot::tab_corr(cor.df,
                   triangle = "lower",
                   digits = 2,
                   string.diag = rep(x = "$-$",max(length(cor.df)))) #Tabla de correlacion
@@ -635,7 +636,7 @@ knitreg(list(getah.or1_factor, # ordinal: padres factor
         )
 ```
 
-```{r,results='asis'}
+```{r,eval=FALSE, include=FALSE}
 getah.or1 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
 getah.or2 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
 getah.or3 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)

@@ -1,0 +1,16 @@
+base
+summarytools
+haven
+sjPlot
+dplyr
+htmlwidgets
+sjlabelled
+xml2
+rvest
+knitr
+kableExtra
+ordinal
+Matrix
+lme4
+texreg
+ggplot2
