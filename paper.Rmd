@@ -2,20 +2,20 @@
 title: "La Socialización de la Meritocracia: El rol de la Familia y la Escuela"
 
 author:
-  - Juan Carlos Castillo^[Universidad de Chile, Chile - Centro de Estudios de Conflicto y Cohesión Social, Chile - jcastillov@uc.cl - https://juancarloscastillo.github.io/jc-castillo/]
-  - Julio Iturra^[Centro de Estudios de Conflicto y Cohesión Social, Chile]
-  - Francisco Meneses^[Universidad de Chile, Chile]
-  - Martín Venegas^[Universida de Chile, Chile]
-
+  - Juan Carlos Castillo ^[Departamento de Sociología, Universidad de Chile - Centro de Estudios de Conflicto y Cohesión Social - juancastillov@uchile.cl - http://jc-castillo.com/]
+  - Julio Iturra
+  - Francisco Meneses
+  - Martín Venegas
+  
 abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual, el que ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales. En la presente investigación nos enfocamos en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Nuestros resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeracionalmente, dando paso a una portencial reproducción de la legitimación de la desigualdad. A la vez, se entrega evidencia sobre el efecto mitigador que tiene la experiencia de justicia en la escuela.
 date: "`r Sys.Date()`"
 output:
-  pdf_document:
+  bookdown::pdf_document2:
     fig_caption: true
     keep_tex: no
     template: null
     number_sections: no
-    toc: no
+    toc: false
     latex_engine: xelatex
   bookdown::html_document2:
     toc: no
@@ -85,7 +85,7 @@ table_format2 = if(is_html_output()) {
 }
 ```
 
-# Introducción:
+# Introducción
 
 La meritocracia es un ideal que aspira a la distribución equitativa de los recursos según esfuerzo y talento personal [@young_rise_2006]. Este ideal se encuentra ampliamente extendido en las sociedades modernas donde se alza como una forma legítima de progresar individualmente en base a logros personales, contrario a la antigua distribución en base a herencias y a las ventajas que pueden generar otro tipo de actividades como sobornos o uso de contactos personales. Si bien la obtención de recompensas proporcionales a esfuerzo y talento parece una representación fidedigna de la justicia por equidad, la implementación de sistemas meritocráticos no está exenta de problemas. Por un lado, la meritocracia permite la legitimación de las desigualdades mediante la atribución a logro personal, subestimando de esta manera las condiciones de origen o el "punto de partida" [@hadjar_Meritokratie_2008; @bay-cheng_Agency_2015]. Por otro lado, el énfasis en las capacidades individuales se asociaría a responsabilizar a las personas de su situación y por lo tanto a un menor apoyo a políticas sociales que compensen desventajas: “¿por qué las personas que  triunfan en la vida iban a deber nada a los miembros menos favorecidos de la sociedad?” [@sandel_tirania_2021 p.292]. De esta manera, la meritocracia mermaría la preocupación por el bien común y la solidaridad.
 
@@ -118,7 +118,7 @@ Además de la comprensión y explicación de los niños frente a la desigualdad,
 
 También existen estudios de percepciones meritocráticas en la población adolescente. @hjort_Individualized_2014 ha evidenciado una adhesión generalizada a los discursos del individualismo y la meritocracia por parte de los jóvenes en la ciudad de Oslo. Los participantes de la investigación señalan que la determinación individual y trabajo duro son fundamentales. No obstante, aunque los jóvenes señalan como fundamental el mérito, esto no impide que reconozcan diferencias de inicio relacionadas a la transmisión de recursos familiares.
 
-## Socialización y meritocracia.
+## Socialización y meritocracia
 
 Desde distintas disciplinas se ha enfatizado la importancia de la socialización en el proceso de formación de creencias y opiniones sobre la desigualdad. En psicología social se ha señalado que el aprendizaje de la desigualdad se da en las micro interacciones entre sujetos con distintos estatus, donde el aprendizaje es diferenciado según la posición social del sujeto, de modo tal que distintos contextos contribuyen explicaciones diferenciadas sobre de la desigualdad [@mcleod_Handbook_2014; @elenbaas_DevelopmentalScience_2020]. En sociología hace ya 40 años que se ha llamado a profundizar los estudios de socialización sobre la desigualdad [@kluegel_Beliefs_1981], pero aún sigue siendo una perspectiva emergente. Aportes cómo los de @Liebig2016 han propuesto comprender la cuestión de cómo las instituciones moldean las actitudes de justicia dentro de una sociedad, entendiendolas cómo agentes de socialización. Así, los individuos son testigos de cómo se toman decisiones al interior de las instituciones y en base a eso forman sus actitudes. Otros aportes cómo los de @mijs_Inequality_2018 profundizan en esta idea proponiendo un modelo que concibe a las instituciones sociales cómo espacios inferenciales, en donde los individuos elaboran modelos explicativos para la desigualdad infiriendo a partir de la información obtenida en su experiencia con estas instituciones (familia, escuela, barrio, entre otras).
 
