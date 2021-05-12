@@ -22,17 +22,15 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache = TRUE)
 
 ## Univariado 
 ```{r echo=FALSE, results='asis',message=F, error=F}
-pacman::p_load(summarytools,haven,sjPlot,dplyr,htmlwidgets)
+pacman::p_load(summarytools,haven,sjPlot,dplyr,htmlwidgets, webshot)
 st_css()
 load(file = "input/data/ap_est.RData")
 basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              perc_esfuerzo_factor_est,
                              perc_trabajo_duro_factor_ap,
                              perc_esfuerzo_factor_ap,
-                             sj_direct,
-                             sj_indirect_noln,
-                             sj_indirect_qtil,
-                             sj_indirect_cat,
+                             sj_direct_factor,
+                             sj_indirect_ln,
                              quintiles_ingresos_pc_factor,
                              libros_hogar_factor_ap,
                              recompensa_factor_est,
@@ -62,6 +60,8 @@ df<- dfSummary(basereg,
                )
 df$Variable <- NULL # delete variable column
 view(df,method = "render")
+
+view(df)
 ```
 
 ## Bivariado
@@ -74,6 +74,7 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              perc_trabajo_duro_factor_ap,
                              perc_esfuerzo_factor_ap,
                              sj_direct,
+                             sj_indirect_ln,
                              quintiles_ingresos_pc_factor,
                              libros_hogar_factor_ap,
                              recompensa_est,
@@ -82,6 +83,8 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              pos_pol_factor_est,
                              genero_factor_est,
                              dependencia_factor_ap,
+                             univ_esc,
+                             ingresos_esc
                              # rbd_est
                              ) %>% na.omit(basereg)
 
@@ -90,24 +93,34 @@ cor.df<- data.frame(lapply(basereg[,c("perc_trabajo_duro_factor_est",
                                        "perc_esfuerzo_factor_est",
                                        "perc_trabajo_duro_factor_ap",
                                        "perc_esfuerzo_factor_ap",
-                                       "sj_direct")], function(x) as_numeric(x))) 
+                                       "sj_direct",
+                                       "sj_indirect_ln",
+                                       "quintiles_ingresos_pc_factor",
+                                       "univ_esc",
+                                       "ingresos_esc")], function(x) as_numeric(x))) 
 cor.label <- as.character(get_label(cor.df)) # guardar var labels
 cor.tab<-sjPlot::tab_corr(cor.df,
                   triangle = "lower",
                   digits = 2,
-                  string.diag = rep(x = "$-$",max(length(cor.df)))) #Tabla de correlacion
+                  string.diag = rep(x = "-",max(length(cor.df)))) #Tabla de correlacion
 cor.mat <- as.data.frame(read_html(x = cor.tab[["page.content"]]) %>% html_table(fill=FALSE))
 cor.mat <- cor.mat[-max(length(cor.mat)),]                    # matriz as dataframe
 cor.mat$Var.1 <- paste0(1:length(cor.label),". ",cor.label)   # eliminar fila 
 colnames(cor.mat) <- as.character(c(" ",1:length(cor.label))) # asignar colnames
 # generar tabla de correlacion 
-kable(cor.mat,
+correlationtable <- kable(cor.mat,
       align = c("l",rep(x = "c",max(length(cor.df)))),
       caption = "Correlaciones de Pearson" ) %>% 
   kable_classic(full_width = T) %>%  
-  footnote(paste0("$N=$ ",dim(basereg)[1],", ","$^{***}$p< 0.001, $^{**}$p< 0.01, $^{*}$p< 0.05"),
+  footnote(paste0("N= ",dim(basereg)[1],", ","*** p< 0.001; ** p< 0.01; * p< 0.05"),
            footnote_as_chunk = T,
            general_title = "Nota: " )
+
+# Save table
+
+save_kable(correlationtable, "output/tables/cor.png")
+
+correlationtable
 ```
 
 # Modelos

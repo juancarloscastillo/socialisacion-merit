@@ -46,6 +46,15 @@ if (!!window.navigator.userAgent.match("MSIE 8")) {
 !function(a){"use strict";a.matchMedia=a.matchMedia||function(a){var b,c=a.documentElement,d=c.firstElementChild||c.firstChild,e=a.createElement("body"),f=a.createElement("div");return f.id="mq-test-1",f.style.cssText="position:absolute;top:-100em",e.style.background="none",e.appendChild(f),function(a){return f.innerHTML='&shy;<style media="'+a+'"> #mq-test-1 { width: 42px; }</style>',c.insertBefore(e,d),b=42===f.offsetWidth,c.removeChild(e),{matches:b,media:a}}}(a.document)}(this),function(a){"use strict";function b(){u(!0)}var c={};a.respond=c,c.update=function(){};var d=[],e=function(){var b=!1;try{b=new a.XMLHttpRequest}catch(c){b=new a.ActiveXObject("Microsoft.XMLHTTP")}return function(){return b}}(),f=function(a,b){var c=e();c&&(c.open("GET",a,!0),c.onreadystatechange=function(){4!==c.readyState||200!==c.status&&304!==c.status||b(c.responseText)},4!==c.readyState&&c.send(null))};if(c.ajax=f,c.queue=d,c.regex={media:/@media[^\{]+\{([^\{\}]*\{[^\}\{]*\})+/gi,keyframes:/@(?:\-(?:o|moz|webkit)\-)?keyframes[^\{]+\{(?:[^\{\}]*\{[^\}\{]*\})+[^\}]*\}/gi,urls:/(url\()['"]?([^\/\)'"][^:\)'"]+)['"]?(\))/g,findStyles:/@media *([^\{]+)\{([\S\s]+?)$/,only:/(only\s+)?([a-zA-Z]+)\s?/,minw:/\([\s]*min\-width\s*:[\s]*([\s]*[0-9\.]+)(px|em)[\s]*\)/,maxw:/\([\s]*max\-width\s*:[\s]*([\s]*[0-9\.]+)(px|em)[\s]*\)/},c.mediaQueriesSupported=a.matchMedia&&null!==a.matchMedia("only all")&&a.matchMedia("only all").matches,!c.mediaQueriesSupported){var g,h,i,j=a.document,k=j.documentElement,l=[],m=[],n=[],o={},p=30,q=j.getElementsByTagName("head")[0]||k,r=j.getElementsByTagName("base")[0],s=q.getElementsByTagName("link"),t=function(){var a,b=j.createElement("div"),c=j.body,d=k.style.fontSize,e=c&&c.style.fontSize,f=!1;return b.style.cssText="position:absolute;font-size:1em;width:1em",c||(c=f=j.createElement("body"),c.style.background="none"),k.style.fontSize="100%",c.style.fontSize="100%",c.appendChild(b),f&&k.insertBefore(c,k.firstChild),a=b.offsetWidth,f?k.removeChild(c):c.removeChild(b),k.style.fontSize=d,e&&(c.style.fontSize=e),a=i=parseFloat(a)},u=function(b){var c="clientWidth",d=k[c],e="CSS1Compat"===j.compatMode&&d||j.body[c]||d,f={},o=s[s.length-1],r=(new Date).getTime();if(b&&g&&p>r-g)return a.clearTimeout(h),h=a.setTimeout(u,p),void 0;g=r;for(var v in l)if(l.hasOwnProperty(v)){var w=l[v],x=w.minw,y=w.maxw,z=null===x,A=null===y,B="em";x&&(x=parseFloat(x)*(x.indexOf(B)>-1?i||t():1)),y&&(y=parseFloat(y)*(y.indexOf(B)>-1?i||t():1)),w.hasquery&&(z&&A||!(z||e>=x)||!(A||y>=e))||(f[w.media]||(f[w.media]=[]),f[w.media].push(m[w.rules]))}for(var C in n)n.hasOwnProperty(C)&&n[C]&&n[C].parentNode===q&&q.removeChild(n[C]);n.length=0;for(var D in f)if(f.hasOwnProperty(D)){var E=j.createElement("style"),F=f[D].join("\n");E.type="text/css",E.media=D,q.insertBefore(E,o.nextSibling),E.styleSheet?E.styleSheet.cssText=F:E.appendChild(j.createTextNode(F)),n.push(E)}},v=function(a,b,d){var e=a.replace(c.regex.keyframes,"").match(c.regex.media),f=e&&e.length||0;b=b.substring(0,b.lastIndexOf("/"));var g=function(a){return a.replace(c.regex.urls,"$1"+b+"$2$3")},h=!f&&d;b.length&&(b+="/"),h&&(f=1);for(var i=0;f>i;i++){var j,k,n,o;h?(j=d,m.push(g(a))):(j=e[i].match(c.regex.findStyles)&&RegExp.$1,m.push(RegExp.$2&&g(RegExp.$2))),n=j.split(","),o=n.length;for(var p=0;o>p;p++)k=n[p],l.push({media:k.split("(")[0].match(c.regex.only)&&RegExp.$2||"all",rules:m.length-1,hasquery:k.indexOf("(")>-1,minw:k.match(c.regex.minw)&&parseFloat(RegExp.$1)+(RegExp.$2||""),maxw:k.match(c.regex.maxw)&&parseFloat(RegExp.$1)+(RegExp.$2||"")})}u()},w=function(){if(d.length){var b=d.shift();f(b.href,function(c){v(c,b.href,b.media),o[b.href]=!0,a.setTimeout(function(){w()},0)})}},x=function(){for(var b=0;b<s.length;b++){var c=s[b],e=c.href,f=c.media,g=c.rel&&"stylesheet"===c.rel.toLowerCase();e&&g&&!o[e]&&(c.styleSheet&&c.styleSheet.rawCssText?(v(c.styleSheet.rawCssText,e,f),o[e]=!0):(!/^([a-zA-Z:]*\/\/)/.test(e)&&!r||e.replace(RegExp.$1,"").split("/")[0]===a.location.host)&&("//"===e.substring(0,2)&&(e=a.location.protocol+e),d.push({href:e,media:f})))}w()};x(),c.update=x,c.getEmValue=t,a.addEventListener?a.addEventListener("resize",b,!1):a.attachEvent&&a.attachEvent("onresize",b)}}(this);
 };
 </script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script>/*! jQuery UI - v1.11.4 - 2016-01-05
 * http://jqueryui.com
 * Includes: core.js, widget.js, mouse.js, position.js, draggable.js, droppable.js, resizable.js, selectable.js, sortable.js, accordion.js, autocomplete.js, button.js, dialog.js, menu.js, progressbar.js, selectmenu.js, slider.js, spinner.js, tabs.js, tooltip.js, effect.js, effect-blind.js, effect-bounce.js, effect-clip.js, effect-drop.js, effect-explode.js, effect-fade.js, effect-fold.js, effect-highlight.js, effect-puff.js, effect-pulsate.js, effect-scale.js, effect-shake.js, effect-size.js, effect-slide.js, effect-transfer.js
@@ -295,7 +304,7 @@ float: none;
         self._setEventHandlers();
 
         // Binding to the Window load event to make sure the correct scrollTop is calculated
-        $(window).load(function() {
+        $(window).on("load", function() {
 
           // Sets the active TOC item
           self._setActiveElement(true);
@@ -1286,21 +1295,20 @@ window.initializeCodeFolding = function(show) {
 
     // create a collapsable div to wrap the code in
     var div = $('<div class="collapse r-code-collapse"></div>');
-    show = (show || $(this).hasClass('fold-show')) && !$(this).hasClass('fold-hide');
-    if (show) div.addClass('in');
+    var showThis = (show || $(this).hasClass('fold-show')) && !$(this).hasClass('fold-hide');
     var id = 'rcode-643E0F36' + currentIndex++;
     div.attr('id', id);
     $(this).before(div);
     $(this).detach().appendTo(div);
 
     // add a show code button right above
-    var showCodeText = $('<span>' + (show ? 'Hide' : 'Code') + '</span>');
-    var showCodeButton = $('<button type="button" class="btn btn-default btn-xs code-folding-btn pull-right"></button>');
+    var showCodeText = $('<span>' + (showThis ? 'Hide' : 'Code') + '</span>');
+    var showCodeButton = $('<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm code-folding-btn pull-right float-right"></button>');
     showCodeButton.append(showCodeText);
     showCodeButton
         .attr('data-toggle', 'collapse')
         .attr('data-target', '#' + id)
-        .attr('aria-expanded', show)
+        .attr('aria-expanded', showThis)
         .attr('aria-controls', id);
 
     var buttonRow = $('<div class="row"></div>');
@@ -1311,13 +1319,27 @@ window.initializeCodeFolding = function(show) {
 
     div.before(buttonRow);
 
+    // show the div if necessary
+    if (showThis) div.collapse('show');
+
     // update state of button on show/hide
-    div.on('hidden.bs.collapse', function () {
+    //   * Change text
+    //   * add a class for intermediate states styling
+    div.on('hide.bs.collapse', function () {
       showCodeText.text('Code');
+      showCodeButton.addClass('btn-collapsing');
+    });
+    div.on('hidden.bs.collapse', function () {
+      showCodeButton.removeClass('btn-collapsing');
     });
     div.on('show.bs.collapse', function () {
       showCodeText.text('Hide');
+      showCodeButton.addClass('btn-expanding');
     });
+    div.on('shown.bs.collapse', function () {
+      showCodeButton.removeClass('btn-expanding');
+    });
+
   });
 
 }
@@ -1566,12 +1588,16 @@ border: 0;
 }
 </style>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -1584,32 +1610,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 <style type="text/css">body{font-family: Times New Roman;font-size: 12pt;}h1,h2,h3,h4,h5,h6{font-size: 24pt;}</style>
 
@@ -1620,10 +1621,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -1640,6 +1637,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
@@ -1652,7 +1652,6 @@ summary {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -1787,7 +1786,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -1798,11 +1797,11 @@ div.tocify {
 
 
 
-<div class="fluid-row" id="header">
+<div id="header">
 
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
 </ul>
@@ -1825,11 +1824,11 @@ div.tocify {
 <div class="container st-container">
 <table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-multiline ">
   <colgroup>
-    <col style="width:5px"/>
-    <col style="width:10px"/>
-    <col style="width:10px"/>
-    <col style="width:10px"/>
-    <col style="width:10px"/>
+    <col style="width:5px"></col>
+    <col style="width:10px"></col>
+    <col style="width:10px"></col>
+    <col style="width:10px"></col>
+    <col style="width:10px"></col>
   </colgroup>
   <thead>
     <tr>
@@ -1842,97 +1841,73 @@ div.tocify {
   </thead>
   <tbody>
     <tr>
-      <td align="left">Percepci&#0243;n meritocracia: Importancia
+      <td align="left">Percepción meritocracia: Importancia
 trabajo duro (estudiantes)</td>
       <td align="left">1. Nada importante
 2. Algo importante
 3. Importante
 4. Muy importante</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">16</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">61</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">11.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">152</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">27.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">315</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">57.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAE0AAABQBAMAAACub+XGAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywxrKiKVAAAAGFJREFUSMft0rENgDAQQ9GMgDeAY4Nk/90QCEEEUc6CK1L416+x5JTGzwzdptOtWU6Od+yvgFhnR4u/o+zJycU69n9w+vb7u/6OqywnF+HY/8Hp7++fze0dr+Tkasf+auQ2w0IOX/IljJwAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDQtMzBUMTk6NDQ6NDktMDQ6MDBKB1NRAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA0LTMwVDE5OjQ0OjQ5LTA0OjAwO1rr7QAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAE0AAABOBAMAAACXs4YtAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAGBJREFUSMft0sEJwCAQRFFLcDuIawfaf29BCTEQ2R3Eg4f553cZmBDOT1XM4uNyoaPDHforkb1Oe8nfUVt0dJhDfyVOa38e2TveCh2d5dBfoT9FnTpd8x2/6Oi+Dv3Vyd0w1gckEd+bOAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNS0xMlQxMzoxNToyOCswMDowMFOQsY4AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDUtMTJUMTM6MTU6MjgrMDA6MDAizQkyAAAAAElFTkSuQmCC"></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
-      <td align="left">Percepci&#0243;n meritocracia: Esfuerzo para
+      <td align="left">Percepción meritocracia: Esfuerzo para
 salir adelante (estudiantes)</td>
       <td align="left">1. Muy en desacuerdo
 2. En desacuerdo
 3. De acuerdo
 4. Muy de acuerdo</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">20</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">3.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">82</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">15.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">226</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">41.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">216</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">39.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADsAAABQBAMAAABVOBAZAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywxrKiKVAAAAFNJREFUSMdjYBhYoKSkKIgFCECllY1HpYeWNIEIFcQOiJRWggFcToMAo1Hp4SFNIL6plJhQgQKa09DAqPRQlSYQ37RITIoCeJ02Kj14pQlE6EABANs45apKWtc2AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA0LTMwVDE5OjQ0OjQ5LTA0OjAwSgdTUQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNC0zMFQxOTo0NDo0OS0wNDowMDta6+0AAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADsAAABOBAMAAABs5HPyAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAFNJREFUSMdjYBhYoKSkKIgFCECllY1HpYeWNIEIFcQOiJRWggFcToMAo1HpISJNIEKplFpQgQKa09DAqPSglSYQobRILYoCeJ02Kj14pQlE6EABAAS93k3OlnwAAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA1LTEyVDEzOjE1OjI4KzAwOjAwU5CxjgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNS0xMlQxMzoxNToyOCswMDowMCLNCTIAAAAASUVORK5CYII="></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
-      <td align="left">Percepci&#0243;n meritocracia: Importancia
+      <td align="left">Percepción meritocracia: Importancia
 trabajo duro (apoderado)</td>
       <td align="left">1. Nada importante
 2. Algo importante
 3. Importante
 4. Muy importante</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">35</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">66</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">12.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">173</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">31.8%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">270</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">49.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEQAAABQBAMAAABSes4MAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywxrKiKVAAAAFpJREFUSMftkrENACAIBF2BFXQD2X83TTSRBn0LEyJcfcUVl5ItcocUplKYaygeFGAG2oAreXDIZa04FGcK8AttuB5ToOQKaihuFeCXV2MutFwRHspPCjCDFRqtDPbnuNYdcwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNC0zMFQxOTo0NDo0OS0wNDowMEoHU1EAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDQtMzBUMTk6NDQ6NDktMDQ6MDA7WuvtAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEQAAABOBAMAAABrpq3nAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAFpJREFUSMftkrENACAIBF2BFXQD2X83TTSRBn0LE4JcfcUVl5ItcocUplKYayg/KMAMtAFX8uCQy1pxKJ4UYAbacH2dQMkV1FB8KsAMr65baLkiPBRPCjCDFRrvaO//KaJvlwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNS0xMlQxMzoxNToyOCswMDowMFOQsY4AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDUtMTJUMTM6MTU6MjgrMDA6MDAizQkyAAAAAElFTkSuQmCC"></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
-      <td align="left">Percepci&#0243;n meritocracia: Esfuerzo para
+      <td align="left">Percepción meritocracia: Esfuerzo para
 salir adelante (apoderados)</td>
       <td align="left">1. Muy en desacuerdo
 2. En desacuerdo
 3. De acuerdo
 4. Muy de acuerdo</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">16</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">81</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">14.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">256</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">47.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">191</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">35.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEEAAABQBAMAAAC0UwVIAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAFhJREFUSMdjYBg8QElJEAcQgKpQNhpVMVxVEI59QUHKVShBgSJulxpDwKiKkaiCcPoQxAlIT4WYQAHNpZhgVMXwV0E4fdAqFWLPL0jAaFTF8FBBOPYHAwAAY37zSav+Qm0AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDATNRYcAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA0LTMwVDE5OjQ0OjUwLTA0OjAwYmiuoAAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEEAAABOBAMAAACNj2ajAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAFdJREFUSMdjYBg8QElJEAcQgKpQNhpVMVxVEI59QUHKVShBgSJulxpDwKiK4aeCcOwL4gSkpzFMoIDmUkwwqmKoqyAc+7RKY9hzAxIwGlUxPFQQjv3BAABCzusxsyB+KQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNS0xMlQxMzoxNToyOCswMDowMFOQsY4AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDUtMTJUMTM6MTU6MjgrMDA6MDAizQkyAAAAAElFTkSuQmCC"></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
-      <td align="left">Sentido de Justicia directo</td>
-      <td align="left">Mean (sd) : 2 (0.6)
-min < med < max:
-1 < 2 < 3
-IQR (CV) : 0 (0.3)</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">108</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">19.9%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">2</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">352</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">64.7%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 0 0 7px;margin:0;border:0" align="right">3</td><td style="padding:0 2px;border:0;" align="left">:</td><td style="padding:0 4px 0 6px;margin:0;border:0" align="right">84</td><td style="padding:0;border:0" align="left">(</td><td style="padding:0 2px;margin:0;border:0" align="right">15.4%</td><td style="padding:0 4px 0 0;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFUAAAA+BAMAAACo6ErwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAE5JREFUSMdjYBh6QAkBFAVxAAGoWmVjOBhVO6qWZmpJSZOCRABaq1UiAihghgNOMKp2VC2laklJk4MqDxGhFhYORqNqR9XSUC0paXIoAQBsp/NbHsV1OgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMBM1FhwAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDBiaK6gAAAAAElFTkSuQmCC"></td>
+      <td align="left">Sentido de justicia directo factor</td>
+      <td align="left">1. Las que merezco
+2. Menos de las que merezco
+3. Más de las que merezco</td>
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">352</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">64.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">108</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">19.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">84</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">15.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFUAAAA7BAMAAAD4JdtDAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAE5JREFUSMdjYBh6QIkIoABVq2xMGIyqHVWLTS0p6UyQCCBAY7VIzlIkpBYpHEbVjqolSS0p6UyQCEC3fEGEWlg4GI2qHVVLolpS0tlQAgDHu+SgWLQ5/wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNS0xMlQxMzoxNToyOCswMDowMFOQsY4AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDUtMTJUMTM6MTU6MjgrMDA6MDAizQkyAAAAAElFTkSuQmCC"></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
-      <td align="left">Sentido de Justicia indirecto SIN LN</td>
-      <td align="left">Mean (sd) : 1 (0.1)
-min < med < max:
-0.6 < 1 < 2.5
-IQR (CV) : 0.1 (0.1)</td>
-      <td align="left" style="vertical-align:middle">157 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHQAAABUBAMAAAChGA4iAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAEtJREFUWMPt17EJACAMRNGskBV0A91/NzWVYHMiVvm/fwSui1mufFUiV9tp7bMGhUKhUCgUCoVCoVAo9AOVH/aTyqcT0pj1gV5muRrW+UUIyjiF1wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMBM1FhwAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDBiaK6gAAAAAElFTkSuQmCC"></td>
+      <td align="left">Sentido de Justicia indirecto</td>
+      <td align="left">Mean (sd) : 0 (0.1)
+min &lt; med &lt; max:
+-0.5 &lt; 0 &lt; 0.9
+IQR (CV) : 0.1 (-2.7)</td>
+      <td align="left" style="vertical-align:middle">158 distinct values</td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHQAAABUBAMAAAChGA4iAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAGJJREFUWMPt2LENgDAMBVGvEDbgswHefzccBIICyUqkFCh3/Wvsyjabq/JukbSWtE/q7lAoFAqFQqFQKBQKhUIH0DjX1UrrjR90c9+baZi/0uSz8dA6H50zummyo4uqI5urA4YZMph/mYDzAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA1LTEyVDEzOjE1OjI4KzAwOjAwU5CxjgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNS0xMlQxMzoxNToyOCswMDowMCLNCTIAAAAASUVORK5CYII="></td>
       <td align="center">544
-(100%)</td>
-    </tr>
-    <tr>
-      <td align="left">Sentido de Justicia indirecto
-(cuartiles)</td>
-      <td align="left">1. Cuartil 1
-2. Cuartil 2
-3. Cuartil 3
-4. Cuartil 4</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">107</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">19.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">150</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">27.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">144</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">26.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">143</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">26.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACwAAABQBAMAAACQSoqIAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAElJREFUOMtjYKAtUEIARUEggAorG8PBqDBZwjgCVhAN4BdWQgOYVoKA0agwlYRxhDdFkSaI1UqjUWFqCeMI79FIGxTCOAKWVgAAk1+/YURfdfsAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDATNRYcAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA0LTMwVDE5OjQ0OjUwLTA0OjAwYmiuoAAAAABJRU5ErkJggg=="></td>
-      <td align="center">544
-(100%)</td>
-    </tr>
-    <tr>
-      <td align="left">Sentido de Justicia indirecto
-(categ&#0243;rico)</td>
-      <td align="left">1. Nota justa
-2. Nota sobrerecompensada
-3. Nota subrecompensada</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">133</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">24.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">53</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">358</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">65.8%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFYAAAA+BAMAAABD3/HzAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAFBJREFUSMdjYBh6QAkFCGIHULXKxkjAaFTtqFraqCUlTQoSA2isFq87sYWD0ajaUbW0VUtKmhQkBtAlDxEA2MoSHMBoVO2oWgrVkpImhxIAAJJf83OqLj/pAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA0LTMwVDE5OjQ0OjUwLTA0OjAwEzUWHAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMGJorqAAAAAASUVORK5CYII="></td>
-      <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
       <td align="left">Quintiles de ingreso per capita del
@@ -1944,9 +1919,9 @@ hogar</td>
 5. Quintil 5
 6. No sabe/No responde</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">91</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">16.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">85</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">15.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">103</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">18.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">97</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">17.8%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">97</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">17.8%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">71</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">13.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACIAAAB1BAMAAADZ4i6+AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAFlJREFUSMdjYKAeUIIBRUGoiLIxFIxAEczQEEQAEkTg5gii22U0AkUwQ4OkMFRSQo8vY6MRJ4IZGhSmTCVFDLtGnghmaIyGIX3CEGeoKgqilyQjUgQzNKgBAPAxvdTNbH/KAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA0LTMwVDE5OjQ0OjUwLTA0OjAwEzUWHAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMGJorqAAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACIAAABwBAMAAACJL78NAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAFVJREFUOMtjYKAeUIIBRUGoiLIxFAx7EUy/CyIAThG4LkF0k41GoAhmaJAUhkpK6LFjbDTiRDBDg7QwVMQweeSJYIbGaBjSNQwVBdFLiREggul3agAAe5O4DfGfSJQAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDUtMTJUMTM6MTU6MjgrMDA6MDBTkLGOAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA1LTEyVDEzOjE1OjI4KzAwOjAwIs0JMgAAAABJRU5ErkJggg=="></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
       <td align="left">Libros en el hogar (apoderados)</td>
@@ -1955,11 +1930,11 @@ hogar</td>
 3. Entre 26 y 100 libros
 4. Entre 101 y 200 libros
 5. Entre 201 y 500 libros
-6. M&#0225;s de 500 libros</td>
+6. Más de 500 libros</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">104</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">19.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">144</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">26.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">200</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">36.8%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">62</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">11.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">27</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">7</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">1.3%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADYAAAB1BAMAAAD3pw8sAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAGxJREFUSMft1UEOgCAMRFGu0CMIN9D7340FqJiU2RTamMzfvk2TIZqSf/lNnrqV6+6kBRraSLSMlr9N7hxupbkb2mjR7i31ln4Rzd3QRvu+BYdq7U5atKGNDLtPrYz/KFqYoY1Ey/omaL82zyoaewUZlhHJHwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMBM1FhwAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDBiaK6gAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADYAAABwBAMAAACnap6fAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAGtJREFUSMft1bsNwCAMhGFW8AiBDZL9d6PgEZDMCYnEUNzffo2lK+ycff5NatnCU7ppPxvaQbQmzPcNbmnuoZkb2uij3VPqLfkimrmhjdZ2v1RLt9B2G9poYfehhfbX0LYZ2ki0ZnanHW+WRU16/Js6JFJIAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA1LTEyVDEzOjE1OjI4KzAwOjAwU5CxjgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNS0xMlQxMzoxNToyOCswMDowMCLNCTIAAAAASUVORK5CYII="></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
       <td align="left">Esfuerzo es recompensado en escuela
@@ -1969,9 +1944,9 @@ hogar</td>
 3. De acuerdo
 4. Muy de acuerdo</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">42</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">7.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">117</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">21.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">287</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">52.8%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">98</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">18.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEgAAABQBAMAAABIRi6CAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAGBJREFUSMdjYBicQAkIFAVxAagiZWNj41FFI10RUUlFEC8gRZESElDEpQjkcBgYVTSqCI8iotKTIF5AbvLFBFgcjgGMRhWNKoIrIio90SL5KuJWhHD4qKKRq4iopDLYAADWTQQFh65xawAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMBM1FhwAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDBiaK6gAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEgAAABOBAMAAABxmk1pAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAF1JREFUSMdjYBicQAkIFAVxAagiZWNj41FFI10RUUlFEC8gRZESElDEpQjkcBgYVTRSFRGVVATxAnJTJibA4nAMYDSqaGQoIiqp0CJlKuJWhHD4qKKRq4iopDLYAAAaP/p37ch8hQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNS0xMlQxMzoxNToyOCswMDowMFOQsY4AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDUtMTJUMTM6MTU6MjgrMDA6MDAizQkyAAAAAElFTkSuQmCC"></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
       <td align="left">Justicia en el trato profesores</td>
@@ -1980,12 +1955,12 @@ hogar</td>
 3. De acuerdo
 4. Muy de acuerdo</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">34</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">110</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">20.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">318</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">58.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">82</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">15.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAE4AAABQBAMAAABFWF7FAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAFxJREFUSMft0sENABAQRFEtbAnoYPXfGwfiQOwQEof553eZZJz7v1CSVdXFlJSODnXor8Rq04WeN3a06OiuOfR/YnX++3njjmlKR3fg0P89+73h2g6lowMc+qufy4EMEoOtaZQfAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA0LTMwVDE5OjQ0OjUwLTA0OjAwEzUWHAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMGJorqAAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAE4AAABOBAMAAAB8hD0uAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAF5JREFUSMft0rEJwDAQQ1GvcCPkssF5/93iIkcCMZFsMLjQr18jUCn75y3763ZnrSEnxzr2V4YadP50gB2ZnBx07K8MNf/nft8d3UJO7uXYXy37M3C5I+TkCMf+aucuw9YIWl4LOLwAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDUtMTJUMTM6MTU6MjgrMDA6MDBTkLGOAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA1LTEyVDEzOjE1OjI4KzAwOjAwIs0JMgAAAABJRU5ErkJggg=="></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
-      <td align="left">Posici&#0243;n pol&#0237;tica apoderados</td>
+      <td align="left">Posición política apoderados</td>
       <td align="left">1. Derecha
 2. Centro Derecha
 3. Centro
@@ -1995,12 +1970,12 @@ hogar</td>
 7. Ninguna
 8. Ns/Nr</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">42</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">7.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">35</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">17</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">3.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">35</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">39</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">7.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">43</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">7.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">262</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">48.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">71</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">13.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEIAAACYBAMAAACi3yKSAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAIpJREFUWMPt1sEJwCAMBVBXyAjVDZL9d6uFHjwkpkIRjf+fH9TyYzCldZJrLlLziiIiEDGF3z7Z+Syer/RFPSlDxBR++2RnYMY8URgiqvDbJ5ohsOlOFrM2HV5s54o5LzZfZHvYm39hiJDCb5/sjM2Ynuakehhic+G3/+OMXf3bIPpahthc+O2vkBsYqm+IvNxZmgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMBM1FhwAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDBiaK6gAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEIAAACVBAMAAAAeQTFMAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAIhJREFUWMPt1tEJwCAMBFBXyAjqBnH/3arQj35Er9IiGu6+HzRwaTCEfZJqopi5RS6lUPgUuH3p57VoXxmLOqlS+BS4felnYseQyErhVeD2Rb4L3jG/Ys2VwoLvMb9i3WsrDUWbVClcCty+9DO3Y3Yek9pRisMFbv/HHYvjv6HYR5ficIHb3yEXU89pKFHvn5kAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDUtMTJUMTM6MTU6MjgrMDA6MDBTkLGOAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA1LTEyVDEzOjE1OjI4KzAwOjAwIs0JMgAAAABJRU5ErkJggg=="></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
-      <td align="left">Posici&#0243;n pol&#0237;tica estudiantes</td>
+      <td align="left">Posición política estudiantes</td>
       <td align="left">1. Derecha
 2. Centro derecha
 3. Centro
@@ -2009,10 +1984,10 @@ hogar</td>
 6. Independiente
 7. Ninguna
 8. Ns/Nr</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">53</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">32</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">3.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">34</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">32</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">22</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">4.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">139</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">25.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">213</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">39.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADgAAACYBAMAAABDtDfDAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAIpJREFUWMPt1tEJwCAMRVFXyAjqBrr/bhWxBUt8+KE1hXd/DxQhYurcmUJNXjWMuZSIthCOTNRmsHzTD7EciGgO4chEbe4m+DHGTLSHcGSituLBCEOMyvtFPI1wZKI2eRM8OhDRHG5aHRC5V36Hm/ZK6PI91p/fJ6INhCNbdRPu1AO1EvEswpF93QUBfD/WOFznWQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMBM1FhwAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDBiaK6gAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">53</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">9.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">32</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">3.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">34</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">6.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">32</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">22</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">4.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">139</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">25.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">213</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">39.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADgAAACVBAMAAAD/KiQdAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAIVJREFUWMPt1sEJwCAMheGukBGiG+j+u1XEtrTEhwerObz/+kEJRLTHsadQk08NYy4loi+EKxOzESzf1C6WgYjuEK5MzMZOgvYxZqI/hCsTs8E7IXQxGlcUcQHCrYjZjJOgaFoiHwDiPvzxAXjSN9a/1DuiD4Qrm3USrsyBWom4F+HKVncCalc6l9AYdQcAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDUtMTJUMTM6MTU6MjgrMDA6MDBTkLGOAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA1LTEyVDEzOjE1OjI4KzAwOjAwIs0JMgAAAABJRU5ErkJggg=="></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
       <td align="left">Sexo estudiante</td>
@@ -2020,67 +1995,67 @@ hogar</td>
 2. Mujer
 3. Otro</td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">277</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">259</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">47.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">8</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">1.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEYAAAA+BAMAAABkcXAbAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAD5JREFUSMdjYBh8QAkfgKpRNsYNjEbVDFs1xKQNQXyAymrwuAauBre/jEbVDGM1xKQNuqbVUTWjaihQM5gAALX51sNmva0SAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA0LTMwVDE5OjQ0OjUwLTA0OjAwEzUWHAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMGJorqAAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEYAAAA7BAMAAAA0vOGoAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8ckyrDigAAAD5JREFUSMdjYBh8QAkfgKpRNsYNjEbVDEk1xMS7ID5AZTV4XANXg9tfRqNqhqgaYuKdrulwVM2oGhxqBhMAAJFkyZ13hEbFAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA1LTEyVDEzOjE1OjI4KzAwOjAwU5CxjgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNS0xMlQxMzoxNToyOCswMDowMCLNCTIAAAAASUVORK5CYII="></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
       <td align="left">Dependencia administrativa</td>
       <td align="left">1. Municipal
 2. Part. Subvencionado
 3. Part. Privado</td>
-      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">149</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">27.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">318</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">58.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">77</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">14.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAE4AAAA+BAMAAAB3pjDvAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqb39/f///+DdZCQAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAExJREFUSMdjYBj8QAkVKAqiA6g6ZWMUMKpuVB1edcSmK0FCgEbqlAgB7P7FAEaj6kbVIakjNl0NdLpXJKAO5t9RdaPqiFFHbLoazAAArvnlOYNqbywAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDATNRYcAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA0LTMwVDE5OjQ0OjUwLTA0OjAwYmiuoAAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">149</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">27.4%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">318</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">58.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">77</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">14.2%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></table></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAE4AAAA7BAMAAAAna6FcAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8d5C3zHAAAAEdJREFUSMdjYBj8QAkVKAqiA6g6ZWMUMKpuhKojNr0IEgI0UqdECGD3LwYwGlU3ItQRm14GOj0rElAH8++oupGtjtj0MpgBAL6u10eowGlDAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA1LTEyVDEzOjE1OjI5KzAwOjAw9ee6OgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNS0xMlQxMzoxNToyOSswMDowMIS6AoYAAAAASUVORK5CYII="></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
-      <td align="left">Ingresos por escuela</td>
+      <td align="left">Promedio ingresos por escuela</td>
       <td align="left">Mean (sd) : 910632.8 (664677.9)
-min < med < max:
-187500 < 658833.3 < 3e+06
+min &lt; med &lt; max:
+187500 &lt; 658833.3 &lt; 3e+06
 IQR (CV) : 653437.5 (0.7)</td>
       <td align="left" style="vertical-align:middle">59 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHQAAABUBAMAAAChGA4iAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAJRJREFUWMPt120KgCAMBmCvYDdo3sDd/25NlJb0YUqU5Pv+EQcPE4lUY8aKXTMRkb2VPWX2oD+j8jlQI3XiQEFBQUFBO6bh1tNKmfkRSuWb1xl15eagoKCgX9Grv1uBXjV/i8rq5yqqQGZ1VOppt5SGwj2qM+3ve6fx+C3RdEjnNA66Ycc0W2JON/VE45u3mdbGjJUFwSR7mCrqC+IAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDATNRYcAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA0LTMwVDE5OjQ0OjUwLTA0OjAwYmiuoAAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHQAAABUBAMAAAChGA4iAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8d5C3zHAAAAJRJREFUWMPt120KgCAMBmCvYDdo3sDd/25NlJb0YUqU5Pv+EQcPE4lUY8aKXTMRkb2VPWX2oD+j8jlQI3XiQEFBQUFBO6bh1tNKmfkRSuWb1xl15eagoKCgX9Grv1uBXjV/i8rq5yqqQGZ1VOppt5SGwj2qM+3ve6fx+C3RdEjnNA66Ycc0W2JON/VE45u3mdbGjJUFwSR7mCrqC+IAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDUtMTJUMTM6MTU6MjkrMDA6MDD157o6AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA1LTEyVDEzOjE1OjI5KzAwOjAwhLoChgAAAABJRU5ErkJggg=="></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
       <td align="left">Ingreso per capita por escuela</td>
       <td align="left">Mean (sd) : 217411.4 (159440.8)
-min < med < max:
-43368 < 168142.9 < 947400
+min &lt; med &lt; max:
+43368 &lt; 168142.9 &lt; 947400
 IQR (CV) : 190778.2 (0.7)</td>
       <td align="left" style="vertical-align:middle">59 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHQAAABUBAMAAAChGA4iAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAHBJREFUWMPt18ENgCAQBdFtATsQO5D+e1P/QU2Msmw8aJi5kpcNgQOY9VXayip5O9OprM1QKBQKhUKhzVQPkBiVgkKhcer+AFypezT0n3SoXI4nWpl/QzUwRj27hr5NdWBjAz2Allto2cGnaA5kfbUAojd7/pbeozwAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDATNRYcAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA0LTMwVDE5OjQ0OjUwLTA0OjAwYmiuoAAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHQAAABUBAMAAAChGA4iAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8d5C3zHAAAAG9JREFUWMPt10EKgCAQRmGvYDfIbpD3v1v1LyoIcmYQCnxvKx8jutGUxiofFZWt3elS91YoFAqFQqFQN9UDJEaloFBonJo/AE9qHg39kE6NG36jjfn9qfYao5YDg/amurDZQS+gZQ+tJ/gVLYHSWG2Mt3yoA5WSJAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNS0xMlQxMzoxNToyOSswMDowMPXnujoAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDUtMTJUMTM6MTU6MjkrMDA6MDCEugKGAAAAAElFTkSuQmCC"></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
       <td align="left">Porcentaje ed. terciaria por escuela</td>
       <td align="left">Mean (sd) : 0.2 (0.2)
-min < med < max:
-0 < 0.1 < 0.9
+min &lt; med &lt; max:
+0 &lt; 0.1 &lt; 0.9
 IQR (CV) : 0.3 (1.2)</td>
       <td align="left" style="vertical-align:middle">25 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHQAAABUBAMAAAChGA4iAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAHpJREFUWMPt12EKgCAMhuFdoW7QukHe/26ViCkqNaEgfL8f+/cwUSZMZKzomWUyJdDVHYFCoVAoFAqFQqE/on4B0C7qywaFvkXn9np6S11zMEqaz4CJ5q3tNLa208v30Vhc9Zqf0er/Y6XJJ2Slydt/Tv2pA9WOyFjZASzSaLV21CRIAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA0LTMwVDE5OjQ0OjUwLTA0OjAwEzUWHAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMGJorqAAAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHQAAABUBAMAAAChGA4iAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8d5C3zHAAAAHtJREFUWMPt12EKgCAMhmGvkDfIbpD3v1s1xBQV2qAgfL8f+/cwER3MubkSrqyLKolu8QwUCoVCoVAoFAr9EZUFIJiolB0KfYv68Xra0voh+zj8GC2tW39K86n19PY2mkvsXvMz2p0/WloMIS0tno2NSmsblZJoMMTNlQNX6moH+4KWQAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNS0xMlQxMzoxNToyOSswMDowMPXnujoAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDUtMTJUMTM6MTU6MjkrMDA6MDCEugKGAAAAAElFTkSuQmCC"></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
     <tr>
       <td align="left">RBD RBD</td>
       <td align="left">Mean (sd) : 15744.4 (10425.6)
-min < med < max:
-218 < 12977 < 31421
+min &lt; med &lt; max:
+218 &lt; 12977 &lt; 31421
 IQR (CV) : 17089 (0.7)</td>
       <td align="left" style="vertical-align:middle">59 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHQAAABUBAMAAAChGA4iAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqby8vL///8shn5hAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QQeDywyNaHb7gAAAHJJREFUWMPt1ssJwCAQRdFpIekg2kHsv7dAMi4GJOgjAcH7NjLiWfhDzdZK8mwDcZrLnRMKhU5I690WaB07Ed19NodAn6pAu2j7Teii7d2GvlNfb4Xm2AuF/kb9mCo0NFAoFAqFajR+mIZoLL+jSYitlQskpzV9BDljHwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNC0zMFQxOTo0NDo1MC0wNDowMBM1FhwAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDQtMzBUMTk6NDQ6NTAtMDQ6MDBiaK6gAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent"><img style="border:none;background-color:transparent;padding:0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHQAAABUBAMAAAChGA4iAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAD1BMVEX////9/v2mpqbw8PD///+xh0SBAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAAB3RJTUUH5QUMDQ8d5C3zHAAAAHJJREFUWMPt1ssJwCAQRdFpIekg2kHsv7dAMi4GJOgjAcH7NjLiWfhDzdZK8mwDcZrLnRMKhU5I690WaB07Ed19NodAn6pAu2j7Teii7d2GvlNfb4Xm2AuF/kb9mCo0NFAoFAqFajR+mIZoLL+jSYitlQskpzV9BDljHwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNS0xMlQxMzoxNToyOSswMDowMPXnujoAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjEtMDUtMTJUMTM6MTU6MjkrMDA6MDCEugKGAAAAAElFTkSuQmCC"></td>
       <td align="center">544
-(100%)</td>
+(100.0%)</td>
     </tr>
   </tbody>
 </table>
-<p>Generated by <a href='https://github.com/dcomtois/summarytools'>summarytools</a> 0.9.6 (<a href='https://www.r-project.org/'>R</a> version 4.0.3)<br/>2021-04-30</p>
+<p>Generated by <a href="https://github.com/dcomtois/summarytools">summarytools</a> 0.9.9 (<a href="https://www.r-project.org/">R</a> version 4.0.5)<br />2021-05-12</p>
 </div>
 </div>
 <div id="bivariado" class="section level2">
@@ -2108,6 +2083,18 @@ Correlaciones de Pearson
 <th style="text-align:center;">
 5
 </th>
+<th style="text-align:center;">
+6
+</th>
+<th style="text-align:center;">
+7
+</th>
+<th style="text-align:center;">
+8
+</th>
+<th style="text-align:center;">
+9
+</th>
 </tr>
 </thead>
 <tbody>
@@ -2117,7 +2104,15 @@ Correlaciones de Pearson
 <li>Percepción meritocracia: Importancia trabajo duro (estudiantes)
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(-\)</span>
+<ul>
+<li></td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
 </td>
 <td style="text-align:center;">
 </td>
@@ -2134,10 +2129,18 @@ Correlaciones de Pearson
 <li>Percepción meritocracia: Esfuerzo para salir adelante (estudiantes)
 </td>
 <td style="text-align:center;">
-0.27***
+0.29***
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(-\)</span>
+<ul>
+<li></td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
 </td>
 <td style="text-align:center;">
 </td>
@@ -2152,13 +2155,21 @@ Correlaciones de Pearson
 <li>Percepción meritocracia: Importancia trabajo duro (apoderado)
 </td>
 <td style="text-align:center;">
-0.08
+0.09*
 </td>
 <td style="text-align:center;">
 0.08*
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(-\)</span>
+<ul>
+<li></td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
 </td>
 <td style="text-align:center;">
 </td>
@@ -2174,13 +2185,21 @@ Correlaciones de Pearson
 0.08
 </td>
 <td style="text-align:center;">
-0.05
+0.06
 </td>
 <td style="text-align:center;">
-0.12**
+0.11**
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(-\)</span>
+<ul>
+<li></td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
 </td>
 <td style="text-align:center;">
 </td>
@@ -2191,34 +2210,181 @@ Correlaciones de Pearson
 <li>Sentido de Justicia directo
 </td>
 <td style="text-align:center;">
--0.00
+-0.01
 </td>
 <td style="text-align:center;">
 0.02
 </td>
 <td style="text-align:center;">
-0.04
+0.03
 </td>
 <td style="text-align:center;">
 0.04
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(-\)</span>
+<ul>
+<li></td>
+<td style="text-align:center;">
 </td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="6" style="list-style-type: decimal">
+<li>Sentido de Justicia indirecto
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.12**
+</td>
+<td style="text-align:center;">
+<ul>
+<li></td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="7" style="list-style-type: decimal">
+<li>Quintiles de ingreso per capita del hogar
+</td>
+<td style="text-align:center;">
+0.09*
+</td>
+<td style="text-align:center;">
+-0.05
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+-0.13**
+</td>
+<td style="text-align:center;">
+-0.03
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+<ul>
+<li></td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="8" style="list-style-type: decimal">
+<li>Porcentaje ed. terciaria por escuela
+</td>
+<td style="text-align:center;">
+0.11**
+</td>
+<td style="text-align:center;">
+-0.00
+</td>
+<td style="text-align:center;">
+0.10*
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+-0.07
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+<td style="text-align:center;">
+0.39***
+</td>
+<td style="text-align:center;">
+<ul>
+<li></td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="9" style="list-style-type: decimal">
+<li>Promedio ingresos por escuela
+</td>
+<td style="text-align:center;">
+0.13**
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.09*
+</td>
+<td style="text-align:center;">
+-0.00
+</td>
+<td style="text-align:center;">
+-0.10*
+</td>
+<td style="text-align:center;">
+0.09*
+</td>
+<td style="text-align:center;">
+0.42***
+</td>
+<td style="text-align:center;">
+0.86***
+</td>
+<td style="text-align:center;">
+<ul>
+<li></td>
 </tr>
 </tbody>
 <tfoot>
 <tr>
 <td style="padding: 0; " colspan="100%">
-<span style="font-style: italic;">Nota: </span> <sup></sup> <span class="math inline">\(N=\)</span> 572, <span class="math inline">\(^{***}\)</span>p&lt; 0.001, <span class="math inline">\(^{**}\)</span>p&lt; 0.01, <span class="math inline">\(^{*}\)</span>p&lt; 0.05
+<span style="font-style: italic;">Nota: </span> <sup></sup> N= 544, *** p&lt; 0.001; ** p&lt; 0.01; * p&lt; 0.05
 </td>
 </tr>
 </tfoot>
 </table></li>
+</ul></li>
 </ol></li>
+</ul></li>
 </ol></li>
+</ul></li>
 </ol></li>
+</ul></li>
 </ol></li>
+</ul></li>
+</ol></li>
+</ul></li>
+</ol></li>
+</ul></li>
+</ol></li>
+</ul></li>
+</ol></li>
+</ul></li>
 </ol>
 </div>
 </div>
@@ -13674,7 +13840,7 @@ Variance: rbd_est: (Intercept)
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -13692,7 +13858,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

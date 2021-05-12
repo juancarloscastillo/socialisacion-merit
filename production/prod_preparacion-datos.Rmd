@@ -822,10 +822,13 @@ ap_proc$quintiles_ingresos_pc[is.na(ap_proc$quintiles_ingresos_pc)] <- 99
 ap_proc$quintiles_ingresos_pc_factor <- factor(ap_proc$quintiles_ingresos_pc, levels = c(1,2,3,4,5,99), labels = c("Quintil 1", "Quintil 2", "Quintil 3", "Quintil 4", "Quintil 5", "No sabe/No responde"))
 ap_proc$quintiles_ingresos_pc_factor <- set_label(ap_proc$quintiles_ingresos_pc_factor,label = "Quintiles de ingreso per capita del hogar ")
 
+# Construcción ingresos per capita quintiles factor con NS/NR al medio para correlaciones
+ap_proc$quintiles_ingresos_pc_factor_cor <- factor(ap_proc$quintiles_ingresos_pc, levels = c(1,2,99,3,4,5), labels = c("Quintil 1", "Quintil 2", "Quintil 3", "No sabe/No responde", "Quintil 4", "Quintil 5"))
+ap_proc$quintiles_ingresos_pc_factor_cor <- set_label(ap_proc$quintiles_ingresos_pc_factor,label = "Quintiles de ingreso per capita del hogar (NS/NR al medio) ")
+
 ## Eliminar 99 de la variable numerica
 ap_proc$quintiles_ingresos_pc[ap_proc$quintiles_ingresos_pc == 99] <- NA
 ap_proc$quintiles_ingresos_pc <- set_label(ap_proc$quintiles_ingresos_pc,label = "Quintiles de ingreso per capita del hogar (numerica)") 
- # ---- Descripción variables nuevas ----
 
 # ingresos
 summary(ap_proc$ingresos)
@@ -1207,7 +1210,7 @@ summary(ap_proc$ingresos_pc_esc)
 
 #---- Etiquetado variables nuevas----
 # Ingresos a nivel escuela
-ap_proc$ingresos_esc <- set_label(x = ap_proc$ingresos_esc, label = "Ingresos por escuela")
+ap_proc$ingresos_esc <- set_label(x = ap_proc$ingresos_esc, label = "Promedio ingresos por escuela")
 
 # Ingresos per capita a nivel escuela
 ap_proc$ingresos_pc_esc <- set_label(x = ap_proc$ingresos_pc_esc, label = "Ingreso per capita por escuela")
