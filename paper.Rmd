@@ -1,12 +1,10 @@
 ---
 title: "La Socialización de la Meritocracia: El rol de la Familia y la Escuela"
-
 author:
-  - Juan Carlos Castillo ^[Departamento de Sociología, Universidad de Chile - Centro de Estudios de Conflicto y Cohesión Social - juancastillov@uchile.cl - http://jc-castillo.com/]
   - Julio Iturra
   - Francisco Meneses
   - Martín Venegas
-  
+  - Juan Carlos Castillo ^[Departamento de Sociología, Universidad de Chile - Centro de Estudios de Conflicto y Cohesión Social - juancastillov@uchile.cl - http://jc-castillo.com/]
 abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual, el que ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales. En la presente investigación nos enfocamos en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Nuestros resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeracionalmente, dando paso a una portencial reproducción de la legitimación de la desigualdad. A la vez, se entrega evidencia sobre el efecto mitigador que tiene la experiencia de justicia en la escuela.
 date: "`r Sys.Date()`"
 output:
@@ -47,6 +45,8 @@ link-citations: yes
 linkcolor: blue
 fontsize: 12pt
 font-family: Times New Roman
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r eval=FALSE, include=FALSE}
@@ -265,6 +265,12 @@ knitr::include_graphics(path = "output/tables/Data-Frame-Summary.png")
 ```{r echo=FALSE, results='asis',message=F, error=F}
 pacman::p_load(summarytools,haven,sjPlot,dplyr,htmlwidgets, webshot)
 st_css()
+
+library(RCurl)
+library(XML)
+
+
+
 load(file = "input/data/ap_est.RData")
 basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              perc_esfuerzo_factor_est,
@@ -307,9 +313,58 @@ A partir de los datos recopilados es posible sostener que las percepciones merit
 
 En la la Figura N° \@ref(fig:correl) se presentan las correlaciones entre las variables relevantes. Estas deben interpretarse como asociaciones positivas o negativas según el signo, de mayor intensidad según se acerquen a 1 o -1 y posiblemente extrapolable a los estudiantes del universo señalado cuando es significativo, lo cual se señalan con asteriscos.
 
+```{r echo=FALSE}
+pacman::p_load(summarytools,haven,sjPlot,dplyr,sjlabelled,rvest,knitr,kableExtra)
+load(file = "input/data/ap_est.RData")
+basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             sj_direct,
+                             sj_indirect_noln,
+                             quintiles_ingresos_pc_factor,
+                             libros_hogar_factor_ap,
+                             recompensa_est,
+                             resp_prof_factor,
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             univ_esc,
+                             ingresos_esc
+                             # rbd_est
+                             ) %>% na.omit(basereg)
 
-```{r correl, echo=FALSE, fig.cap="Relaciones entre percepciones meritocraticas parentales, del estudiante y justicia en las notas", fig.align = 'center', out.heigh = '100%'}
-knitr::include_graphics(path = "output/tables/cor.png")
+# Crear dataframe para correlacion
+cor.df<- data.frame(lapply(basereg[,c("perc_trabajo_duro_factor_est",
+                                       "perc_esfuerzo_factor_est",
+                                       "perc_trabajo_duro_factor_ap",
+                                       "perc_esfuerzo_factor_ap",
+                                       "sj_direct",
+                                       "sj_indirect_noln",
+                                       "quintiles_ingresos_pc_factor",
+                                       "univ_esc",
+                                       "ingresos_esc")], function(x) as_numeric(x))) 
+cor.label <- as.character(get_label(cor.df)) # guardar var labels
+cor.tab<-sjPlot::tab_corr(cor.df,
+                  triangle = "lower",
+                  digits = 2,
+                  string.diag = rep(x = "-",max(length(cor.df)))) #Tabla de correlacion
+cor.mat <- as.data.frame(read_html(x = cor.tab[["page.content"]]) %>% html_table(fill=FALSE))
+cor.mat <- cor.mat[-max(length(cor.mat)),]                    # matriz as dataframe
+cor.mat$Var.1 <- paste0(1:length(cor.label),". ",cor.label)   # eliminar fila 
+colnames(cor.mat) <- as.character(c(" ",1:length(cor.label))) # asignar colnames
+# generar tabla de correlacion 
+kable(cor.mat,
+      align = c("l",rep(x = "c",max(length(cor.df)))),
+      caption = "Relaciones entre percepciones meritocraticas, sentido justicia en las notas, nivel socioeconómico de familia y escuela", 
+      booktabs=TRUE,
+      format = "latex",
+      linesep = "") %>% 
+  kable_styling(full_width = F,latex_options = c("scale_down")) %>%  
+  footnote(paste0("N= ",dim(basereg)[1],", ","*** p< 0.001; ** p< 0.01; * p< 0.05"),
+           footnote_as_chunk = T,
+           general_title = "Nota: " )
 ```
 
 A grandes rasgos, las correlaciones ofrecen evidencia parcial a las hipotésis planteadas en este estudio, aunque con magnitudes debiles. Comenzando con las percepciones de meritocracia, resalta que ambos indicadores relacionan significativamente tanto en estudiantes (*r* = 0.29; *p* < 0.001), como en apoderados (*r*  = 0.11; *p* < 0.01), lo cual sugiere que refieren al mismo constructo. Lo segundo a destacar es que las percepciones de trabajo duro de los padres correlacionan significativamente con las percepciones de esfuerzo (*r* = 0.08; *p* < 0.05 ) y de trabajo duro (*r* = 0.09; *p* < 0.05 ) de los estudiantes, no así las percepciones de esfuerzo de los padres. En otras palabras, los datos apuntan en la dirección propuesta por la hipótesis de transmisión intergeneracional solamente con un indicador, por lo que la relación podría no ser tan intensa como la esperada. En tercer lugar, ninguna de las dos formas de medir la sensación de justicia en las notas poseen la relación esperada con las percepciones meritocráticas de los estudiantes, lo cual indica que no existe una relación directa  entre las notas del estudiante. Finalmente, las hipótesis de nivel socioeconómico se sostienen solamente para el indicador de trabajo duro de estudiantes, correlacionando significativamente a nivel individual  (*r* = 0.09; *p* < 0.05 ) y a nivel escuela (*r* = 0.13; *p* < 0.01 ).

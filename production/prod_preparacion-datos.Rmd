@@ -274,10 +274,10 @@ summary(est_proc$sj_indirect_noln)
 
 ##### ---- Etiquetado varibles nuevas ----
 # Sentido de justicia
-est_proc$sj_indirect_ln <- set_label(x = est_proc$sj_indirect_ln, label = "Sentido de Justicia indirecto")
+est_proc$sj_indirect_ln <- set_label(x = est_proc$sj_indirect_ln, label = "Sentido de Justicia indirecto (ln)")
 
 # Sentido de justicia sin ln
-est_proc$sj_indirect_noln <- set_label(x = est_proc$sj_indirect_noln, label = "Sentido de Justicia indirecto SIN LN")
+est_proc$sj_indirect_noln <- set_label(x = est_proc$sj_indirect_noln, label = "Sentido de Justicia indirecto")
 ```
 
 * recodificamos sentido de justicia indirecto en grupos:
@@ -1190,7 +1190,6 @@ No aplica.
 Se construyen dos variables para el ingreso a nivel escuela. La primera a partir de la agregación del ingreso del hogar. La segunda a partir de la agregación del ingreso per capita.
 
 ```{r}
-
 # Ingresos a nivel escuela
  ap_proc <- ap_proc %>%
      group_by(rbd) %>%
@@ -1512,6 +1511,31 @@ ap_est$perc_esfuerzo_bi_ap <- factor(ap_est$perc_esfuerzo_bi_ap,labels = c("En d
 table(ap_est$perc_tduro_bi_ap)
 ap_est$perc_esfuerzo_bi_ap <- set_label(ap_est$perc_esfuerzo_bi_ap, label = "Esfuerzo es recompensado (apoderado)")
 frq(ap_est$perc_esfuerzo_bi_ap)
+```
+
+### Ingreso imputado
+
+```{r}
+ap_est$ingresos_pc.im <- ifelse(test =is.na(ap_est$ingresos_pc),
+                                yes = ap_est$ingresos_pc_esc,
+                                no=ap_est$ingresos_pc) 
+View(ap_est[,c("rbd_est","rbd_ap","ingresos_pc","ingresos_pc_esc","quintiles_ingresos_pc_factor","ingresos_pc.im")])
+
+ap_est$ingresos_pc.im <- set_label(ap_est$ingresos_pc.im,label = "Ingreso per cap (imputado media escuela)")
+
+
+ap_est$quintiles_ingresos_pc.im <- ntile(ap_est$ingresos_pc.im,5)
+# ap_est$quintiles_ingresos_pc.im[is.na(ap_est$quintiles_ingresos_pc.im)] <- 99
+# 
+# ap_est$quintiles_ingresos_pc.im<- factor(ap_est$quintiles_ingresos_pc.im,
+#                                          levels = c(1,2,3,4,5,99),
+#                                          labels = c("Quintil 1", "Quintil 2", 
+#                                                     "Quintil 3", "Quintil 4", 
+#                                                     "Quintil 5", "No sabe/No responde"))
+
+ap_est$quintiles_ingresos_pc.im <- set_label(ap_est$quintiles_ingresos_pc.im, "Quintiles de ingreso per capita del hogar")
+sjmisc::frq(ap_est$quintiles_ingresos_pc.im)
+sjmisc::frq(ap_est$quintiles_ingresos_pc_factor)
 ```
 
 
