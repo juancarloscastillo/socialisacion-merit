@@ -1,0 +1,197 @@
+---
+title: "Pruebas de mediación"
+author: "Equipo legitimidad"
+output: 
+  html_document: 
+    css: style.css
+    toc: yes
+    code_folding: hide
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+editor_options: 
+  chunk_output_type: console
+bibliography: input/bib/Educación-ciudadana-PACES.bib
+csl: input/bib/apa.csl
+linestretch: '1.2'
+link-citations: yes
+linkcolor: blue
+fontsize: 12pt
+font-family: Times New Roman
+---
+
+
+```{r}
+pacman::p_load(dplyr,mediation,kableExtra,texreg,lme4,sjlabelled,fastDummies, haven)
+
+load(file = "input/data/ap_est.RData")
+
+```
+
+# Centrar variables 
+```{r}
+#centrar variables
+#ap_est <-  ap_est %>% group_by(rbd_est) %>% mutate(perc_esfuerzo_est_mdg = mean(perc_esfuerzo_est,na.rm =T))
+#ap_est <- ap_est %>%  mutate(perc_esfuerzo_est_cmg = perc_esfuerzo_est - mean(perc_esfuerzo_est_mdg,na.rm =T))
+
+#ap_est <-  ap_est %>% group_by(rbd_est) %>% mutate(ingresos_pc_mdg = mean(ingresos_pc,na.rm =T))
+#ap_est <- ap_est %>%  mutate(ingresos_pc_cmg = ingresos_pc - mean(ingresos_pc_mdg,na.rm =T))
+
+#ap_est$perc_esfuerzo_ap_mdg %>% head()
+
+ap_est$perc_trabajo_duro_ap_numeric= as.numeric(ap_est$perc_trabajo_duro_factor_ap)
+
+ap_est <-  ap_est %>% group_by(rbd_est) %>% mutate(perc_trabajo_duro_ap_mdg = mean(perc_trabajo_duro_ap_numeric,na.rm =T))
+ap_est <- ap_est %>%  mutate(perc_trabajo_duro_ap_cmg = perc_trabajo_duro_ap_numeric - mean(perc_trabajo_duro_ap_mdg,na.rm =T))
+
+ap_est$perc_trabajo_duro_est_num=as.numeric(ap_est$perc_trabajo_duro_factor_est)
+
+basereg = ap_est %>%  dplyr::select(perc_trabajo_duro_est_num, quintiles_ingresos_pc_factor, perc_trabajo_duro_ap_cmg,  sj_direct_cwc, 
+                      pos_pol_factor_ap,
+                      pos_pol_factor_est,
+                      genero_factor_est,
+                      libros_hogar_factor_ap,
+                      dependencia_factor_ap,rbd_est)
+
+ basereg=na.omit(basereg)
+ basereg$perc_trabajo_duro_ap_cmg=as.numeric(basereg$perc_trabajo_duro_ap_cmg)
+ 
+ basereg <- dummy_cols(basereg, select_columns = "quintiles_ingresos_pc_factor") 
+  
+ 
+basereg <- basereg %>% rename(quintil_1= `quintiles_ingresos_pc_factor_Quintil 1`,
+                      quintil_2 =`quintiles_ingresos_pc_factor_Quintil 2`,
+                      quintil_3=`quintiles_ingresos_pc_factor_Quintil 3`,
+                      quintil_4=`quintiles_ingresos_pc_factor_Quintil 4`,
+                      quintil_5=`quintiles_ingresos_pc_factor_Quintil 5`,
+                      quintil_ns=`quintiles_ingresos_pc_factor_No sabe/No responde`)
+
+
+```
+
+
+# Mediación 1
+[Interpretar Mediaciones con mediation](https://data.library.virginia.edu/introduction-to-mediation-analysis/)
+
+```{r results='asis', message  = FALSE}
+
+ 
+med.fit <- lmer(perc_trabajo_duro_ap_cmg ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns  + sj_direct_cwc + pos_pol_factor_ap +
+                      pos_pol_factor_est +
+                      genero_factor_est +
+                      libros_hogar_factor_ap +
+                      dependencia_factor_ap + (1|rbd_est), data = basereg)
+
+out.fit <- lmer(perc_trabajo_duro_est_num ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns  + perc_trabajo_duro_ap_cmg +  sj_direct_cwc  +
+                      pos_pol_factor_ap +
+                      pos_pol_factor_est +
+                      genero_factor_est +
+                      libros_hogar_factor_ap +
+                      dependencia_factor_ap + (1 + perc_trabajo_duro_ap_cmg |rbd_est), data = basereg)
+
+
+
+med.outq2 <- mediation::mediate(med.fit, out.fit, treat = "quintil_2", mediator = "perc_trabajo_duro_ap_cmg",sims = 100)
+med.outq3 <- mediation::mediate(med.fit, out.fit, treat = "quintil_3", mediator = "perc_trabajo_duro_ap_cmg",sims = 100)
+med.outq4 <- mediation::mediate(med.fit, out.fit, treat = "quintil_4", mediator = "perc_trabajo_duro_ap_cmg",sims = 100)
+med.outq5 <- mediation::mediate(med.fit, out.fit, treat = "quintil_5", mediator = "perc_trabajo_duro_ap_cmg",sims = 100)
+med.outqns <- mediation::mediate(med.fit, out.fit, treat = "quintil_ns", mediator = "perc_trabajo_duro_ap_cmg",sims = 100)
+
+med.outq2su<-summary(med.outq2)
+med.outq3su=summary(med.outq3)
+med.outq4su=summary(med.outq4)
+med.outq5su=summary(med.outq5)
+med.outqnssu=summary(med.outqns)
+
+
+omit_coef="(Intercept)|(sj_direct_cwc)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
+
+
+htmlreg(list(med.fit,out.fit),caption = "Mediación percepción padres", custom.model.names = c("PM Apoderado","PM Estudiante"),
+        omit.coef = omit_coef, 
+        caption.above = T, 
+        star.symbol = "\\*", 
+        center = T, 
+        custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Controles aplicados en todos los modelos")
+
+
+
+```
+# Mediación 2 
+
+```{r  results='asis', message=FALSE}
+
+
+
+med.fitn <- lmer(sj_direct_cwc ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns + perc_trabajo_duro_ap_cmg+ 
+                      pos_pol_factor_ap +
+                      pos_pol_factor_est +
+                      genero_factor_est +
+                      libros_hogar_factor_ap +
+                      dependencia_factor_ap + (1|rbd_est), data = basereg)
+
+out.fitn <- lmer(perc_trabajo_duro_est_num ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns + sj_direct_cwc + perc_trabajo_duro_ap_cmg +   pos_pol_factor_ap +
+                      pos_pol_factor_est +
+                      genero_factor_est +
+                      libros_hogar_factor_ap +
+                      dependencia_factor_ap +(1|rbd_est), data = basereg)
+
+med.outq2sj <- mediation::mediate(med.fit, out.fit, treat = "quintil_2", mediator = "sj_direct_cwc",sims = 100)
+med.outq3sj <- mediation::mediate(med.fit, out.fit, treat = "quintil_3", mediator = "sj_direct_cwc",sims = 100)
+med.outq4sj <- mediation::mediate(med.fit, out.fit, treat = "quintil_4", mediator = "sj_direct_cwc",sims = 100)
+med.outq5sj <- mediation::mediate(med.fit, out.fit, treat = "quintil_5", mediator = "sj_direct_cwc",sims = 100)
+med.outqnssj <- mediation::mediate(med.fit, out.fit, treat = "quintil_ns", mediator = "sj_direct_cwc",sims = 100)
+
+med.outq2susj<-summary(med.outq2sj)
+med.outq3susj=summary(med.outq3sj)
+med.outq4susj=summary(med.outq4sj)
+med.outq5susj=summary(med.outq5sj)
+med.outqnssusj=summary(med.outqnssj)
+
+
+omit_coef="(Intercept)|(perc_trabajo_duro_ap_cmg)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
+
+htmlreg(list(med.fitn,out.fitn),caption = "Mediación Sensación de Justicia ", custom.model.names = c("SJ Notas","PM Estudiante"),
+        omit.coef = omit_coef, 
+        caption.above = T, 
+        star.symbol = "\\*", 
+        center = T, 
+        custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Controles aplicados en todos los modelos")
+#summary(med.outn)
+
+```
+
+
+
+# Tabla resumen 
+
+```{r}
+collapse_rows_dt <- data.frame( Independiente = c(rep("Percepción Meritocratica Padres",5),rep("Sensación Justicia Notas",5)), Mediador = c("Quintil 2","Quintil 3","Quintil 4","Quintil 5","Quintil Ns/Nr"), 
+                
+                     'Efectos Directos' = c(paste0(round(c(med.outq2su$z0,med.outq3su$z0,med.outq4su$z0,med.outq5su$z0,med.outqnssu$z0),4),gtools::stars.pval(c(med.outq2su$z0.p,med.outq3su$z0.p,med.outq4su$z0.p,med.outq5su$z0.p,med.outqnssu$z0.p))),paste0(round(out.fitn@beta[2:6],4),gtools::stars.pval(c(med.outq2susj$z0.p,med.outq3susj$z0.p,med.outq4susj$z0.p,med.outq5susj$z0.p,med.outqnssusj$z0.p)))),
+                   
+                'Efectos Indirectos' = c(paste0(round(c(med.outq2su$d0,med.outq3su$d0,med.outq4su$d0,med.outq5su$d0,med.outqnssu$d0),4),gtools::stars.pval(c(med.outq2su$d0.p,med.outq3su$d0.p,med.outq4su$d0.p,med.outq5su$d0.p,med.outqnssu$d0.p))),paste0(round(out.fitn@beta[18:22],4),gtools::stars.pval(c(med.outq2susj$d0.p,med.outq3susj$d0.p,med.outq4susj$d0.p,med.outq5susj$d0.p,med.outqnssusj$d0.p)))),
+
+                
+                 'Efectos Totales' =  c(
+                   paste0(round(c(med.outq2su$tau.coef,med.outq3su$tau.coef,med.outq4su$tau.coef,med.outq5su$tau.coef,med.outqnssu$tau.coef),4),gtools::stars.pval(c(med.outq2su$tau.p,med.outq3su$tau.p,med.outq4su$tau.p,med.outq5su$tau.p,med.outqnssu$tau.p))),
+paste0(round(c(med.outq2susj$tau.coef,med.outq3susj$tau.coef,med.outq4susj$tau.coef,med.outq5susj$tau.coef,med.outqnssusj$tau.coef),4),gtools::stars.pval(c(med.outq2susj$tau.p,med.outq3susj$tau.p,med.outq4susj$tau.p,med.outq5susj$tau.p,med.outqnssusj$tau.p)))),
+                  
+                
+                 'Porcentaje Indirecto' = c(paste0(round(c(med.outq2su$n1*100,med.outq3su$n1*100,med.outq4su$n1*100,med.outq5su$n1*100,med.outqnssu$n1*100),1),"%"),paste0(round(c(med.outq2susj$n1*100,med.outq3susj$n1*100,med.outq4susj$n1*100,med.outq5susj$n1*100,med.outqnssusj$n1*100),1), '%' )))
+                    
+
+  kbl(collapse_rows_dt, align = "c",col.names = c("Mediador (Centrada)","Independiente", "Efectos Directos", "Efectos Indirectos", "Efectos Totales", "% de Efectos Indirectos")) %>% 
+   kable_paper("hover",full_width = F) %>%
+     column_spec(1, bold = T) %>% collapse_rows(columns = 1:3, valign = "top") %>%  add_header_above(c(" " = 2, "Efectos sobre Percepcion Meritocratica Estudiantes" = 4), bold = T)
+  
+```
+
+Este estudio propuso dos caminos para explicar la relación entre nivel socioeconómico y percepciones de meritocracia en los estudiantes, señalando como posibles mediadores las percepciones meritocraticas de los padres y las experiencias de justicia en las notas.  Estas ideas corresponden respectivamente a las hipótesis $H_6$ y $H_7$. Considerando la influencia positiva de los ingresos sobre la percepción de meritocracia [@kunovich_Systems_2007], así como la transmisión intergeneracional de variadas creencias y valores [@tam_Understanding_2015; @dhar_Intergenerational_2019], la hipótesis seis ($H_6$) propone que el NSE familiar se asocia a tener padres con mayores percepciones de meritocracia, lo cual consecutivamente,  fomenta en sus hijos creencias similares. Por su parte, en vista de la evidencia producida por @resh_Sense_2010 sobre el efecto positivo de los ingresos en la sensación de justicia y relacionando esta evidencia con hipótesis anteriores, la última hipótesis ($H_7$) sugiere que mayores ingresos implican una mayor sensación de justicia en las notas lo cual fomenta la legitimación de la percepción meritocrática de los estudiantes. A partir del análisis empírico de mediación, este estudio no encuentra evidencia para respaldar estas hipótesis. En ambos casos, no es significativo ninguno de los efectos indirectos de los quintiles de ingreso sobre las percepciones meritocráticas, ni mediante la percepción de los padres ni mediante sensación en los estudiantes sobre la justicia respecto a las notas ($p$ > 0.05).
+
+
+# Dudas
+
+
+> USAR universitarios.  preguntar si usar % q5? o mantener qn1
