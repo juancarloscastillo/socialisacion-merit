@@ -1,10 +1,10 @@
 ---
 title: "La Socialización de la Meritocracia: El rol de la Familia y la Escuela"
 author:
+  - Juan Carlos Castillo ^[Departamento de Sociología, Universidad de Chile - Centro de Estudios de Conflicto y Cohesión Social - juancastillov@uchile.cl - http://jc-castillo.com/]
   - Julio Iturra
   - Francisco Meneses
   - Martín Venegas
-  - Juan Carlos Castillo ^[Departamento de Sociología, Universidad de Chile - Centro de Estudios de Conflicto y Cohesión Social - juancastillov@uchile.cl - http://jc-castillo.com/]
 abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual, el que ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales. En la presente investigación nos enfocamos en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Nuestros resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeracionalmente, dando paso a una portencial reproducción de la legitimación de la desigualdad. A la vez, se entrega evidencia sobre el efecto mitigador que tiene la experiencia de justicia en la escuela.
 date: "`r Sys.Date()`"
 output:
