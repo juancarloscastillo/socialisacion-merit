@@ -1,18 +1,25 @@
 ---
-title: "La Socialización de la Meritocracia:   El rol de la Familia y la Escuela"
+title: "La Socialización de la Meritocracia: El rol de la Familia y la Escuela"
 author:
-  - Juan Carlos Castillo ^[Departamento de Sociología, Universidad de Chile - Centro de Estudios de Conflicto y Cohesión Social - juancastillov@uchile.cl - http://jc-castillo.com/]
-  - Julio Iturra
-  - Francisco Meneses
-  - Martín Venegas
+- name: Duke A Caboom, MD
+  affiliation: University of Tuktoyaktuk, CXVG+62 Tuktoyaktuk, Inuvik, Unorganized, NT Canada
+  email: dtholmes@mail.ubc.ca
+  number: 1
+- name: Justin d'Ottawa, PhD
+  affiliation: University of Ottawa, 75 Laurier Ave E, Ottawa, ON K1N 6N5, Canada
+  email: justin@neverready.ca
+  number: 2
 abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual, el que ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales. En la presente investigación nos enfocamos en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Nuestros resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeracionalmente, dando paso a una portencial reproducción de la legitimación de la desigualdad. A la vez, se entrega evidencia sobre el efecto mitigador que tiene la experiencia de justicia en la escuela.
 date: "`r Sys.Date()`"
 output:
   bookdown::html_document2:
     toc: no
     df_print: paged
-    css: input/css/custom.css
   bookdown::pdf_document2:
+    pandoc_args:
+      - --csl=input/bib/apa.csl
+      - --citation-abbreviations=extras/abbreviations.json
+      - --template=extras/mytemplate.tex
     fig_caption: true
     keep_tex: no
     template: null
@@ -24,7 +31,6 @@ output:
     df_print: paged
 geometry: paperheight= 11in, paperwidth=11in, margin=0.75in
 bibliography: input/bib/Educación-ciudadana-PACES.bib
-csl: input/bib/apa.csl
 header-includes:
 - \usepackage{caption}
 - \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
@@ -87,10 +93,7 @@ table_format2 = if(is_html_output()) {
 ```
 
 
-# Introducción {.tabset}
-
-
-## Opción 1 (Versión revisada)
+# Introducción
 
 La meritocracia es un ideal que aspira a la distribución de los recursos en una sociedad según esfuerzo y talento personal [@young_rise_2006]. Este ideal se encuentra ampliamente extendido en las sociedades modernas donde se alza como una forma legítima de progresar individualmente en base a logros personales, contrario a la antigua distribución en base a herencias y a las ventajas que pueden generar otro tipo de actividades como sobornos o uso de contactos personales. Si bien la obtención de recompensas proporcionales a esfuerzo y talento parece una representación fidedigna de la justicia por equidad, la implementación de sistemas meritocráticos no está exenta de problemas. Por un lado, la meritocracia permite la legitimación de las desigualdades mediante la atribución a logro personal, subestimando de esta manera las condiciones de origen o el "punto de partida" [@hadjar_Meritokratie_2008; @bay-cheng_Agency_2015]. Ello implica una gran presión psíquica y social hacia los jóvenes, quienes independiente de las desiguales de sus contextos, crecen rodeados de discursos meritocráticos de posibilidades infinitas que contrastan constantemente con la realidad [@allen_Top_2016]. Por otro lado, el énfasis en las capacidades individuales se asociaría a responsabilizar a las personas de su situación y por lo tanto a un menor apoyo a políticas sociales que compensen desventajas: "¿por qué las personas que triunfan en la vida iban a deber nada a los miembros menos favorecidos de la sociedad?" [@sandel_tirania_2021 p.292]. De esta manera, la meritocracia mermaría la preocupación por el bien común y la solidaridad.
 
@@ -100,25 +103,11 @@ La literatura sobre justicia en la escuela ha logrado evidenciar la importancia 
 
 La segunda hipótesis que proponemos en este trabajo es que las percepciones meritocráticas de los padres se transmiten hacia los hijos. Los estudios sobre la reproducción intergeneracional de la política han generado vasta evidencia en torno a la transmisión de habilidades, creencias, actitudes y prácticas para el ejercicio de la ciudadanía [@astill_Multilevel_2002; @miranda_Desigualdad_2018]. En esta línea, se ha estudiado la transmisión de opiniones e intenciones de participación política [@boonen_Adolescent_2013a; @quintelier_Intergenerational_2015], las creencias políticas sobre la democracia [@greenstein_Personality_2016a] y orientaciones políticas [@jennings_Politics_2009]. No obstante, estas investigaciones por lo general no incorporan aspectos relativos a la justicia distributiva, los cuales pueden ser fundamentales si se considera que las ideas de las personas sobre la desigualdad pueden generar apatía política e incluso deseos de insubordinación [@easterbrook_social_2021], además de estar relacionadas con la tolerancia y las ideas autoritarias [@madeira_Primes_2019; @azevedo_Neoliberal_2019]. De esta manera, esta investigación busca contribuir al cuerpo de estudios sobre socialización política incorporando otras ideas transmisibles, como las sensaciones de justicia y percepciones meritocráticas.
 
-
-## Opción 2 (Propuesta FM)
-
-La meritocracia es un ideal que aspira a que los recursos se distribuyan según el esfuerzo y talento personal [@young_rise_2006].  Este ideal fomenta la frustración de los jóvenes y corroe en ellos los principios de la democracia, especialmente en contextos desiguales. La desigualdad social está creciendo a nivel mundial, lo que amenaza con agravar los problemas que de ella derivan [@solt_Measuring_2020]. Por ello, los jóvenes seguirán viéndose enfrentados a diversos problemas tales como la desigualdad de oportunidades [@woodman_Inequality_2020; @pitkanen_Parental_2021], mayores presiones por conseguir estatus, menor autoestima, sintomatología ansiosa e incluso depresión adolescente [@nadler_Relative_2020;@du_Perceived_2021; @kim_Does_2020]. También serán expuestos a vivir más experiencias de discriminación  [@conde_Desigualdad_2014]. Este tipo de vivencias negativas en contextos desiguales pueden ser agravadas por el ideal meritocrático [@major_Perceived_2007]. Pese a su carácter moderno y aparentemente equitativo, el ideal meritocrático no está exento de problemas. Por un lado, esta creencia fomenta un discurso de posibilidades infinitas, que se contradice con las limitaciones socioeconómicas reales que enfrentan los sujetos [@allen_Top_2016; @guzman_Legitimacion_2016]. Esta contradicción entre discurso y realidad deriva en un sentimiento de frustración en jóvenes de estratos bajos, usualmente asociado a temas educativos [@araujo_escuela_2015]. Esta frustración meritocrática, se debe a responsabilizar a los individuos de su posición social, obviando las diferencias de oportunidades [@hadjar_Meritokratie_2008]. Por otro lado, las creencias meritocraticas se asocian a valores contrarios a los promovidos por la educación cívica y ciudadana, ya que fomentan creencias antidemocráticas e intolerantes [@azevedo_Neoliberal_2019; @madeira_Primes_2019], así como corroe el sentido de comunidad [@sandel_tirania_2021 p.292] y legitima la desigualdad disminuyendo el apoyo a políticas asistenciales [@suhay_Ideology_2021]. 
-
-Pese a la importancia evidenciada de la meritocracia en las vivencias juveniles de la desigualdad, se ha puesto poca atención a la formación de estas creencias en etapas tempranas. En el último tiempo se ha incrementado el interés por el estudio de la meritocracia en las ciencias sociales. Desde la sociología, se ha desarrollado una agenda de investigación que ha aportado en resaltar los aspectos subjetivos de la meritocracia [@jasso_New_1980; @kluegel_Beliefs_1981; @janmaat_Subjective_2013], trabajando teórica y empíricamente en torno a conceptos cómo preferencias redistributivas, atribuciones de pobreza o percepciones meritocráticas, [e.g. @newman_False_2015; @reynolds_Perceptions_2014] siendo estas últimas el objeto de este estudio. Las percepciones meritocráticas se entienden cómo la convicción de los sujetos sobre que su sociedad realmente distribuye recursos según el mérito individual [@castillo_Meritocracia_2019]. Pese a recientes avances en el estudio de la meritocracia, se ha puesto poca atención al origen de estas percepciones en etapas previas a la vida adulta, específicamente en cómo la meritocracia podría ser transmitida intergeneracionalmente. Desde una perspectiva de socialización, distintos agentes tienen el potencial de contribuir a la formación de percepciones, actitudes y creencias en los jóvenes, siendo dos de ellos los más importantes: la familia y la escuela [@gidengil_Political_2016; @torney-purta_School_2002]. En el presente trabajo, nuestro objetivo es estudiar en qué medida las ideas parentales y las experiencias escolares influyen en las percepciones meritocráticas de estudiantes secundarios. Basados en los trabajos sobre justicia en la escuela y en la agenda de socialización política familiar buscamos responder dos preguntas: ¿De qué modo se asocia el sentido de justicia sobre la asignación de notas con las percepciones meritocráticas de los jóvenes? y ¿Cómo las percepciones meritocráticas de los padres pueden fomentar o disminuir las percepciones meritocráticas de sus hijos?
-
-La literatura sobre justicia en la escuela ha logrado evidenciar la importancia que tienen las experiencias distributivas en la configuración de la visión del mundo en los jóvenes. Trabajos como lo de Resh y Sabbagh han demostrado que el sentido de justicia que tienen los estudiantes con respecto a la distribución de notas tiene un impacto en sus actitudes y comportamientos democráticos [@resh_Sense_2014; @resh_Sense_2017], así como también en la confianza institucional y social [@resh_Sense_2018]. Esta evidencia llama a profundizar en el efecto del sentido de justicia en otros aspectos de la visión del mundo de los jóvenes, como por ejemplo las percepciones de meritocracia. Esta propuesta se refuerza si se considera a la escuela no sólo como un formador de visiones, sino como un determinante de la forma en que se percibe la desigualdad de una sociedad, o como lo denomina @mijs_Inequality_2018, *espacios inferenciales*. Los espacios inferenciales consisten en instituciones que son capaces de formar percepciones sobre las causas de la desigualdad a partir de la información y experiencias que proveen. En este caso, un estudiante que siente que sus esfuerzos son recompensados podría inferir que dicha situación se replica a nivel general, o dicho de otro modo, percibe mayor meritocracia. En base a este planteamiento, la primera hipótesis de este trabajo es que, para el contexto chileno, la sensación de justicia en las notas implica mayores percepciones de meritocracia.
-
-La segunda hipótesis que proponemos en este trabajo es que las percepciones meritocráticas de los padres se transmiten hacia los hijos. Los estudios sobre la reproducción intergeneracional de la política han generado vasta evidencia en torno a la transmisión de habilidades, creencias, actitudes y prácticas para el ejercicio de la ciudadanía [@astill_Multilevel_2002; @miranda_Desigualdad_2018]. En esta línea, se ha estudiado la transmisión de opiniones e intenciones de participación política [@boonen_Adolescent_2013a; @quintelier_Intergenerational_2015], las creencias políticas sobre la democracia [@greenstein_Personality_2016a] y orientaciones políticas [@jennings_Politics_2009]. No obstante, estas investigaciones por lo general no incorporan aspectos relativos a la justicia distributiva, los cuales pueden ser fundamentales si se considera que las ideas de las personas sobre la desigualdad pueden generar apatía política e incluso deseos de insubordinación [@easterbrook_social_2021], además de estar relacionadas con la tolerancia y las ideas autoritarias [@madeira_Primes_2019; @azevedo_Neoliberal_2019]. De esta manera, esta investigación busca contribuir al cuerpo de estudios sobre socialización política incorporando otras ideas transmisibles, como las sensaciones de justicia y percepciones meritocráticas.
-
-
-
-
 # Antecedentes conceptuales y empíricos
 
 ## Estudio subjetivo de la desigualdad y las percepciones meritocráticas
 
-El estudio de la desigualdad social ha tenido un lugar central en la sociología. Por un lado, está el desarrollo de la investigación en el ámbito de la estratificación social, donde se ha puesto atención en las características de la estructura social y en los mecanismos de preproducción de la desigualdad [@kerbo_Estratificacion_1998; @chan_Class_2007; @lopez-roldan_Comparative_2021]. Una de las dimensiones que ha sido abordada desde esta perspectiva se relaciona con la legitimidad de la desigualdad en ámbitos como los salarios [@evans_Justifications_2010] o el acceso a bienestar social [@maldonado_Risk_2019]. Por otro lado, durante las últimas décadas se ha desarrollado un ámbito de investigación que propone estudiar las actitudes distributivas de los individuos en relación a su posición en la estructura social, principalmente a través de sus percepciones y preferencias en torno a la desigualdad económica [@kluegel_Beliefs_2017; @kluegel_Social_2018; @janmaat_Subjective_2013; @jensen_Deservingness_2017]. En este marco, desde un enfoque de interés racional se sostiene que la posición relativa de los individuos en la estructura social - representada a través de los ingresos, logro educacional y posición en el mercado laboral - trae consigo que individuos de mayor estatus manifiesten actitudes menos igualitarias, y por tanto, tiendan a justificar mayor desigualdad [@meltzer_Tests_1983; @gugushvili_Intergenerational_2016]. Por otro lado, la literatura también ha demostrado que las actitudes de los individuos no solo se ven afectadas por su posición objetiva, sino que también son influenciadas por sus experiencias en torno a la desigualdad, donde la percepción en torno a la actual distribución económica juega un rol clave en cómo las sociedades legitiman la asignación de recursos en la sociedad [@garcia-castro_Perceiving_2020; @trump_Income_2018].
+El estudio de la desigualdad social ha tenido un lugar central en la sociología. Por un lado, está el desarrollo de la investigación en el ámbito de la estratificación social, donde se ha puesto atención en las características de la estructura social y en los mecanismos de preproducción de la desigualdad [@kerbo_Estratificacion_1998; @chan_Class_2007a; @lopez-roldan_Comparative_2021]. Una de las dimensiones que ha sido abordada desde esta perspectiva se relaciona con la legitimidad de la desigualdad en ámbitos como los salarios [@evans_Justifications_2010] o el acceso a bienestar social [@maldonado_Risk_2019]. Por otro lado, durante las últimas décadas se ha desarrollado un ámbito de investigación que propone estudiar las actitudes distributivas de los individuos en relación a su posición en la estructura social, principalmente a través de sus percepciones y preferencias en torno a la desigualdad económica [@kluegel_Beliefs_2017; @kluegel_Social_2018; @janmaat_Subjective_2013; @jensen_Deservingness_2017]. En este marco, desde un enfoque de interés racional se sostiene que la posición relativa de los individuos en la estructura social - representada a través de los ingresos, logro educacional y posición en el mercado laboral - trae consigo que individuos de mayor estatus manifiesten actitudes menos igualitarias, y por tanto, tiendan a justificar mayor desigualdad [@meltzer_Tests_1983; @gugushvili_Intergenerational_2016]. Por otro lado, la literatura también ha demostrado que las actitudes de los individuos no solo se ven afectadas por su posición objetiva, sino que también son influenciadas por sus experiencias en torno a la desigualdad, donde la percepción en torno a la actual distribución económica juega un rol clave en cómo las sociedades legitiman la asignación de recursos en la sociedad [@garcia-castro_Perceiving_2020; @trump_Income_2018].
 
 Frente a la complejidad y amplitud de conceptos utilizados en los estudios sobre desigualdad subjetiva, autores como @jasso_New_1980 o @janmaat_Subjective_2013 proponen marcos conceptuales que facilitan la comprensión del campo de estudio. Según @janmaat_Subjective_2013 los tres principales conceptos sobre desigualdad subjetiva son percepciones de desigualdad (estimaciones subjetivas sobre la desigualdad existente), creencias sobre la desigualdad (ideas normativas de justicia respecto a cómo debería ser la desigualdad), y por último, juicios sobre la desigualdad (evaluaciones sobre que tan buena o mala es la situación actual). Dentro de este marco, el presente estudio se focaliza en el aspecto específico de la percepción meritocrática, que tiene que ver con la estimación de la medida en que los esfuerzos y talentos son recompensados, lo que es distinto de la evaluación normativa de la meritocracia en la sociedad [@castillo_Meritocracia_2019].
 
@@ -411,7 +400,7 @@ kable(cor.mat,
       align = c("l",rep(x = "c",max(length(cor.df)))),
       caption = "Relaciones entre percepciones meritocraticas, sentido justicia en las notas, nivel socioeconómico de familia y escuela", 
       booktabs=TRUE,
-      format = "latex",
+      format = table_format,
       linesep = "") %>% 
   kable_styling(full_width = F,latex_options = c("scale_down","HOLD_position")) %>%  
   footnote(paste0("N= ",dim(basereg)[1],", ","*** p< 0.001; ** p< 0.01; * p< 0.05"),
@@ -470,8 +459,9 @@ con <-c(
 ref <- "(1|rbd_est)"
 ```
 
-```{r, results='asis', echo=FALSE}
+```{r getah, results='asis', echo=FALSE}
 ref <- "(1|rbd_est)"
+cap <- "Modelos ordinal logit multinivel para Socialización de importancia del trabajo duro"
 
 getah.or1 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
 getah.or2 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
@@ -493,8 +483,8 @@ coef_names <- c(
   "Es importante x Más de las que merezco",
   "% apoderados Universitarios"
   )
-texreg(list(getah.or1,getah.or2,getah.or3,getah.or4,getah.or5,getah.or6,getah.or7,getah.or8),
-        caption = "Modelos ordinal logit multinivel para Socialización de importancia del trabajo duro",
+knitreg(list(getah.or1,getah.or2,getah.or3,getah.or4,getah.or5,getah.or6,getah.or7,getah.or8),
+        caption = paste("(\\#tab:getah)",cap),
         caption.above=TRUE,
         omit.coef=omit_coef,
         include.thresholds=FALSE,
@@ -509,7 +499,7 @@ texreg(list(getah.or1,getah.or2,getah.or3,getah.or4,getah.or5,getah.or6,getah.or
 
 ## Análisis multivariado
 
-La Tabla 4[^2] presenta los resultados de la estimación del modelo de regresión ordinal multinivel para la variable de importancia del trabajo duro como indicador de percepción meritocrática en estudiantes. Las estimaciones de los modelos siguen un orden de complejidad ascendente con tal de poder analizar el comportamiento de los coeficientes en la medida que se introducen predictores. Bajo esta lógica, primero se estiman modelos simples para las variables principales, luego modelos multivariados, para luego introducir controles e interacciones.
+La Tabla N° \@ref(tab:getah) [^2] presenta los resultados de la estimación del modelo de regresión ordinal multinivel para la variable de importancia del trabajo duro como indicador de percepción meritocrática en estudiantes. Las estimaciones de los modelos siguen un orden de complejidad ascendente con tal de poder analizar el comportamiento de los coeficientes en la medida que se introducen predictores. Bajo esta lógica, primero se estiman modelos simples para las variables principales, luego modelos multivariados, para luego introducir controles e interacciones.
 
 [^2]: El indicador de esfuerzo no presentó resultados significativos en el análisis multivariado, por lo que no se incorpora en el análisis principal. Se puede ver en la sección de [Apéndice web](https://htmlpreview.github.io/?https://github.com/juancarloscastillo/socialisacion-merit/blob/metodo/paper_analysis.html#Esfuerzo_recompensado11).
 
@@ -554,9 +544,5 @@ El segundo punto de relevancia se relaciona a los aportes que esta investigació
 El tercer y último punto a discutir tiene que ver con el tipo de socialización estudiada hasta ahora y los aportes que este artículo hace. Los estudios con perspectiva de socialización generalmente se han centrado en cómo los valores y actitudes son aprendidos en función de los contextos. Lo que hemos denominado cómo socialización de la institucionalidad económica asume que son las características de un país las que influyen en las creencias meritocráticas [@smith_Two_2012a ; @orkeny_Views_2000]. Asimismo, desde la sociología de Bourdieu se afirma que es el paso por la universidad y la socialización de valores dominantes lo que lleva a respaldar la meritocracia [@baer_Education_2008]. También, numerosos estudios empíricos trabajan en torno a la idea de que son determinados períodos los que forman estas creencias [@legarrec_Distributive_2015; @ignacz_Remains_2018; @vanheuvelen_Intercohort_2018]. Si bien todos han sido grandes contribuciones, hasta ahora no se había hecho la pregunta de ¿quiénes son los que contribuyen a formar esas creencias y percepciones? Este estudio ha contribuido con evidencia suficiente para sostener que la familia es un agente socializador de la meritocracia y que la escuela puede contribuir a mitigar esa formación. De todos modos, aún queda por explorar cuáles son las formas en las que estos agentes contribuyen a transmitir la meritocracia ¿es una socialización de tipo activa cómo plantea @calarco_Coached_2014? ¿o se da de forma más automática en discusiones de sobremesa y otras instancias?
 
 Pese a los aportes de esta investigación, es necesario señalar algunas limitaciones relevantes. En primer lugar, se puede apreciar un tema de potencia estadística asociado a la cantidad de casos utilizados, pues si bien la muestra cuenta con aproximadamente 1700 estudiantes, solo cerca de 700 padres respondieron la encuesta, los cuales no siempre respondieron todas las preguntas. Por ello, al dejar una muestra que posee padres y estudiantes pareados, el número con el que se trabaja se reduce a 544. Esto es perjudicial en tanto la relación hipotetizada entre sentido de justicia en las notas y percepciones meritocráticas de los estudiantes solo es significativa con la muestra de solo estudiantes y no con la muestra restringida según los apoderados que respondieron. En segundo lugar, las preguntas presentes en el cuestionario no permiten medir las distintas dimensiones de las creencias meritocráticas, distinguiendo según percepciones, preferencias e ideas meritocráticas y antimeritocraticas. Más bien, debido a las preguntas del cuestionario sólo fue posible incorporar percepciones meritocráticas lo que puede afectar la validez del constructo dependiente al no controlarlo por las otras dimensiones. En último lugar, el que este sea un estudio de corte transversal y no longitudinal imposibilita estudiar la dirección de las relaciones, por ejemplo, este trabajo supone, basados en los estudios de socialización política que las percepciones meritocráticas son traspasadas de padres a hijos, cuando bien podría ser también de manera opuesta.
-
-# Referencias
-
-
 
 # Referencias
