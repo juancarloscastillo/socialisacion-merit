@@ -1,25 +1,18 @@
 ---
-title: "La Socialización de la Meritocracia: El rol de la Familia y la Escuela"
+title: "La Socialización de la Meritocracia:   El rol de la Familia y la Escuela"
 author:
-- name: Duke A Caboom, MD
-  affiliation: University of Tuktoyaktuk, CXVG+62 Tuktoyaktuk, Inuvik, Unorganized, NT Canada
-  email: dtholmes@mail.ubc.ca
-  number: 1
-- name: Justin d'Ottawa, PhD
-  affiliation: University of Ottawa, 75 Laurier Ave E, Ottawa, ON K1N 6N5, Canada
-  email: justin@neverready.ca
-  number: 2
+  - Juan Carlos Castillo ^[Departamento de Sociología, Universidad de Chile - Centro de Estudios de Conflicto y Cohesión Social - juancastillov@uchile.cl - http://jc-castillo.com/]
+  - Julio Iturra
+  - Francisco Meneses
+  - Martín Venegas
 abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual, el que ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales. En la presente investigación nos enfocamos en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Nuestros resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeracionalmente, dando paso a una portencial reproducción de la legitimación de la desigualdad. A la vez, se entrega evidencia sobre el efecto mitigador que tiene la experiencia de justicia en la escuela.
 date: "`r Sys.Date()`"
 output:
   bookdown::html_document2:
     toc: no
     df_print: paged
+    css: input/css/custom.css
   bookdown::pdf_document2:
-    pandoc_args:
-      - --csl=input/bib/apa.csl
-      - --citation-abbreviations=extras/abbreviations.json
-      - --template=extras/mytemplate.tex
     fig_caption: true
     keep_tex: no
     template: null
@@ -31,6 +24,7 @@ output:
     df_print: paged
 geometry: paperheight= 11in, paperwidth=11in, margin=0.75in
 bibliography: input/bib/Educación-ciudadana-PACES.bib
+csl: input/bib/apa.csl
 header-includes:
 - \usepackage{caption}
 - \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
@@ -93,11 +87,25 @@ table_format2 = if(is_html_output()) {
 ```
 
 
-# Introducción
+# Introducción {.tabset}
+
+
+## Opción 1 (Versión revisada)
 
 La meritocracia es un ideal que aspira a la distribución de los recursos en una sociedad según esfuerzo y talento personal [@young_rise_2006]. Este ideal se encuentra ampliamente extendido en las sociedades modernas donde se alza como una forma legítima de progresar individualmente en base a logros personales, contrario a la antigua distribución en base a herencias y a las ventajas que pueden generar otro tipo de actividades como sobornos o uso de contactos personales. Si bien la obtención de recompensas proporcionales a esfuerzo y talento parece una representación fidedigna de la justicia por equidad, la implementación de sistemas meritocráticos no está exenta de problemas. Por un lado, la meritocracia permite la legitimación de las desigualdades mediante la atribución a logro personal, subestimando de esta manera las condiciones de origen o el "punto de partida" [@hadjar_Meritokratie_2008; @bay-cheng_Agency_2015]. Ello implica una gran presión psíquica y social hacia los jóvenes, quienes independiente de las desiguales de sus contextos, crecen rodeados de discursos meritocráticos de posibilidades infinitas que contrastan constantemente con la realidad [@allen_Top_2016]. Por otro lado, el énfasis en las capacidades individuales se asociaría a responsabilizar a las personas de su situación y por lo tanto a un menor apoyo a políticas sociales que compensen desventajas: "¿por qué las personas que triunfan en la vida iban a deber nada a los miembros menos favorecidos de la sociedad?" [@sandel_tirania_2021 p.292]. De esta manera, la meritocracia mermaría la preocupación por el bien común y la solidaridad.
 
 En el último tiempo se ha incrementado el interés por el estudio de la meritocracia en las ciencias sociales. Desde la sociología, se ha desarrollado una agenda de investigación que ha aportado en resaltar los aspectos subjetivos de la meritocracia [@jasso_New_1980; @kluegel_Beliefs_1981; @janmaat_Subjective_2013], trabajando teórica y empíricamente en torno a conceptos cómo preferencias redistributivas, atribuciones de pobreza o percepciones meritocráticas, [e.g. @newman_False_2015; @reynolds_Perceptions_2014] siendo estas últimas el objeto de este estudio. Las percepciones meritocráticas se entienden cómo la convicción de los sujetos sobre que su sociedad realmente distribuye recursos según el mérito individual [@castillo_Meritocracia_2019]. Pese a recientes avances en el estudio de la meritocracia, se ha puesto poca atención al origen de estas percepciones en etapas previas a la vida adulta, específicamente en cómo la meritocracia podría ser transmitida intergeneracionalmente. Desde una perspectiva de socialización, distintos agentes tienen el potencial de contribuir a la formación de percepciones, actitudes y creencias en los jóvenes, siendo dos de ellos los más importantes: la familia y la escuela [@gidengil_Political_2016; @torney-purta_School_2002]. En el presente trabajo, nuestro objetivo es estudiar en qué medida las ideas parentales y las experiencias escolares influyen en las percepciones meritocráticas de estudiantes secundarios. Basados en los trabajos sobre justicia en la escuela y en la agenda de socialización política familiar buscamos responder dos preguntas: ¿De qué modo se asocia el sentido de justicia sobre la asignación de notas con las percepciones meritocráticas de los jóvenes? y ¿Cómo las percepciones meritocráticas de los padres pueden fomentar o disminuir las percepciones meritocráticas de sus hijos?
+
+La literatura sobre justicia en la escuela ha logrado evidenciar la importancia que tienen las experiencias distributivas en la configuración de la visión del mundo en los jóvenes. Trabajos como lo de Resh y Sabbagh han demostrado que el sentido de justicia que tienen los estudiantes con respecto a la distribución de notas tiene un impacto en sus actitudes y comportamientos democráticos [@resh_Sense_2014; @resh_Sense_2017], así como también en la confianza institucional y social [@resh_Sense_2018]. Esta evidencia llama a profundizar en el efecto del sentido de justicia en otros aspectos de la visión del mundo de los jóvenes, como por ejemplo las percepciones de meritocracia. Esta propuesta se refuerza si se considera a la escuela no sólo como un formador de visiones, sino como un determinante de la forma en que se percibe la desigualdad de una sociedad, o como lo denomina @mijs_Inequality_2018, *espacios inferenciales*. Los espacios inferenciales consisten en instituciones que son capaces de formar percepciones sobre las causas de la desigualdad a partir de la información y experiencias que proveen. En este caso, un estudiante que siente que sus esfuerzos son recompensados podría inferir que dicha situación se replica a nivel general, o dicho de otro modo, percibe mayor meritocracia. En base a este planteamiento, la primera hipótesis de este trabajo es que, para el contexto chileno, la sensación de justicia en las notas implica mayores percepciones de meritocracia.
+
+La segunda hipótesis que proponemos en este trabajo es que las percepciones meritocráticas de los padres se transmiten hacia los hijos. Los estudios sobre la reproducción intergeneracional de la política han generado vasta evidencia en torno a la transmisión de habilidades, creencias, actitudes y prácticas para el ejercicio de la ciudadanía [@astill_Multilevel_2002; @miranda_Desigualdad_2018]. En esta línea, se ha estudiado la transmisión de opiniones e intenciones de participación política [@boonen_Adolescent_2013a; @quintelier_Intergenerational_2015], las creencias políticas sobre la democracia [@greenstein_Personality_2016a] y orientaciones políticas [@jennings_Politics_2009]. No obstante, estas investigaciones por lo general no incorporan aspectos relativos a la justicia distributiva, los cuales pueden ser fundamentales si se considera que las ideas de las personas sobre la desigualdad pueden generar apatía política e incluso deseos de insubordinación [@easterbrook_social_2021], además de estar relacionadas con la tolerancia y las ideas autoritarias [@madeira_Primes_2019; @azevedo_Neoliberal_2019]. De esta manera, esta investigación busca contribuir al cuerpo de estudios sobre socialización política incorporando otras ideas transmisibles, como las sensaciones de justicia y percepciones meritocráticas.
+
+
+## Opción 2 (Propuesta FM)
+
+La meritocracia es un ideal que aspira a que los recursos se distribuyan según el esfuerzo y talento personal [@young_rise_2006].  Este ideal fomenta la frustración de los jóvenes y corroe en ellos los principios de la democracia, especialmente en contextos desiguales. La desigualdad social está creciendo a nivel mundial, lo que amenaza con agravar los problemas que de ella derivan [@solt_Measuring_2020]. Por ello, los jóvenes seguirán viéndose enfrentados a diversos problemas tales como la desigualdad de oportunidades [@woodman_Inequality_2020; @pitkanen_Parental_2021], mayores presiones por conseguir estatus, menor autoestima, sintomatología ansiosa e incluso depresión adolescente [@nadler_Relative_2020;@du_Perceived_2021; @kim_Does_2020]. También serán expuestos a vivir más experiencias de discriminación  [@conde_Desigualdad_2014]. Este tipo de vivencias negativas en contextos desiguales pueden ser agravadas por el ideal meritocrático [@major_Perceived_2007]. Pese a su carácter moderno y aparentemente equitativo, el ideal meritocrático no está exento de problemas. Por un lado, esta creencia fomenta un discurso de posibilidades infinitas, que se contradice con las limitaciones socioeconómicas reales que enfrentan los sujetos [@allen_Top_2016; @guzman_Legitimacion_2016]. Esta contradicción entre discurso y realidad deriva en un sentimiento de frustración en jóvenes de estratos bajos, usualmente asociado a temas educativos [@araujo_escuela_2015]. Esta frustración meritocrática, se debe a responsabilizar a los individuos de su posición social, obviando las diferencias de oportunidades [@hadjar_Meritokratie_2008]. Por otro lado, las creencias meritocraticas se asocian a valores contrarios a los promovidos por la educación cívica y ciudadana, ya que fomentan creencias antidemocráticas e intolerantes [@azevedo_Neoliberal_2019; @madeira_Primes_2019], así como corroe el sentido de comunidad [@sandel_tirania_2021 p.292] y legitima la desigualdad disminuyendo el apoyo a políticas asistenciales [@suhay_Ideology_2021]. 
+
+Pese a la importancia evidenciada de la meritocracia en las vivencias juveniles de la desigualdad, se ha puesto poca atención a la formación de estas creencias en etapas tempranas. En el último tiempo se ha incrementado el interés por el estudio de la meritocracia en las ciencias sociales. Desde la sociología, se ha desarrollado una agenda de investigación que ha aportado en resaltar los aspectos subjetivos de la meritocracia [@jasso_New_1980; @kluegel_Beliefs_1981; @janmaat_Subjective_2013], trabajando teórica y empíricamente en torno a conceptos cómo preferencias redistributivas, atribuciones de pobreza o percepciones meritocráticas, [e.g. @newman_False_2015; @reynolds_Perceptions_2014] siendo estas últimas el objeto de este estudio. Las percepciones meritocráticas se entienden cómo la convicción de los sujetos sobre que su sociedad realmente distribuye recursos según el mérito individual [@castillo_Meritocracia_2019]. Pese a recientes avances en el estudio de la meritocracia, se ha puesto poca atención al origen de estas percepciones en etapas previas a la vida adulta, específicamente en cómo la meritocracia podría ser transmitida intergeneracionalmente. Desde una perspectiva de socialización, distintos agentes tienen el potencial de contribuir a la formación de percepciones, actitudes y creencias en los jóvenes, siendo dos de ellos los más importantes: la familia y la escuela [@gidengil_Political_2016; @torney-purta_School_2002]. En el presente trabajo, nuestro objetivo es estudiar en qué medida las ideas parentales y las experiencias escolares influyen en las percepciones meritocráticas de estudiantes secundarios. Basados en los trabajos sobre justicia en la escuela y en la agenda de socialización política familiar buscamos responder dos preguntas: ¿De qué modo se asocia el sentido de justicia sobre la asignación de notas con las percepciones meritocráticas de los jóvenes? y ¿Cómo las percepciones meritocráticas de los padres pueden fomentar o disminuir las percepciones meritocráticas de sus hijos?
 
 La literatura sobre justicia en la escuela ha logrado evidenciar la importancia que tienen las experiencias distributivas en la configuración de la visión del mundo en los jóvenes. Trabajos como lo de Resh y Sabbagh han demostrado que el sentido de justicia que tienen los estudiantes con respecto a la distribución de notas tiene un impacto en sus actitudes y comportamientos democráticos [@resh_Sense_2014; @resh_Sense_2017], así como también en la confianza institucional y social [@resh_Sense_2018]. Esta evidencia llama a profundizar en el efecto del sentido de justicia en otros aspectos de la visión del mundo de los jóvenes, como por ejemplo las percepciones de meritocracia. Esta propuesta se refuerza si se considera a la escuela no sólo como un formador de visiones, sino como un determinante de la forma en que se percibe la desigualdad de una sociedad, o como lo denomina @mijs_Inequality_2018, *espacios inferenciales*. Los espacios inferenciales consisten en instituciones que son capaces de formar percepciones sobre las causas de la desigualdad a partir de la información y experiencias que proveen. En este caso, un estudiante que siente que sus esfuerzos son recompensados podría inferir que dicha situación se replica a nivel general, o dicho de otro modo, percibe mayor meritocracia. En base a este planteamiento, la primera hipótesis de este trabajo es que, para el contexto chileno, la sensación de justicia en las notas implica mayores percepciones de meritocracia.
 
@@ -501,7 +509,7 @@ knitreg(list(getah.or1,getah.or2,getah.or3,getah.or4,getah.or5,getah.or6,getah.o
 
 La Tabla N° \@ref(tab:getah) [^2] presenta los resultados de la estimación del modelo de regresión ordinal multinivel para la variable de importancia del trabajo duro como indicador de percepción meritocrática en estudiantes. Las estimaciones de los modelos siguen un orden de complejidad ascendente con tal de poder analizar el comportamiento de los coeficientes en la medida que se introducen predictores. Bajo esta lógica, primero se estiman modelos simples para las variables principales, luego modelos multivariados, para luego introducir controles e interacciones.
 
-[^2]: El indicador de esfuerzo no presentó resultados significativos en el análisis multivariado, por lo que no se incorpora en el análisis principal. Se puede ver en la sección de [Apéndice web](https://htmlpreview.github.io/?https://github.com/juancarloscastillo/socialisacion-merit/blob/metodo/paper_analysis.html#Esfuerzo_recompensado11).
+[^2]: El indicador de esfuerzo no presentó resultados significativos en el análisis multivariado, por lo que no se incorpora en el análisis principal. Se puede ver en la Tabla N° \@ref(tab:effort) en la sección de Apéndice.
 
 Los resultados son consistentes con lo vislumbrado por los análisis descriptivos. En el caso de la hipótesis de transmisión intergeneracional se observa un efecto significativo entre las percepciones meritocráticas de los padres y las percepciones meritocráticas de los estudiantes, relación que se mantiene significativa pese a los controles estadísticos (Model 8: *logit* = 1.45; *p* \< 0.001 ). Con respecto a la hipótesis del sentido de justicia, podemos ver que en ninguna de las formas en que se mide la sensación de justicia en las notas permite concluir una relación positiva con la percepción meritocrática de los estudiantes.
 
@@ -511,7 +519,7 @@ Respecto a las interacciones, se observa que aunque la justicia en las notas no 
 
 Por último, este estudio propuso dos caminos para explicar la relación entre nivel socioeconómico y percepciones de meritocracia en los estudiantes, señalando como posibles mediadores las percepciones meritocraticas de los padres y las experiencias de justicia en las notas.  Estas ideas corresponden respectivamente a las hipótesis $H_6$ y $H_7$. Considerando la influencia positiva de los ingresos sobre la percepción de meritocracia [@kunovich_Systems_2007], así como la transmisión intergeneracional de variadas creencias y valores [@tam_Understanding_2015; @dhar_Intergenerational_2019], la hipótesis seis ($H_6$) propone que el NSE familiar se asocia a tener padres con mayores percepciones de meritocracia, lo cual consecutivamente,  fomenta en sus hijos creencias similares. Por su parte, en vista de la evidencia producida por @resh_Sense_2010 sobre el efecto positivo de los ingresos en la sensación de justicia y relacionando esta evidencia con hipótesis anteriores, la última hipótesis ($H_7$) sugiere que mayores ingresos implican una mayor sensación de justicia en las notas lo cual fomenta la legitimación de la percepción meritocrática de los estudiantes. A partir del análisis empírico de mediación, este estudio no encuentra evidencia para respaldar estas hipótesis. En ambos casos, no es significativo ninguno de los efectos indirectos de los quintiles de ingreso sobre las percepciones meritocráticas, ni mediante la percepción de los padres ni mediante sensación en los estudiantes sobre la justicia respecto a las notas ($p$ > 0.05)[^3].
 
-[^3]: El análisis de mediación en detalle se puede ver en el [Apéndice web](https://htmlpreview.github.io/?https://github.com/juancarloscastillo/socialisacion-merit/blob/metodo/mediation.html).
+[^3]: El análisis de mediación en detalle se puede ver en la Tabla N° \@ref(tab:meds) en la sección de Apéndice.
 
 ```{r interac, fig.width=11,fig.cap="Interacción entre percepciones meritocraticas parentales, del estudiante y justicia en las notas", echo=FALSE, out.width='100%'}
 
@@ -546,3 +554,192 @@ El tercer y último punto a discutir tiene que ver con el tipo de socialización
 Pese a los aportes de esta investigación, es necesario señalar algunas limitaciones relevantes. En primer lugar, se puede apreciar un tema de potencia estadística asociado a la cantidad de casos utilizados, pues si bien la muestra cuenta con aproximadamente 1700 estudiantes, solo cerca de 700 padres respondieron la encuesta, los cuales no siempre respondieron todas las preguntas. Por ello, al dejar una muestra que posee padres y estudiantes pareados, el número con el que se trabaja se reduce a 544. Esto es perjudicial en tanto la relación hipotetizada entre sentido de justicia en las notas y percepciones meritocráticas de los estudiantes solo es significativa con la muestra de solo estudiantes y no con la muestra restringida según los apoderados que respondieron. En segundo lugar, las preguntas presentes en el cuestionario no permiten medir las distintas dimensiones de las creencias meritocráticas, distinguiendo según percepciones, preferencias e ideas meritocráticas y antimeritocraticas. Más bien, debido a las preguntas del cuestionario sólo fue posible incorporar percepciones meritocráticas lo que puede afectar la validez del constructo dependiente al no controlarlo por las otras dimensiones. En último lugar, el que este sea un estudio de corte transversal y no longitudinal imposibilita estudiar la dirección de las relaciones, por ejemplo, este trabajo supone, basados en los estudios de socialización política que las percepciones meritocráticas son traspasadas de padres a hijos, cuando bien podría ser también de manera opuesta.
 
 # Referencias
+
+<div id="refs"></div>
+\printbibliography[heading=none]
+\def\printbibliography{}
+
+# Apéndice
+
+```{r effort, echo=FALSE, results='asis'}
+cap1 <- "Modelos ordinal logit multinivel para Socialización de Esfuerzo recompensado"
+
+effort.or1 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap",ref),collapse="+"))), basereg)
+effort.or2 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
+effort.or3 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
+effort.or4 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
+effort.or5 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg)
+effort.or6 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_indirect_noln",ref),collapse="+"))), basereg)
+effort.or7 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+
+coef_names <- c(
+  # "Algo importante","Importante","Muy importante",
+  "De acuerdo",
+  "SJ indirecto",
+  "Menos de las que merezco","Más de las que merezco",
+  "Quintil 2","Quintil 3","Quintil 4","Quintil 5","Quintil No sabe/No responde",  
+  "De acuerdo x SJ indirecto",
+  "De acuerdo x Menos de las que merezco",
+  "De acuerdo x Más de las que merezco"
+  )
+
+knitreg(list(effort.or1,effort.or2,effort.or3,effort.or4,effort.or5,effort.or6,effort.or7),
+        caption = paste("(\\#tab:effort)",cap1),
+        caption.above=TRUE,        
+        omit.coef=omit_coef,
+        include.thresholds=FALSE,
+        custom.gof.rows=list(Controls=c("No","No","No","No","Yes","Yes","Yes")),
+        # groups=list("Perc. Meritocracia (apoderado)"=1:3, 
+        #             "Setido justicia (indirecto)"=4:6,
+        #             "Sentido justicia (directo)"=7:8),
+        custom.coef.names=coef_names
+        )
+```
+
+```{r Mediaciones, include=FALSE}
+pacman::p_load(dplyr,mediation,kableExtra,texreg,lme4,sjlabelled,fastDummies, haven)
+
+load(file = "input/data/ap_est.RData")
+
+#centrar variables
+#ap_est <-  ap_est %>% group_by(rbd_est) %>% mutate(perc_esfuerzo_est_mdg = mean(perc_esfuerzo_est,na.rm =T))
+#ap_est <- ap_est %>%  mutate(perc_esfuerzo_est_cmg = perc_esfuerzo_est - mean(perc_esfuerzo_est_mdg,na.rm =T))
+
+#ap_est <-  ap_est %>% group_by(rbd_est) %>% mutate(ingresos_pc_mdg = mean(ingresos_pc,na.rm =T))
+#ap_est <- ap_est %>%  mutate(ingresos_pc_cmg = ingresos_pc - mean(ingresos_pc_mdg,na.rm =T))
+
+#ap_est$perc_esfuerzo_ap_mdg %>% head()
+
+ap_est$perc_trabajo_duro_ap_numeric= as.numeric(ap_est$perc_trabajo_duro_factor_ap)
+
+ap_est <-  ap_est %>% group_by(rbd_est) %>% mutate(perc_trabajo_duro_ap_mdg = mean(perc_trabajo_duro_ap_numeric,na.rm =T))
+ap_est <- ap_est %>%  mutate(perc_trabajo_duro_ap_cmg = perc_trabajo_duro_ap_numeric - mean(perc_trabajo_duro_ap_mdg,na.rm =T))
+
+ap_est$perc_trabajo_duro_est_num=as.numeric(ap_est$perc_trabajo_duro_factor_est)
+
+basereg = ap_est %>%  dplyr::select(perc_trabajo_duro_est_num, quintiles_ingresos_pc_factor, perc_trabajo_duro_ap_cmg,  sj_direct_cwc, 
+                      pos_pol_factor_ap,
+                      pos_pol_factor_est,
+                      genero_factor_est,
+                      libros_hogar_factor_ap,
+                      dependencia_factor_ap,rbd_est)
+
+ basereg=na.omit(basereg)
+ basereg$perc_trabajo_duro_ap_cmg=as.numeric(basereg$perc_trabajo_duro_ap_cmg)
+ 
+ basereg <- dummy_cols(basereg, select_columns = "quintiles_ingresos_pc_factor") 
+  
+ 
+basereg <- basereg %>% rename(quintil_1= `quintiles_ingresos_pc_factor_Quintil 1`,
+                      quintil_2 =`quintiles_ingresos_pc_factor_Quintil 2`,
+                      quintil_3=`quintiles_ingresos_pc_factor_Quintil 3`,
+                      quintil_4=`quintiles_ingresos_pc_factor_Quintil 4`,
+                      quintil_5=`quintiles_ingresos_pc_factor_Quintil 5`,
+                      quintil_ns=`quintiles_ingresos_pc_factor_No sabe/No responde`)
+
+
+med.fit <- lmer(perc_trabajo_duro_ap_cmg ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns  + sj_direct_cwc + pos_pol_factor_ap +
+                      pos_pol_factor_est +
+                      genero_factor_est +
+                      libros_hogar_factor_ap +
+                      dependencia_factor_ap + (1|rbd_est), data = basereg)
+
+out.fit <- lmer(perc_trabajo_duro_est_num ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns  + perc_trabajo_duro_ap_cmg +  sj_direct_cwc  +
+                      pos_pol_factor_ap +
+                      pos_pol_factor_est +
+                      genero_factor_est +
+                      libros_hogar_factor_ap +
+                      dependencia_factor_ap + (1 + perc_trabajo_duro_ap_cmg |rbd_est), data = basereg)
+
+
+
+med.outq2 <- mediation::mediate(med.fit, out.fit, treat = "quintil_2", mediator = "perc_trabajo_duro_ap_cmg",sims = 100)
+med.outq3 <- mediation::mediate(med.fit, out.fit, treat = "quintil_3", mediator = "perc_trabajo_duro_ap_cmg",sims = 100)
+med.outq4 <- mediation::mediate(med.fit, out.fit, treat = "quintil_4", mediator = "perc_trabajo_duro_ap_cmg",sims = 100)
+med.outq5 <- mediation::mediate(med.fit, out.fit, treat = "quintil_5", mediator = "perc_trabajo_duro_ap_cmg",sims = 100)
+med.outqns <- mediation::mediate(med.fit, out.fit, treat = "quintil_ns", mediator = "perc_trabajo_duro_ap_cmg",sims = 100)
+
+med.outq2su<-summary(med.outq2)
+med.outq3su=summary(med.outq3)
+med.outq4su=summary(med.outq4)
+med.outq5su=summary(med.outq5)
+med.outqnssu=summary(med.outqns)
+
+
+omit_coef="(Intercept)|(sj_direct_cwc)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
+
+
+htmlreg(list(med.fit,out.fit),caption = "Mediación percepción padres", custom.model.names = c("PM Apoderado","PM Estudiante"),
+        omit.coef = omit_coef, 
+        caption.above = T, 
+        star.symbol = "\\*", 
+        center = T, 
+        custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Controles aplicados en todos los modelos")
+
+
+
+med.fitn <- lmer(sj_direct_cwc ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns + perc_trabajo_duro_ap_cmg+ 
+                      pos_pol_factor_ap +
+                      pos_pol_factor_est +
+                      genero_factor_est +
+                      libros_hogar_factor_ap +
+                      dependencia_factor_ap + (1|rbd_est), data = basereg)
+
+out.fitn <- lmer(perc_trabajo_duro_est_num ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns + sj_direct_cwc + perc_trabajo_duro_ap_cmg +   pos_pol_factor_ap +
+                      pos_pol_factor_est +
+                      genero_factor_est +
+                      libros_hogar_factor_ap +
+                      dependencia_factor_ap +(1|rbd_est), data = basereg)
+
+med.outq2sj <- mediation::mediate(med.fit, out.fit, treat = "quintil_2", mediator = "sj_direct_cwc",sims = 100)
+med.outq3sj <- mediation::mediate(med.fit, out.fit, treat = "quintil_3", mediator = "sj_direct_cwc",sims = 100)
+med.outq4sj <- mediation::mediate(med.fit, out.fit, treat = "quintil_4", mediator = "sj_direct_cwc",sims = 100)
+med.outq5sj <- mediation::mediate(med.fit, out.fit, treat = "quintil_5", mediator = "sj_direct_cwc",sims = 100)
+med.outqnssj <- mediation::mediate(med.fit, out.fit, treat = "quintil_ns", mediator = "sj_direct_cwc",sims = 100)
+
+med.outq2susj<-summary(med.outq2sj)
+med.outq3susj=summary(med.outq3sj)
+med.outq4susj=summary(med.outq4sj)
+med.outq5susj=summary(med.outq5sj)
+med.outqnssusj=summary(med.outqnssj)
+
+
+omit_coef="(Intercept)|(perc_trabajo_duro_ap_cmg)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
+
+htmlreg(list(med.fitn,out.fitn),caption = "Mediación Sensación de Justicia ", custom.model.names = c("SJ Notas","PM Estudiante"),
+        omit.coef = omit_coef, 
+        caption.above = T, 
+        star.symbol = "\\*", 
+        center = T, 
+        custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Controles aplicados en todos los modelos")
+#summary(med.outn)
+
+```
+
+
+```{r meds, echo=FALSE}
+collapse_rows_dt <- data.frame( Independiente = c(rep("Percepción Meritocratica Padres",5),rep("Sensación Justicia Notas",5)), Mediador = c("Quintil 2","Quintil 3","Quintil 4","Quintil 5","Quintil Ns/Nr"), 
+                
+                     'Efectos Directos' = c(paste0(round(c(med.outq2su$z0,med.outq3su$z0,med.outq4su$z0,med.outq5su$z0,med.outqnssu$z0),4),gtools::stars.pval(c(med.outq2su$z0.p,med.outq3su$z0.p,med.outq4su$z0.p,med.outq5su$z0.p,med.outqnssu$z0.p))),paste0(round(out.fitn@beta[2:6],4),gtools::stars.pval(c(med.outq2susj$z0.p,med.outq3susj$z0.p,med.outq4susj$z0.p,med.outq5susj$z0.p,med.outqnssusj$z0.p)))),
+                   
+                'Efectos Indirectos' = c(paste0(round(c(med.outq2su$d0,med.outq3su$d0,med.outq4su$d0,med.outq5su$d0,med.outqnssu$d0),4),gtools::stars.pval(c(med.outq2su$d0.p,med.outq3su$d0.p,med.outq4su$d0.p,med.outq5su$d0.p,med.outqnssu$d0.p))),paste0(round(out.fitn@beta[18:22],4),gtools::stars.pval(c(med.outq2susj$d0.p,med.outq3susj$d0.p,med.outq4susj$d0.p,med.outq5susj$d0.p,med.outqnssusj$d0.p)))),
+
+                
+                 'Efectos Totales' =  c(
+                   paste0(round(c(med.outq2su$tau.coef,med.outq3su$tau.coef,med.outq4su$tau.coef,med.outq5su$tau.coef,med.outqnssu$tau.coef),4),gtools::stars.pval(c(med.outq2su$tau.p,med.outq3su$tau.p,med.outq4su$tau.p,med.outq5su$tau.p,med.outqnssu$tau.p))),
+paste0(round(c(med.outq2susj$tau.coef,med.outq3susj$tau.coef,med.outq4susj$tau.coef,med.outq5susj$tau.coef,med.outqnssusj$tau.coef),4),gtools::stars.pval(c(med.outq2susj$tau.p,med.outq3susj$tau.p,med.outq4susj$tau.p,med.outq5susj$tau.p,med.outqnssusj$tau.p)))),
+                  
+                
+                 'Porcentaje Indirecto' = c(paste0(round(c(med.outq2su$n1*100,med.outq3su$n1*100,med.outq4su$n1*100,med.outq5su$n1*100,med.outqnssu$n1*100),1),"%"),paste0(round(c(med.outq2susj$n1*100,med.outq3susj$n1*100,med.outq4susj$n1*100,med.outq5susj$n1*100,med.outqnssusj$n1*100),1), '%' )))
+                    
+
+kbl(collapse_rows_dt, format =table_format, caption = "Resumen Modelos de Mediación Percepciones Meritocráticas Estudiantes", align = "c",col.names = c("Mediador (Centrada)","Independiente", "Efectos Directos", "Efectos Indirectos", "Efectos Totales", "% de Efectos Indirectos")) %>% 
+   kable_styling(latex_options = c("HOLD_position"), full_width = T) %>%
+     column_spec(1, bold = T) %>% collapse_rows(columns = 1:3, valign = "top") %>%  add_header_above(c(" " = 2, "Efectos sobre Percepcion Meritocratica Estudiantes" = 4), bold = T) %>%  
+  footnote(paste0("N= ",dim(basereg)[1],", ","*** p< 0.001; ** p< 0.01; * p< 0.05"),
+           footnote_as_chunk = T,
+           general_title = "Nota: " )
+  
+
+
+```
