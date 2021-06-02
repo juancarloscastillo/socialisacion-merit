@@ -1543,7 +1543,9 @@ sjmisc::frq(ap_est$quintiles_ingresos_pc_factor)
 ```{r}
 save(est_proc, file = "../input/data/est_proc.RData",ascii = T)# Guardar base de datos estudiantes
 save(ap_proc, file = "../input/data/ap_proc.RData",ascii = T)  # Guardar base de datos apoderados
-save(ap_est, file = "../input/data/ap_est.RData",ascii = T)    # Guardar base de datos conjunta
+save(ap_est, file = "../input/data/ap_est.RData")    # Guardar base de datos conjunta
+save(ap_est, file = "../input/data/ap_est.sav")    # Guardar base de datos conjunta
+
 ```
 
 ```{r echo=FALSE}
