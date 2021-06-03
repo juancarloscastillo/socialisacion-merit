@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.6.3)  3 JUN 2021 04:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.6.3)  3 JUN 2021 17:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -672,19 +672,19 @@ LaTeX Info: Redefining \nameref on input line 146.
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
 * driver: pdftex
-* paper: custom
+* paper: <default>
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(54.2025pt, 686.56499pt, 54.2025pt)
-* v-part:(T,H,B)=(54.2025pt, 686.56499pt, 54.2025pt)
-* \paperwidth=794.96999pt
+* h-part:(L,W,R)=(56.9055pt, 500.484pt, 56.9055pt)
+* v-part:(T,H,B)=(85.35826pt, 624.25346pt, 85.35826pt)
+* \paperwidth=614.295pt
 * \paperheight=794.96999pt
-* \textwidth=686.56499pt
-* \textheight=686.56499pt
-* \oddsidemargin=-18.06749pt
-* \evensidemargin=-18.06749pt
-* \topmargin=-55.06749pt
+* \textwidth=500.484pt
+* \textheight=624.25346pt
+* \oddsidemargin=-15.36449pt
+* \evensidemargin=-15.36449pt
+* \topmargin=-23.91173pt
 * \headheight=12.0pt
 * \headsep=25.0pt
 * \topskip=10.0pt
@@ -754,51 +754,46 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 [1
 
 {c:/Users/Mar/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.
-map}] [2] [3] [4] [5] [6]
+map}] [2] [3] [4] [5] [6] [7] [8]
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 2
-61.
+47.
 (c:/Users/Mar/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-) [7]
-Overfull \vbox (24.0pt too high) detected at line 331
+) [9]
+Overfull \vbox (24.0pt too high) detected at line 317
  []
 
 
-Overfull \vbox (2.87024pt too high) detected at line 331
+Overfull \vbox (2.87024pt too high) detected at line 317
  []
 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[8]
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 36
-7.
+[10]
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 35
+3.
 (c:/Users/Mar/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [9] [10]
-<output/tables/desc01.png, id=424, 1166.85938pt x 1757.81718pt>
+) [11] [12]
+<output/tables/desc01.png, id=396, 1166.85938pt x 1757.81718pt>
 File: output/tables/desc01.png Graphic file (type png)
 <use output/tables/desc01.png>
-Package pdftex.def Info: output/tables/desc01.png  used on input line 387.
+Package pdftex.def Info: output/tables/desc01.png  used on input line 373.
 (pdftex.def)             Requested size: 376.39384pt x 567.0191pt.
-<output/tables/desc01_esc.png, id=426, 1189.44376pt x 552.56438pt>
+[13]
+<output/tables/desc01_esc.png, id=406, 1189.44376pt x 552.56438pt>
 File: output/tables/desc01_esc.png Graphic file (type png)
 <use output/tables/desc01_esc.png>
-Package pdftex.def Info: output/tables/desc01_esc.png  used on input line 395.
+Package pdftex.def Info: output/tables/desc01_esc.png  used on input line 381.
 (pdftex.def)             Requested size: 414.04288pt x 192.3465pt.
-[11 <./output/tables/desc01.png>] [12 <./output/tables/desc01_esc.png>] [13] [1
-4]
-<paper_files/figure-latex/interac-1.pdf, id=472, 794.97pt x 325.215pt>
+[14 <./output/tables/desc01.png>] [15 <./output/tables/desc01_esc.png>] [16] [1
+7]
+<paper_files/figure-latex/interac-1.pdf, id=447, 794.97pt x 325.215pt>
 File: paper_files/figure-latex/interac-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/interac-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/interac-1.pdf  used on input 
-line 490.
-(pdftex.def)             Requested size: 686.58427pt x 280.87538pt.
-[15] [16 <./paper_files/figure-latex/interac-1.pdf>] [17] [18] [19] [20] [21] [
-22]
+line 478.
+(pdftex.def)             Requested size: 500.49411pt x 204.74759pt.
+[18] [19 <./paper_files/figure-latex/interac-1.pdf>] [20] [21] [22] [23] [24] [
+25] [26] [27] [28] [29]
 
 Package caption Warning: Unused \captionsetup[figure] on input line \caption@op
 t@figure@lineno .
@@ -809,7 +804,7 @@ Package caption Warning: Unused \captionsetup[ table] on input line \caption@op
 t@ table@lineno .
 See the caption package documentation for explanation.
 
-[23] [24] (./paper.aux
+[30] (./paper.aux
 LaTeX Info: Redefining \. on input line 25.
 LaTeX Info: Redefining \% on input line 25.
 )
@@ -817,13 +812,13 @@ LaTeX Info: Redefining \% on input line 25.
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: F2FA06D7F96BCD24F3F76AEF635E21D8;3030.
+(rerunfilecheck)             Checksum: 0EEB69A8B0F99558F6C73F557D69AE8E;2625.
  ) 
 Here is how much of TeX's memory you used:
- 14931 strings out of 480499
- 225645 string characters out of 5897842
- 601173 words of memory out of 5000000
- 32127 multiletter control sequences out of 15000+600000
+ 14928 strings out of 480499
+ 225488 string characters out of 5897842
+ 604090 words of memory out of 5000000
+ 32123 multiletter control sequences out of 15000+600000
  469403 words of font info for 93 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,16n,66p,2835b,507s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -847,10 +842,10 @@ s/type1/urw/courier/ucrr8a.pfb><c:/Users/Mar/AppData/Roaming/TinyTeX/texmf-dist
 /fonts/type1/urw/times/utmb8a.pfb><c:/Users/Mar/AppData/Roaming/TinyTeX/texmf-d
 ist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/Mar/AppData/Roaming/TinyTeX/texm
 f-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (24 pages, 519410 bytes).
+Output written on paper.pdf (30 pages, 516601 bytes).
 PDF statistics:
- 771 PDF objects out of 1000 (max. 8388607)
- 701 compressed objects within 8 object streams
- 173 named destinations out of 1000 (max. 500000)
- 160 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 758 PDF objects out of 1000 (max. 8388607)
+ 683 compressed objects within 7 object streams
+ 174 named destinations out of 1000 (max. 500000)
+ 144 words of extra memory for PDF output out of 10000 (max. 10000000)
 
