@@ -8,17 +8,17 @@ body{
 
 /**td { font-size: 14px;
 	  align: center;
-
 } **/
 
 
 
 h1, h2, h3{
   font-family: "Times New Roman", Times, serif;
-  padding-top: 55px;
-  margin-top: 55px;
-  line-height: 2em;
-  display:
+}
+
+h4{
+  font-size:20px;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .right {
@@ -77,5 +77,5 @@ p.caption {
   color: black;
   margin-right: 10%;
   margin-left: 10%;
-  text-align: justify;
+  text-align: center;
 }

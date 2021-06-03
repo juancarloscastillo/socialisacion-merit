@@ -12,6 +12,10 @@ output:
 editor_options: 
   chunk_output_type: console
 ---
+# Introducción
+
+El presente documento corresponde al detalle del análisis de datos del artículo "Socialización de la Meritocracia: El rol de la Familia y la Escuela", a cargo del investigador Juan Carlos Castillo y enmarcado en el proyecto Fondecyt Regular 1181219. El documento se divide en análisis descriptivos y multivariado. La sección de descriptivos presenta una panorámica de las variables utilizadas en el artículo, tanto a nivel univariado como bivariado. La sección multivariada presenta el análisis a partir de tres técnicas: regresiones lineales multinivel, regresiones logísticas ordinales y regresiones logísticas binarias, generando modelos para ambos indicadores que componen la variable dependiente (esfuerzo y salir adelante). Por último, se termina con una sección de "Otros análisis", donde se exploran variantes de los análisis presentados, cambiando las codificaciones o introduciendo otras posibles variables relevantes. El análisis aquí presentado queda a disposición de cualquier persona que quiera reproducir, replicar o revisar el proceso del artículo señalado.
+
 
 # Descriptivos
 

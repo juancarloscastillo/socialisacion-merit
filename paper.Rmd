@@ -1,94 +1,85 @@
 ---
 title: "La Socialización de la Meritocracia:   El rol de la Familia y la Escuela"
+css: "input/css/custom.css" # custom CSS para html
+linestretch: '1.5'          # interlineado 
+link-citations: yes         # citas linkeadas
 author:
-  - Juan Carlos Castillo ^[Departamento de Sociología, Universidad de Chile - Centro de Estudios de Conflicto y Cohesión Social - juancastillov@uchile.cl - http://jc-castillo.com/]
-  - Julio Iturra
-  - Francisco Meneses
-  - Martín Venegas
+- name: Juan Carlos Castillo ^[Autor para correspondencia - juancastillov@uchile.cl - http://jc-castillo.com/]
+  number: 1,2
+- name: Julio Iturra 
+  affiliation: Centro de Estudios de Conflicto y Cohesión Social
+  number: 2
+- name: Francisco Meneses
+  affiliation: Departamento de Sociología, Universidad de Chile
+  number: 1
+- name: Martín Venegas
+  number: 1
+# Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.
 abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual, el que ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales. En la presente investigación nos enfocamos en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Nuestros resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeracionalmente, dando paso a una portencial reproducción de la legitimación de la desigualdad. A la vez, se entrega evidencia sobre el efecto mitigador que tiene la experiencia de justicia en la escuela.
-date: "`r Sys.Date()`"
 output:
-  bookdown::html_document2:
-    toc: no
-    df_print: paged
-    css: input/css/custom.css
   bookdown::pdf_document2:
-    fig_caption: true
-    keep_tex: no
     template: null
-    number_sections: no
     toc: false
-    latex_engine: xelatex
-  html_document:
-    toc: no
-    df_print: paged
-geometry: paperheight= 11in, paperwidth=11in, margin=0.75in
-bibliography: input/bib/Educación-ciudadana-PACES.bib
-csl: input/bib/apa.csl
+    keep_tex: false
+    pandoc_args:
+      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion 
+  bookdown::html_document2:
+    number_sections: false
+linkcolor: blue                         # enlaces y citas en color azul
+bibliography: input/bib/Educación-ciudadana-PACES.bib     # bibliografia en bibtex
+editor_options:
+  chunk_output_type: console            # en RStudio, mostrar output en consola
+geometry: paperheight= 11in, paperwidth=11in, margin=0.75in # márgenes de página
 header-includes:
-- \usepackage{caption}
-- \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
-- \usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
-- \usepackage{graphicx}
-- \usepackage{float}
-- \usepackage{booktabs}
-- \usepackage{longtable}
-- \usepackage{array}
-- \usepackage{multirow}
-- \usepackage{wrapfig}
-- \usepackage{float}
-- \usepackage{colortbl}
-- \usepackage{pdflscape}
-- \usepackage{tabu}
-- \usepackage{threeparttable}
-linestretch: '1.2'
-link-citations: yes
-linkcolor: blue
-fontsize: 12pt
-font-family: Times New Roman
-editor_options: 
-  chunk_output_type: console
+  - \usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+  - \usepackage{times}           # Times New Roman
+  - \usepackage{caption}
+  - \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
 ---
 
-```{r eval=FALSE, include=FALSE}
-# for render in pdf run rmarkdown::render_site("docs/preanalisis.Rmd", output_format = "all")
-# clean #in the yml
-library(citr)
-#rmarkdown::render("docs/paper.Rmd", output_format = "bookdown::pdf_document2")
-#rmarkdown::render("docs/paper.Rmd", output_format = "bookdown::html_document2")
-```
-
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE,message = FALSE, cache = FALSE,out.width = '85%',fig.pos= "H")
-# knitr::opts_knit$set(base.url = "../") #relative path for .html output file
-# knitr::opts_knit$set(root.dir = "../") #relative path for chunks within .rmd files
-options(scipen=999)
-rm(list=ls())
-options(knitr.kable.NA = '')
-options(knitr.graphics.error = FALSE)
-Sys.setlocale("LC_ALL", "ES_ES.UTF-8")
-```
-
-```{r message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
-pacman::p_load(knitr, kableExtra, dplyr, lavaan, summarytools,haven,sjPlot,htmlwidgets)
-```
-
-```{r echo=FALSE }
-table_format = if(is_html_output()) {
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, ggplot2,sjmisc,texreg) # librerias
+knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
+                      message = FALSE,  # mensajes/avisos de librerias  
+                      cache = FALSE,    # cache de los chunks,usar analisis pesados
+                      out.width = '85%',# largo de imagen en %
+                      fig.pos= "H",     # posicion figuras H = HERE
+                      echo = FALSE      # incluir chunk en output
+                      )
+options(scipen=999) # notacion cientifica
+rm(list=ls())       # limpiar workspace
+options(knitr.kable.NA = '') # NA en kable = ''
+table_format = if(is_html_output()) { # Usar en argumento "format=" de kable
   "html"
 } else if(is_latex_output()) {
   "latex"
 }
-table_format2 = if(is_html_output()) {
+fwidth = if(is_html_output()) { #Usar en argumento "full_width" de kableExtra
   T
 } else if(is_latex_output()) {
   F
 }
 ```
 
+```{r message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
+pacman::p_load(knitr, kableExtra, dplyr, lavaan, summarytools,haven,sjPlot,htmlwidgets)
+```
 
 # Introducción {.tabset}
-
 
 ## Opción 1 (Versión revisada)
 
@@ -99,7 +90,6 @@ En el último tiempo se ha incrementado el interés por el estudio de la meritoc
 La literatura sobre justicia en la escuela ha logrado evidenciar la importancia que tienen las experiencias distributivas en la configuración de la visión del mundo en los jóvenes. Trabajos como lo de Resh y Sabbagh han demostrado que el sentido de justicia que tienen los estudiantes con respecto a la distribución de notas tiene un impacto en sus actitudes y comportamientos democráticos [@resh_Sense_2014; @resh_Sense_2017], así como también en la confianza institucional y social [@resh_Sense_2018]. Esta evidencia llama a profundizar en el efecto del sentido de justicia en otros aspectos de la visión del mundo de los jóvenes, como por ejemplo las percepciones de meritocracia. Esta propuesta se refuerza si se considera a la escuela no sólo como un formador de visiones, sino como un determinante de la forma en que se percibe la desigualdad de una sociedad, o como lo denomina @mijs_Inequality_2018, *espacios inferenciales*. Los espacios inferenciales consisten en instituciones que son capaces de formar percepciones sobre las causas de la desigualdad a partir de la información y experiencias que proveen. En este caso, un estudiante que siente que sus esfuerzos son recompensados podría inferir que dicha situación se replica a nivel general, o dicho de otro modo, percibe mayor meritocracia. En base a este planteamiento, la primera hipótesis de este trabajo es que, para el contexto chileno, la sensación de justicia en las notas implica mayores percepciones de meritocracia.
 
 La segunda hipótesis que proponemos en este trabajo es que las percepciones meritocráticas de los padres se transmiten hacia los hijos. Los estudios sobre la reproducción intergeneracional de la política han generado vasta evidencia en torno a la transmisión de habilidades, creencias, actitudes y prácticas para el ejercicio de la ciudadanía [@astill_Multilevel_2002; @miranda_Desigualdad_2018]. En esta línea, se ha estudiado la transmisión de opiniones e intenciones de participación política [@boonen_Adolescent_2013a; @quintelier_Intergenerational_2015], las creencias políticas sobre la democracia [@greenstein_Personality_2016a] y orientaciones políticas [@jennings_Politics_2009]. No obstante, estas investigaciones por lo general no incorporan aspectos relativos a la justicia distributiva, los cuales pueden ser fundamentales si se considera que las ideas de las personas sobre la desigualdad pueden generar apatía política e incluso deseos de insubordinación [@easterbrook_social_2021], además de estar relacionadas con la tolerancia y las ideas autoritarias [@madeira_Primes_2019; @azevedo_Neoliberal_2019]. De esta manera, esta investigación busca contribuir al cuerpo de estudios sobre socialización política incorporando otras ideas transmisibles, como las sensaciones de justicia y percepciones meritocráticas.
-
 
 ## Opción 2 (Propuesta FM)
 
@@ -115,7 +105,7 @@ La segunda hipótesis que proponemos en este trabajo es que las percepciones mer
 
 ## Estudio subjetivo de la desigualdad y las percepciones meritocráticas
 
-El estudio de la desigualdad social ha tenido un lugar central en la sociología. Por un lado, está el desarrollo de la investigación en el ámbito de la estratificación social, donde se ha puesto atención en las características de la estructura social y en los mecanismos de preproducción de la desigualdad [@kerbo_Estratificacion_1998; @chan_Class_2007a; @lopez-roldan_Comparative_2021]. Una de las dimensiones que ha sido abordada desde esta perspectiva se relaciona con la legitimidad de la desigualdad en ámbitos como los salarios [@evans_Justifications_2010] o el acceso a bienestar social [@maldonado_Risk_2019]. Por otro lado, durante las últimas décadas se ha desarrollado un ámbito de investigación que propone estudiar las actitudes distributivas de los individuos en relación a su posición en la estructura social, principalmente a través de sus percepciones y preferencias en torno a la desigualdad económica [@kluegel_Beliefs_2017; @kluegel_Social_2018; @janmaat_Subjective_2013; @jensen_Deservingness_2017]. En este marco, desde un enfoque de interés racional se sostiene que la posición relativa de los individuos en la estructura social - representada a través de los ingresos, logro educacional y posición en el mercado laboral - trae consigo que individuos de mayor estatus manifiesten actitudes menos igualitarias, y por tanto, tiendan a justificar mayor desigualdad [@meltzer_Tests_1983; @gugushvili_Intergenerational_2016]. Por otro lado, la literatura también ha demostrado que las actitudes de los individuos no solo se ven afectadas por su posición objetiva, sino que también son influenciadas por sus experiencias en torno a la desigualdad, donde la percepción en torno a la actual distribución económica juega un rol clave en cómo las sociedades legitiman la asignación de recursos en la sociedad [@garcia-castro_Perceiving_2020; @trump_Income_2018].
+El estudio de la desigualdad social ha tenido un lugar central en la sociología. Por un lado, está el desarrollo de la investigación en el ámbito de la estratificación social, donde se ha puesto atención en las características de la estructura social y en los mecanismos de reproducción de la desigualdad [@kerbo_Estratificacion_1998; @chan_Class_2007a; @lopez-roldan_Comparative_2021]. Una de las dimensiones que ha sido abordada desde esta perspectiva se relaciona con la legitimidad de la desigualdad en ámbitos como los salarios [@evans_Justifications_2010] o el acceso a bienestar social [@maldonado_Risk_2019]. Por otro lado, durante las últimas décadas se ha desarrollado un ámbito de investigación que propone estudiar las actitudes distributivas de los individuos en relación a su posición en la estructura social, principalmente a través de sus percepciones y preferencias en torno a la desigualdad económica [@kluegel_Beliefs_2017; @kluegel_Social_2018; @janmaat_Subjective_2013; @jensen_Deservingness_2017]. En este marco, desde un enfoque de interés racional se sostiene que la posición relativa de los individuos en la estructura social - representada a través de los ingresos, logro educacional y posición en el mercado laboral - trae consigo que individuos de mayor estatus manifiesten actitudes menos igualitarias, y por tanto, tiendan a justificar mayor desigualdad [@meltzer_Tests_1983; @gugushvili_Intergenerational_2016]. Por otro lado, la literatura también ha demostrado que las actitudes de los individuos no solo se ven afectadas por su posición objetiva, sino que también son influenciadas por sus experiencias en torno a la desigualdad, donde la percepción en torno a la actual distribución económica juega un rol clave en cómo las sociedades legitiman la asignación de recursos en la sociedad [@garcia-castro_Perceiving_2020; @trump_Income_2018].
 
 Frente a la complejidad y amplitud de conceptos utilizados en los estudios sobre desigualdad subjetiva, autores como @jasso_New_1980 o @janmaat_Subjective_2013 proponen marcos conceptuales que facilitan la comprensión del campo de estudio. Según @janmaat_Subjective_2013 los tres principales conceptos sobre desigualdad subjetiva son percepciones de desigualdad (estimaciones subjetivas sobre la desigualdad existente), creencias sobre la desigualdad (ideas normativas de justicia respecto a cómo debería ser la desigualdad), y por último, juicios sobre la desigualdad (evaluaciones sobre que tan buena o mala es la situación actual). Dentro de este marco, el presente estudio se focaliza en el aspecto específico de la percepción meritocrática, que tiene que ver con la estimación de la medida en que los esfuerzos y talentos son recompensados, lo que es distinto de la evaluación normativa de la meritocracia en la sociedad [@castillo_Meritocracia_2019].
 
@@ -357,7 +347,6 @@ knitr::kable(data.frame(image='![](output/tables/desc01_esc.png){width="550"}'),
              format = "pandoc") %>% kable_styling(latex_options = c("HOLD_position"),full_width = T)
 ```
 
-
 La Tabla N° \@ref(tab:desc01) y N° \@ref(tab:desc01-esc) muestran los estadísticos descriptivos para todas las variables utilizadas en este artículo. Comenzando por las variables de hipótesis, es posible sostener que las percepciones meritocráticas se encuentran ampliamente extendidas. Más de un 80% de las respuestas, tanto de apoderados como estudiantes, se concentran en las categorías más altas, dando cuenta de que los encuestados perciben que el esfuerzo y el trabajo duro son fundamentales para prosperar. Comparando ambas formas de preguntar por la percepción de meritocracia, se puede decir que la frase "En Chile quienes se esfuerzan salen adelante" genera más suspicacia en los encuestados, de modo tal que la distribución de esta pregunta se ve menos cargada al valor máximo y más centrada en valores intermedios. Esto puede deberse a que es una pregunta más directa al aludir a la meritocracia en tanto supone que todos los que se esfuerzan son recompensados efectivamente, y no solo que el esfuerzo es importante en la vida. En lo que respecta a la sensación de justicia en las notas, el indicador indirecto permite concluir que, en promedio, los estudiantes se sienten justamente recompensados con respecto a sus notas. Sin embargo, el indicador directo muestra que un 64.7% de estudiantes consideran que su nota es injustamente baja en consideración de su esfuerzo, en contraste a un 35.3% que se siente sobre o justamente recompensado. En el caso de las variables de nivel socioeconómico, los quintiles de ingreso denotan una muestra relativamente homogenea, no obstante, la cantidad de libros en el hogar desmiente esta tendencia mostrando una distribución asimetrica cargada a los valores medios y bajos. A nivel escuela, también se observa una distribución de ingresos asimetrica positiva.
 
 En la Tabla N° \@ref(tab:correl) se presentan las correlaciones entre las variables relevantes. Estas deben interpretarse como asociaciones positivas o negativas según el signo, de mayor intensidad según se acerquen a 1 o -1 y posiblemente extrapolable a los estudiantes del universo señalado cuando es significativo, lo cual se señalan con asteriscos.
@@ -556,8 +545,6 @@ Pese a los aportes de esta investigación, es necesario señalar algunas limitac
 # Referencias
 
 <div id="refs"></div>
-\printbibliography[heading=none]
-\def\printbibliography{}
 
 # Apéndice
 
@@ -733,8 +720,8 @@ paste0(round(c(med.outq2susj$tau.coef,med.outq3susj$tau.coef,med.outq4susj$tau.c
                  'Porcentaje Indirecto' = c(paste0(round(c(med.outq2su$n1*100,med.outq3su$n1*100,med.outq4su$n1*100,med.outq5su$n1*100,med.outqnssu$n1*100),1),"%"),paste0(round(c(med.outq2susj$n1*100,med.outq3susj$n1*100,med.outq4susj$n1*100,med.outq5susj$n1*100,med.outqnssusj$n1*100),1), '%' )))
                     
 
-kbl(collapse_rows_dt, format =table_format, caption = "Resumen Modelos de Mediación Percepciones Meritocráticas Estudiantes", align = "c",col.names = c("Mediador (Centrada)","Independiente", "Efectos Directos", "Efectos Indirectos", "Efectos Totales", "% de Efectos Indirectos")) %>% 
-   kable_styling(latex_options = c("HOLD_position"), full_width = T) %>%
+knitr::kable(collapse_rows_dt, format =table_format, caption = "Resumen Modelos de Mediación Percepciones Meritocráticas Estudiantes", align = "c",col.names = c("Mediador (Centrada)","Independiente", "Efectos Directos", "Efectos Indirectos", "Efectos Totales", "% de Efectos Indirectos")) %>% 
+   kable_styling(full_width = F,latex_options = c("scale_down","HOLD_position")) %>%
      column_spec(1, bold = T) %>% collapse_rows(columns = 1:3, valign = "top") %>%  add_header_above(c(" " = 2, "Efectos sobre Percepcion Meritocratica Estudiantes" = 4), bold = T) %>%  
   footnote(paste0("N= ",dim(basereg)[1],", ","*** p< 0.001; ** p< 0.01; * p< 0.05"),
            footnote_as_chunk = T,
