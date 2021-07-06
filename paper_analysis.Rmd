@@ -36,6 +36,7 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              sj_direct_factor,
                              sj_indirect_ln,
                              quintiles_ingresos_pc_factor,
+                             educ_factor_ap,
                              libros_hogar_factor_ap,
                              recompensa_factor_est,
                              resp_prof_factor,
@@ -252,7 +253,7 @@ knitreg(list(effort.ols1,effort.ols2,effort.ols3,effort.ols4,effort.ols5,effort.
         )
 ```
 
-### Promedio: trabajo duro + recomensa 
+### Promedio: trabajo duro + recompensa 
 ```{r,results='asis'}
 merit.ols1 <- lmer(formula(paste("prom_percmer_est~",paste(c("prom_percmer_ap",ref),collapse="+"))), basereg)
 merit.ols2 <- lmer(formula(paste("prom_percmer_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
