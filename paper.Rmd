@@ -17,14 +17,14 @@ author:
 # Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.
 abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual, el que ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales, así como por sus efectos negativos en la estabilidad emocional y su fomento de actitudes antidemocráticas. La presente investigación se enfoca en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Los resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeracionalmente, dando paso a una portencial reproducción de la legitimación de la desigualdad. A la vez, se entrega evidencia sobre el efecto mitigador que tiene la experiencia de justicia en la escuela.
 output:
-  bookdown::html_document2:
-    number_sections: false
   bookdown::pdf_document2:
     #  - --template=input/mytemplate.tex #custom template para usar autores con afiliacion 
     template: null
     toc: false
     keep_tex: false
     #pandoc_args:
+  bookdown::html_document2:
+    number_sections: false
 linkcolor: blue                         # enlaces y citas en color azul
 bibliography: input/bib/Educación-ciudadana-PACES.bib     # bibliografia en bibtex
 editor_options:
@@ -475,7 +475,7 @@ En lo que respecta a la sensación de justicia en las notas, el indicador indire
 En el caso de recursos, se puede decir, que la muestra posee una gran cantidad de personas con un bajo nivel de recursos socioeconómicos y culturales. La mediana de ingresos per cápita es de $120.666 pesos chilenos ($161,51 USD), lo cual sitúa a la mitad de la muestra por debajo de la línea de la pobreza establecida por el Ministerio de Desarrollo Social del gobierno de Chile para el 2019. Esto es consistente con la distribución de los recursos culturales como los libros. La mayoría de los hogares en la muestra poseen entre 25 y 100 libros (37%), aunque una proporción mayor de personas poseen menos de 25 libros en su hogar  (45%) A nivel escuela, también se observa una distribución de ingresos asimétrica positiva, es decir, cargada hacia valores bajos. 
 
 
-En la Tabla N° \@ref(tab:correl) se presentan las correlaciones entre las variables relevantes. Estas deben interpretarse como asociaciones positivas o negativas según el signo, de mayor intensidad según se acerquen a 1 o -1 y posiblemente extrapolable a los estudiantes del universo señalado cuando es significativo, lo cual se señalan con asteriscos.
+En la Tabla N° \@ref(tab:correl) se presentan las correlaciones entre las variables principales del estudio. Las correlaciones deben interpretarse como asociaciones positivas o negativas según el signo y de mayor intensidad según se acerque el valor absoluto al 1. Estas relaciones son extrapolables al universo cuando son significativas, lo cual se señala con uno, dos o tres, asteriscos según el nivel de confianza (95%, 99% o 99,9%, respectivamente).
 
 
 [^2]: Con tal de poder efectuar los análisis de correlación, los 71 casos de la categoría “NS/NR” de la variable quintiles de ingresos fueron imputados por los promedios de ingresos de la escuela.
@@ -586,16 +586,19 @@ correlationtable=kable(cor.mat,
 correlationtable
 ```
 
+En general, las correlaciones ofrecen evidencia parcial a las hipótesis planteadas en este estudio. Se evidencia una relación entre las percepciones meritocraticas de padres e hijos, aunque solo en uno de los cuatro cruces posible y con una fuerza de relación más bien pequeña. Padres que consideran importante el trabajo duro para surgir en la vida, están asociados a hijos que respaldan la afirmación de que en Chile quienes se esfuerzan salen adelante (*r* = 0.13; *p* \< 0.01). Pese a ello, el respaldo de los padres a la afirmación sobre el rol del esfuerzo no está asociado significativamente con ninguna variable de los estudiantes.
 
-En la Tabla N° \@ref(tab:correl) se presentan las correlaciones entre las variables principales del estudio. Las correlaciones deben interpretarse como asociaciones positivas o negativas según el signo y de mayor intensidad según se acerque el valor absoluto al 1. Estas relaciones son extrapolables al universo cuando son significativas, lo cual se señala con uno, dos o tres, asteriscos según el nivel de confianza (95%, 99% o 99,9%, respectivamente).
- 
-En general, las correlaciones ofrecen evidencia parcial a las hipótesis planteadas en este estudio. Se evidencia una relación entre las percepciones meritocraticas de padres e hijos, aunque con una fuerza de relación más bien pequeña. Padres que consideran importante el trabajo duro para surgir en la vida, están asociados a hijos con similar creencia (*r* = 0.08; *p* \< 0.05 ) y que respaldan la afirmación de que en Chile quienes se esfuerzan salen adelante (*r* = 0.09; *p* \< 0.05). Pese a ello, el respaldo de los padres a la afirmación sobre el rol del esfuerzo no está asociado significativamente con ninguna variable de los estudiantes. Ninguna de las dos formas de medir la sensación de justicia en las notas posee la relación esperada con las percepciones meritocráticas de los estudiantes. Las hipótesis de nivel socioeconómico se sostienen solamente para el indicador de “trabajo duro” en estudiantes, correlacionando significativamente a nivel individual (*r* = 0.09; *p* \< 0.05 ) y a nivel escuela, tanto por el nivel de ingresos (*r* = 0.13; *p* \< 0.01 ), como por el porcentaje de educación terciaria (*r* = 0.11; *p* \< 0.01 ).
+Ninguna de las dos formas de medir la sensación de justicia en las notas posee la relación esperada con las percepciones meritocráticas de los estudiantes. Las hipótesis de nivel socioeconómico se sostienen solamente para el indicador de “trabajo duro” en estudiantes, correlacionando significativamente a nivel individual,  con la educación de los padres (*r* = 0.14; *p* \< 0.05 ) y a nivel escuela, tanto por el nivel de ingresos (*r* = 0.12; *p* \< 0.01 ), como por el porcentaje de apoderados con educación terciaria (*r* = 0.14; *p* \< 0.01 ). En contradicción con nuestras hipótesis, padres de mayor quintil respaldan menos la afirmación de que en chile quien se esfuerza sale adelante (*r* = 0.16; *p* \< 0.01 ).
+
  
 Dada la alta correlación entre ambos indicadores de nivel socioeconómico a nivel escuela (*r* = 0.86; *p* \< 0.001 ), en los modelos se incluirá solamente un indicador con tal de evitar problemas de multicolinealidad.
 
+## Análisis multivariado
 
 
+La Tabla N° \@ref(tab:getah) [^3] presenta los resultados de la estimación del modelo de regresión ordinal multinivel para la variable de “importancia atribuida al trabajo duro para salir adelante” como indicador de percepción meritocrática en estudiantes. Las estimaciones de los modelos siguen un orden de complejidad ascendente con tal de poder analizar el comportamiento de los coeficientes en la medida que son controlados por otros predictores. Bajo esta lógica, primero se estiman modelos simples para las variables principales, luego modelos multivariados, para luego introducir controles e interacciones.
 
+[^3]: El indicador de esfuerzo no presentó resultados significativos en el análisis multivariado, por lo que no se incorpora en el análisis principal. Se puede ver en la Tabla N° \@ref(tab:effort) en la sección de Apéndice.
 
 
 ```{r getah, results='asis', echo=FALSE}
@@ -690,18 +693,11 @@ knitreg(list(getah.or1,getah.or3,getah.or4,getah.or5,getah.or6,getah.or7,getah.o
 ```
 
 
-## Análisis multivariado
-
-
-La Tabla N° \@ref(tab:getah) [^3] presenta los resultados de la estimación del modelo de regresión ordinal multinivel para la variable de “importancia atribuida al trabajo duro para salir adelante” como indicador de percepción meritocrática en estudiantes. Las estimaciones de los modelos siguen un orden de complejidad ascendente con tal de poder analizar el comportamiento de los coeficientes en la medida que son controlados por otros predictores. Bajo esta lógica, primero se estiman modelos simples para las variables principales, luego modelos multivariados, para luego introducir controles e interacciones.
-
-[^3]: El indicador de esfuerzo no presentó resultados significativos en el análisis multivariado, por lo que no se incorpora en el análisis principal. Se puede ver en la Tabla N° \@ref(tab:effort) en la sección de Apéndice.
-
 Los resultados son consistentes con lo vislumbrado por el análisis bivariado. En el caso de la hipótesis de transmisión intergeneracional se observa un efecto significativo entre las percepciones meritocráticas de los padres y las percepciones meritocráticas de los estudiantes, relación que se mantiene significativa pese a los controles estadísticos (Model 7 : *logit* = 1.47; *p* \< 0.001 ). Por ello, las probabilidades naturales de observar mayores niveles de percepción meritocrática en un estudiante aumentan 1.45 cuando el padre posee similares creencias.
 
 Respecto a la hipótesis del sentido de justicia, se puede ver que en ninguna de las formas en que se mide la sensación de justicia en las notas permite concluir una relación positiva con la percepción meritocrática de los estudiantes.
 
-Existe un efecto del nivel socioeconómico en las percepciones meritocráticas de los estudiantes. En comparación con el primer quintil, los estudiantes del tercer quintil poseen más probabilidades de indicar que el trabajo duro es importante para surgir en la vida (ver *logit* Modelos 5,6 y 7 con *p* \< 0.05). Esta evidencia es consistente con los antecedentes que señalan la importancia del nivel socioeconómico al explicar las percepciones meritocráticas, a la vez que aporta evidencia para señalar que dicha asociación, evaluada comúnmente en adultos, es aplicable a los jóvenes. Por su parte, no se encuentra un efecto significativo del nivel socioeconómico de la escuela medido mediante la proporción de apoderados con título universitario. En suma, los hallazgos confirman la relación del nivel socioeconómico con la percepción meritocrática a nivel individual, pero no a nivel escuela.
+Existe un efecto del nivel socioeconómico en las percepciones meritocráticas de los estudiantes. En comparación con el primer quintil, los estudiantes de los tres quintiles superiores poseen más probabilidades de indicar que el trabajo duro es importante para surgir en la vida, aunque solo el efecto del tercer quintil perdura al incluir como control el nivel educativo de los padres (ver *logit* Modelos 5,6 y 7 con *p* \< 0.05). Esta evidencia es consistente con los antecedentes que señalan la importancia del nivel socioeconómico al explicar las percepciones meritocráticas, a la vez que aporta evidencia para señalar que dicha asociación, evaluada comúnmente en adultos, es aplicable a los jóvenes. Por su parte, no se encuentra un efecto significativo del nivel socioeconómico de la escuela medido mediante la proporción de apoderados con título universitario. En suma, los hallazgos confirman la relación del nivel socioeconómico con la percepción meritocrática a nivel individual, pero no a nivel escuela.
 
 Respecto a las interacciones, se observa que, aunque la justicia en las notas no tenga un efecto en sí misma, si posee una interacción significativa con la percepción meritocrática de los padres. Esto va en la línea de lo hipotetizado, en tanto se esperaba que la experiencia escolar debilite la asociación entre la percepción meritocrática de los padres y los estudiantes. Efectivamente, como se puede observar en la Figura N° \@ref(fig:interac), para quienes consideran que su nota es menos de la que merecían, que sus padres consideren importante el trabajo duro no implica una mayor probabilidad de señalar que el trabajo duro es muy importante. Dicho de otra forma, las probabilidades de que un estudiante con papás que perciben meritocracia perciba que el trabajo duro es muy importante cuando se siente subrecompensado con sus notas, es mucho menor a cuando siente que el trabajo duro no es importante.
 
