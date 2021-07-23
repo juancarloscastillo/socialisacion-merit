@@ -23,7 +23,7 @@ output:
     toc: false
     keep_tex: false
     pandoc_args:
-      - --template=input/mytemplate.tex 
+    #  - --template=input/mytemplate.tex 
   bookdown::html_document2:
     number_sections: false
 linkcolor: blue                         # enlaces y citas en color azul
@@ -106,6 +106,7 @@ width_table = if(is_html_output()) {
 } else if(is_latex_output()) {
   500
 }
+pacman::p_load(knitr, kableExtra, dplyr, lavaan, summarytools,haven,sjPlot,htmlwidgets)
 
 
 ```
@@ -257,13 +258,48 @@ En la Tabla N° \@ref(tab:table-dependientes) se expone la variable dependiente 
 
 [^1]: En la Tabla N° \@ref(tab:table-dependientes) se muestran solamente las categorías extremas de la escala Likert.
 
-```{r include=FALSE}
-cap1 <- "Operacionalización de la variable dependiente"
-# if (knitr::is_html_output()) {tb <- table_nums("tb",cap)} else {tb <- cap}
-```
-
 
 ```{r table-dependientes, echo=FALSE}
+
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, ggplot2,sjmisc,texreg,webshot) # librerias
+
+
+table_format = if(is_html_output()) { # Usar en argumento "format=" de kable
+  "html"
+} else if(is_latex_output()) {
+  "latex"
+}
+
+fwidth = if(is_html_output()) { #Usar en argumento "full_width" de kableExtra
+  T
+} else if(is_latex_output()) {
+  F
+}
+
+format_size = if(is_html_output()) { # Usar en argumento "format=" de kable
+ 20
+} else if(is_latex_output()) {
+  10
+}
+
+
+width_table = if(is_html_output()) { 
+  800
+} else if(is_latex_output()) {
+  500
+}
+
+
+
+
+#pacman::p_load(dplyr,kable,utils,kableExtra)
+
+cap1 <- "Operacionalización de la variable dependiente"
+# if (knitr::is_html_output()) {tb <- table_nums("tb",cap)} else {tb <- cap}
+
+
 tab01 <- read.csv(file = "input/prereg/table01.csv",header = 1,sep = ";",encoding = "UTF-8")
 cnames <- c("Variable","Pregunta", "Categorías de respuesta")
 kable(tab01,table_format,booktabs = T, linesep = "",col.names = cnames, caption = cap1) %>%
@@ -286,13 +322,55 @@ kable(tab01,table_format,booktabs = T, linesep = "",col.names = cnames, caption 
 ```
 
 
-```{r include=FALSE}
-cap2 <- "Operacionalización de las variables independientes de nivel individual"
-# if (knitr::is_html_output()) {tb <- table_nums("tb",cap)} else {tb <- cap}
-```
-
 
 ```{r table-independientesn1, echo=FALSE}
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, ggplot2,sjmisc,texreg,webshot) # librerias
+
+options(scipen=999) # notacion cientifica
+rm(list=ls())       # limpiar workspace
+options(knitr.kable.NA = '') # NA en kable = ''
+
+
+table_format = if(is_html_output()) { # Usar en argumento "format=" de kable
+  "html"
+} else if(is_latex_output()) {
+  "latex"
+}
+
+fwidth = if(is_html_output()) { #Usar en argumento "full_width" de kableExtra
+  T
+} else if(is_latex_output()) {
+  F
+}
+
+format_size = if(is_html_output()) { # Usar en argumento "format=" de kable
+ 20
+} else if(is_latex_output()) {
+  10
+}
+
+
+graph.magnif_table = if(is_html_output()) { 
+  1.2
+} else if(is_latex_output()) {
+  0.75
+}
+
+width_table = if(is_html_output()) { 
+  800
+} else if(is_latex_output()) {
+  500
+}
+
+
+
+cap2 <- "Operacionalización de las variables independientes de nivel individual"
+# if (knitr::is_html_output()) {tb <- table_nums("tb",cap)} else {tb <- cap}
+
+
+
 tab02 <- read.csv(file = "input/prereg/table02.csv",header = 1,sep = ";",encoding = "UTF-8")
 
 
@@ -329,13 +407,66 @@ En lo que respecta a las variables independientes de los estudiantes, se emplear
 
 
 
-```{r include=FALSE}
+```{r table-independientesn2, echo=FALSE}
+
+### general 
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, ggplot2,sjmisc,texreg,webshot) # librerias
+knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
+                      message = FALSE,  # mensajes/avisos de librerias  
+                      cache = FALSE,    # cache de los chunks,usar analisis pesados
+                      out.width = '85%',# largo de imagen en %
+                      fig.pos= "H",     # posicion figuras H = HERE
+                      echo = FALSE      # incluir chunk en output
+                      )
+options(scipen=999) # notacion cientifica
+rm(list=ls())       # limpiar workspace
+options(knitr.kable.NA = '') # NA en kable = ''
+
+
+table_format = if(is_html_output()) { # Usar en argumento "format=" de kable
+  "html"
+} else if(is_latex_output()) {
+  "latex"
+}
+
+fwidth = if(is_html_output()) { #Usar en argumento "full_width" de kableExtra
+  T
+} else if(is_latex_output()) {
+  F
+}
+
+format_size = if(is_html_output()) { # Usar en argumento "format=" de kable
+ 20
+} else if(is_latex_output()) {
+  10
+}
+
+stars.pval2=function (p.value) 
+ {
+    unclass(symnum(p.value, corr = FALSE, na = FALSE, cutpoints = c(0, 
+        0.001, 0.01, 0.05, 1), symbols = c("***", 
+        "**", "*", " ")))
+}
+
+graph.magnif_table = if(is_html_output()) { 
+  1.2
+} else if(is_latex_output()) {
+  0.75
+}
+
+width_table = if(is_html_output()) { 
+  800
+} else if(is_latex_output()) {
+  500
+}
+
+### 
+
 cap3 <- "Operacionalización de las variables independientes de nivel escuela"
 # if (knitr::is_html_output()) {tb <- table_nums("tb",cap)} else {tb <- cap}
-```
 
-
-```{r table-independientesn2, echo=FALSE}
 tab03 <- read.csv(file = "input/prereg/table03.csv",header = 1,sep = ";",encoding = "UTF-8")
 
 
@@ -393,6 +524,63 @@ El análisis se llevará a cabo con el software estadístico `R` versión 4.0.3 
 # Resultados
 
 ```{r include=FALSE, results='asis'}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache = TRUE)
+
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, ggplot2,sjmisc,texreg,webshot) # librerias
+knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
+                      message = FALSE,  # mensajes/avisos de librerias  
+                      cache = FALSE,    # cache de los chunks,usar analisis pesados
+                      out.width = '85%',# largo de imagen en %
+                      fig.pos= "H",     # posicion figuras H = HERE
+                      echo = FALSE      # incluir chunk en output
+                      )
+options(scipen=999) # notacion cientifica
+rm(list=ls())       # limpiar workspace
+options(knitr.kable.NA = '') # NA en kable = ''
+
+
+table_format = if(is_html_output()) { # Usar en argumento "format=" de kable
+  "html"
+} else if(is_latex_output()) {
+  "latex"
+}
+
+fwidth = if(is_html_output()) { #Usar en argumento "full_width" de kableExtra
+  T
+} else if(is_latex_output()) {
+  F
+}
+
+format_size = if(is_html_output()) { # Usar en argumento "format=" de kable
+ 20
+} else if(is_latex_output()) {
+  10
+}
+
+
+
+graph.magnif_table = if(is_html_output()) { 
+  1.2
+} else if(is_latex_output()) {
+  0.75
+}
+
+width_table = if(is_html_output()) { 
+  800
+} else if(is_latex_output()) {
+  500
+}
+pacman::p_load(knitr, kableExtra, dplyr, lavaan, summarytools,haven,sjPlot,htmlwidgets)
+
+graph.magnif_table = if(is_html_output()) { 
+  1.2
+} else if(is_latex_output()) {
+  0.75
+}
+
+
 pacman::p_load(summarytools,haven,sjPlot,dplyr,htmlwidgets, webshot)
 st_css()
 st_options(lang = "es",
@@ -445,7 +633,7 @@ df.esc<- dfSummary(select(basereg,dependencia_factor_ap:univ_esc),
                plain.ascii = FALSE,
                style = "grid",
                tmp.img.dir = "/tmp",
-               graph.magnif = graph.magnif_table,
+               graph.magnif = TRUE,
                headings = F,  # encabezado
                varnumbers = F, # num variable
                labels.col = T, # etiquetas
@@ -458,27 +646,23 @@ df.esc$Variable <- NULL # delete variable column
 view(df.esc,file = "desc01_esc.html")
 webshot(url ="desc01_esc.html" ,file ="output/tables/desc01_esc.png",vheight = 10)
 file.remove(c("desc01.html","desc01_esc.html"))
-```
 
 
-```{r desc01, echo=FALSE, results='asis'}
-knitr::kable(data.frame(image='![](output/tables/desc01.png){width=width_table}'),    # generar tabla
+
+knitr::kable(data.frame(image='![](output/tables/desc01.png){height=80%}'),    # generar tabla
              caption="Descriptivos apoderados y estudiantes",
              col.names = "",
              row.names = F,
              format = "pandoc") %>%  kable_styling(latex_options = c("HOLD_position"),full_width = fwidth)
-```
-
-
-
-
-```{r desc01-esc, echo=FALSE, results='asis'}
 knitr::kable(data.frame(image='![](output/tables/desc01_esc.png){width=width_table}'), # generar tabla
              caption="Descriptivos establecimiento",
              col.names = "",
              row.names = F,
              format = "pandoc") %>% kable_styling(latex_options = c("HOLD_position"),full_width = fwidth)
+
+
 ```
+
 
 
 La Tabla N° \@ref(tab:desc01) y N° \@ref(tab:desc01-esc) muestran los estadísticos descriptivos para todas las variables utilizadas en este artículo. Las variables asociadas a meritocracias indican una gran adhesión de la población a este ideal. Más de un 80% de las respuestas, tanto de apoderados como estudiantes, se concentran en las categorías más altas, dando cuenta de que los encuestados perciben que el esfuerzo y el trabajo duro son fundamentales para prosperar. 
@@ -494,6 +678,35 @@ En la Tabla N° \@ref(tab:correl)[^3] se presentan las correlaciones entre las v
 
 
 ```{r correl, echo=FALSE}
+
+
+table_format = if(is_html_output()) { # Usar en argumento "format=" de kable
+  "html"
+} else if(is_latex_output()) {
+  "latex"
+}
+
+fwidth = if(is_html_output()) { #Usar en argumento "full_width" de kableExtra
+  T
+} else if(is_latex_output()) {
+  F
+}
+
+format_size = if(is_html_output()) { # Usar en argumento "format=" de kable
+ 20
+} else if(is_latex_output()) {
+  10
+}
+
+
+stars.pval2=function (p.value) 
+ {
+    unclass(symnum(p.value, corr = FALSE, na = FALSE, cutpoints = c(0, 
+        0.001, 0.01, 0.05, 1), symbols = c("***", 
+        "**", "*", " ")))
+}
+
+
 pacman::p_load(summarytools,haven,sjPlot,dplyr,sjlabelled,rvest,knitr,kableExtra)
 load(file = "input/data/ap_est.RData")
 basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
@@ -668,14 +881,14 @@ ref <- "(1|rbd_est)"
 cap1 <- "Modelos ordinal logit multinivel para Socialización de importancia del trabajo duro"
 
 
-getah.or1 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
-getah.or2 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
-getah.or3 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
-getah.or4 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
-getah.or5 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con[-3],ref),collapse="+"))), basereg)
-getah.or6 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg, nAGQ = 10)
-getah.or7 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
-getah.or8 <- clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","univ_esc",ref),collapse="+"))), basereg)
+getah.or1 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
+getah.or2 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
+getah.or3 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
+getah.or4 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
+getah.or5 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con[-3],ref),collapse="+"))), basereg)
+getah.or6 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg, nAGQ = 10)
+getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+getah.or8 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","univ_esc",ref),collapse="+"))), basereg)
 
 coef_names <- c(
   # "Algo importante","Importante","Muy importante",
@@ -721,19 +934,71 @@ Por último, este estudio propuso dos caminos para explicar la relación entre n
 
 
 ```{r interac, fig.width=11,fig.cap="Interacción entre percepciones meritocraticas parentales, del estudiante y justicia en las notas", echo=FALSE, out.width='100%'}
+pacman::p_load(ordinal,lme4, dplyr,knitr,haven)
+load(file = "input/data/ap_est.RData")
+
+basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             perc_tduro_bi_est,
+                             perc_tduro_bi2_est,
+                             perc_tduro_bi3_est,
+                             perc_esfuerzo_bi_est,
+                             perc_tduro_bi_ap,
+                             perc_tduro_bi2_ap,
+                             perc_tduro_bi3_ap,
+                             perc_esfuerzo_bi_ap,
+                             prom_percmer_est,
+                             prom_percmer_ap,
+                             sj_direct_factor,
+                             sj_indirect_noln,
+                             sj_indirect_cat,
+                             sj_indirect_qtil,
+                             quintiles_ingresos_pc_factor,
+                             educ_factor_ap,
+                             libros_hogar_factor_ap,
+                             recompensa_est,  # recompensa en escuela
+                             resp_prof,# justicia trato profesor  
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             ingresos_esc,
+                             ingresos_pc_esc,
+                             univ_esc,
+                             univ,
+                             rbd_est
+                             ) %>% na.omit(basereg)
+
+omit_coef="(Intercept)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
+con <-c(
+  "quintiles_ingresos_pc_factor",
+  "libros_hogar_factor_ap",
+  "educ_factor_ap",
+  "pos_pol_factor_ap",
+  "pos_pol_factor_est",
+  "genero_factor_est",
+  "dependencia_factor_ap"
+  )
+ref <- "(1|rbd_est)"
 
 
+
+getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
 
 
 library(ggplot2)
 basereg$fitted_or7 <- getah.or7$fitted.values
 pred_or7<- basereg %>%
-  mutate(sj_direct_factor=relevel(sj_direct_factor,ref = "Menos de las que merezco")) %>%
-  group_by(perc_trabajo_duro_factor_est,perc_tduro_bi_ap,sj_direct_factor) %>%
-  summarise(yhat=mean(fitted_or7))
+  dplyr::mutate(sj_direct_factor=relevel(sj_direct_factor,ref = "Menos de las que merezco")) %>%
+  dplyr::group_by(perc_trabajo_duro_factor_est,perc_tduro_bi_ap,sj_direct_factor) %>%
+  dplyr::summarise(yhat=mean(fitted_or7))
 
 
-ggplot(data=pred_or7, aes(x=perc_tduro_bi_ap, y=yhat,
+ggplot2::ggplot(data=pred_or7, aes(x=perc_tduro_bi_ap, y=yhat,
                           group=sj_direct_factor,
                           color=sj_direct_factor,
                          # fill=sj_direct_factor
@@ -773,9 +1038,41 @@ Pese a los aportes de esta investigación, es necesario señalar algunas limitac
 
 ```{r effort, echo=FALSE, results='asis'}
 
+
+
+table_format = if(is_html_output()) { # Usar en argumento "format=" de kable
+  "html"
+} else if(is_latex_output()) {
+  "latex"
+}
+
+fwidth = if(is_html_output()) { #Usar en argumento "full_width" de kableExtra
+  T
+} else if(is_latex_output()) {
+  F
+}
+
+format_size = if(is_html_output()) { # Usar en argumento "format=" de kable
+ 20
+} else if(is_latex_output()) {
+  10
+}
+
+#stars.pval2=function (p.value) 
+ #{
+#    unclass(symnum(p.value, corr = FALSE, na = FALSE, cutpoints = c(0, 
+#        0.001, 0.01, 0.05, 1), symbols = c("***", 
+#        "**", "*", " ")))
+#}
+
+
+pacman::p_load(dplyr,mediation,kableExtra,texreg,lme4,sjlabelled,fastDummies, haven)
+
+
 pacman::p_load(ordinal,lme4,texreg, dplyr,knitr,haven,sjPlot)
 load(file = "input/data/ap_est.RData")
-basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
+
+basereg <- ap_est %>% dplyr::select(perc_trabajo_duro_factor_est,
                              perc_esfuerzo_factor_est,
                              perc_trabajo_duro_est,
                              perc_esfuerzo_est,
@@ -827,13 +1124,13 @@ ref <- "(1|rbd_est)"
 cap1 <- "Modelos ordinal logit multinivel para Socialización de Esfuerzo recompensado"
 
 
-effort.or1 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap",ref),collapse="+"))), basereg)
-effort.or2 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
-effort.or3 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
-effort.or4 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
-effort.or5 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg)
-effort.or6 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_indirect_noln",ref),collapse="+"))), basereg)
-effort.or7 <- clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+effort.or1 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap",ref),collapse="+"))), basereg)
+effort.or2 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
+effort.or3 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
+effort.or4 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
+effort.or5 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg)
+effort.or6 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_indirect_noln",ref),collapse="+"))), basereg)
+effort.or7 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
 
 
 coef_names <- c(
@@ -849,7 +1146,7 @@ coef_names <- c(
   )
 
 
-knitreg(list(effort.or1,effort.or2,effort.or3,effort.or4,effort.or5,effort.or6,effort.or7),
+texreg::knitreg(list(effort.or1,effort.or2,effort.or3,effort.or4,effort.or5,effort.or6,effort.or7),
         caption = paste("(\\#tab:effort)",cap1),
         caption.above=TRUE,
         scalebox = 0.8,
@@ -861,11 +1158,7 @@ knitreg(list(effort.or1,effort.or2,effort.or3,effort.or4,effort.or5,effort.or6,e
         #             "Sentido justicia (directo)"=7:8),
         custom.coef.names=coef_names
         )
-```
 
-
-```{r Mediaciones, include=FALSE}
-pacman::p_load(dplyr,mediation,kableExtra,texreg,lme4,sjlabelled,fastDummies, haven)
 
 
 load(file = "input/data/ap_est.RData")
@@ -886,7 +1179,7 @@ load(file = "input/data/ap_est.RData")
 ap_est$perc_trabajo_duro_ap_numeric= as.numeric(ap_est$perc_trabajo_duro_factor_ap)
 
 
-ap_est <-  ap_est %>% group_by(rbd_est) %>% mutate(perc_trabajo_duro_ap_mdg = mean(perc_trabajo_duro_ap_numeric,na.rm =T))
+ap_est <-  ap_est %>% dplyr::group_by(rbd_est) %>% dplyr::mutate(perc_trabajo_duro_ap_mdg = mean(perc_trabajo_duro_ap_numeric,na.rm =T))
 ap_est <- ap_est %>%  mutate(perc_trabajo_duro_ap_cmg = perc_trabajo_duro_ap_numeric - mean(perc_trabajo_duro_ap_mdg,na.rm =T))
 
 
@@ -930,14 +1223,14 @@ basereg <- basereg %>% rename(quintil_1= `quintiles_ingresos_pc_factor_Quintil 1
 
 
 
-med.fit <- lmer(perc_trabajo_duro_ap_cmg ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns  + sj_direct_cwc + pos_pol_factor_ap +
+med.fit <- lme4::lmer(perc_trabajo_duro_ap_cmg ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns  + sj_direct_cwc + pos_pol_factor_ap +
                       pos_pol_factor_est +
                       genero_factor_est +
                       libros_hogar_factor_ap +
                       dependencia_factor_ap + (1|rbd_est), data = basereg)
 
 
-out.fit <- lmer(perc_trabajo_duro_est_num ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns  + perc_trabajo_duro_ap_cmg +  sj_direct_cwc  +
+out.fit <- lme4::lmer(perc_trabajo_duro_est_num ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns  + perc_trabajo_duro_ap_cmg +  sj_direct_cwc  +
                       pos_pol_factor_ap +
                       pos_pol_factor_est +
                       genero_factor_est +
@@ -970,10 +1263,10 @@ omit_coef="(Intercept)|(sj_direct_cwc)|(libros_hogar_factor_ap)|(pos_pol_factor_
 
 
 
-htmlreg(list(med.fit,out.fit),caption = "Mediación percepción padres", custom.model.names = c("PM Apoderado","PM Estudiante"),
+texreg::knitreg(list(med.fit,out.fit),caption = "Mediación percepción padres", custom.model.names = c("PM Apoderado","PM Estudiante"),
         omit.coef = omit_coef, 
         caption.above = T, 
-        star.symbol = "\\*", 
+        #star.symbol = "\\*", 
         center = T, 
         custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Controles aplicados en todos los modelos")
 
@@ -1016,21 +1309,20 @@ med.outqnssusj=summary(med.outqnssj)
 omit_coef="(Intercept)|(perc_trabajo_duro_ap_cmg)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
 
 
-htmlreg(list(med.fitn,out.fitn),caption = "Mediación Sensación de Justicia ", custom.model.names = c("SJ Notas","PM Estudiante"),
+texreg::knitreg(list(med.fitn,out.fitn),caption = "Mediación Sensación de Justicia ", custom.model.names = c("SJ Notas","PM Estudiante"),
         omit.coef = omit_coef, 
         caption.above = T, 
-        star.symbol = "\\*", 
+        #star.symbol = "\\*", 
         center = T, 
         custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Controles aplicados en todos los modelos")
 #summary(med.outn)
 
 
-```
 
 
 
 
-```{r meds, echo=FALSE}
+
 collapse_rows_dt <- data.frame( Independiente = c(rep("Percepción Meritocratica Padres",5),rep("Sensación Justicia Notas",5)), Mediador = c("Quintil 2","Quintil 3","Quintil 4","Quintil 5","Quintil Ns/Nr"), 
                 
                      'Efectos Directos' = c(paste0(round(c(med.outq2su$z0,med.outq3su$z0,med.outq4su$z0,med.outq5su$z0,med.outqnssu$z0),4),gtools::stars.pval(c(med.outq2su$z0.p,med.outq3su$z0.p,med.outq4su$z0.p,med.outq5su$z0.p,med.outqnssu$z0.p))),paste0(round(out.fitn@beta[2:6],4),gtools::stars.pval(c(med.outq2susj$z0.p,med.outq3susj$z0.p,med.outq4susj$z0.p,med.outq5susj$z0.p,med.outqnssusj$z0.p)))),
@@ -1048,14 +1340,13 @@ paste0(round(c(med.outq2susj$tau.coef,med.outq3susj$tau.coef,med.outq4susj$tau.c
                     
 
 
-knitr::kable(collapse_rows_dt, format =table_format, booktabs = T, caption = "Resumen Modelos de Mediación Percepciones Meritocráticas Estudiantes", align = "c",col.names = c("Mediador (Centrada)","Independiente", "Efectos Directos", "Efectos Indirectos", "Efectos Totales", "% de Efectos Indirectos")) %>% 
+kable(collapse_rows_dt, format =table_format, booktabs = T, caption = "Resumen Modelos de Mediación Percepciones Meritocráticas Estudiantes", align = "c",col.names = c("Mediador (Centrada)","Independiente", "Efectos Directos", "Efectos Indirectos", "Efectos Totales", "% de Efectos Indirectos")) %>% 
    kable_styling(full_width = F,latex_options = c("scale_down","HOLD_position")) %>%
      column_spec(1, bold = T) %>% collapse_rows(columns = 1:3, valign = "top") %>%  add_header_above(c(" " = 2, "Efectos sobre Percepcion Meritocratica Estudiantes" = 4), bold = T) %>%  
   footnote(paste0("N= ",dim(basereg)[1],", ","*** p< 0.001; ** p< 0.01; * p< 0.05"),
            footnote_as_chunk = T,
            general_title = "Nota: " )
   
-
 
 
 
