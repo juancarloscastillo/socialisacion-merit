@@ -575,7 +575,7 @@ file.remove(c("desc01.html","desc01_esc.html")) # Remover archivo HTML
 ```
 
 ```{r desc01, echo=FALSE, results='asis'}
-knitr::kable(data.frame(image='![](output/tables/desc01.png){width=width_table}'),    # generar tabla
+knitr::kable(data.frame(image='![](output/tables/desc01.png){height=80%}'),    # generar tabla
              caption="Descriptivos apoderados y estudiantes",
              col.names = "",
              row.names = F,
