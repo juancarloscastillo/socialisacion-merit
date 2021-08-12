@@ -17,14 +17,14 @@ author:
 # Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.
 abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual, el que ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales, así como por sus efectos negativos en la estabilidad emocional y su fomento de actitudes antidemocráticas. La presente investigación se enfoca en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Los resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeracionalmente, dando paso a una portencial reproducción de la legitimación de la desigualdad. A la vez, se entrega evidencia sobre el efecto mitigador que tiene la experiencia de justicia en la escuela.
 output:
+  bookdown::html_document2:
+    number_sections: false
   bookdown::pdf_document2:
     template: null
     toc: false
     keep_tex: false
     pandoc_args:
       - --template=input/mytemplate.tex #custom template para usar autores con afiliacion
-  bookdown::html_document2:
-    number_sections: false
 linkcolor: blue                         # enlaces y citas en color azul
 bibliography: input/bib/Educación-ciudadana-PACES.bib     # bibliografia en bibtex
 editor_options:
@@ -980,6 +980,8 @@ graph_interact <- ggplot2::ggplot(data=pred_or7, aes(x=perc_tduro_bi_ap, y=yhat,
   geom_point() +
   geom_line()+
   facet_grid(~perc_trabajo_duro_factor_est) + xlab("Percepciones meritocráticas apoderados") + ylab("Probabilidad") + scale_color_discrete("Justicia en las notas")
+
+graph_interact
 ```
 
 
