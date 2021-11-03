@@ -132,10 +132,10 @@ width_table = if(is_html_output()) {
 <!-- ## Opción 2 (Propuesta FM) -->
 
 
-La meritocracia es un ideal que aspira a que los recursos se distribuyan según el esfuerzo y talento personal [@young_rise_2006]. No obstante,  este ideal fomenta la frustración de los jóvenes y corroe en ellos los principios de la democracia, especialmente en contextos desiguales. Por ello, el creciente aumento de la desigualdad social [@solt_Measuring_2020] amenaza con agravar las injusticias y la discriminación. Los jóvenes seguirán enfrentados a diversos problemas como la desigualdad de oportunidades [@woodman_Inequality_2020; @pitkanen_Parental_2021], a la vez que las creencias meritocraticas disminuyen el apoyo a las políticas enfocadas en disminuir dichas desigualdades [@hadjar_Meritokratie_2008; @suhay_Ideology_2021]. En este contexto desigual, el ideal meritocrático fomenta la frustración en los jóvenes, implicando mayores presiones por conseguir estatus, menor autoestima, sintomatología ansiosa e incluso depresión adolescente [@nadler_Relative_2020;@du_Perceived_2021; @kim_Does_2020]. Igualmente, en sociedades desiguales donde la promesa meritocrática ofrece oportunidades infinitas que contrastan con la realidad [@allen_Top_2016; @guzman_Legitimacion_2016], los jóvenes serán expuestos a vivir más experiencias de discriminación [@conde_Desigualdad_2014], en tanto . En suma, este tipo de vivencias negativas en contextos desiguales pueden ser agravadas por el ideal meritocrático [@major_Perceived_2007]. En la misma línea, las creencias meritocraticas se asocian a valores contrarios a los promovidos por la educación cívica y ciudadana, ya que fomentan creencias antidemocráticas e intolerantes [@azevedo_Neoliberal_2019; @madeira_Primes_2019], así como corroe el sentido de comunidad [@sandel_tirania_2021 p.292].
+La meritocracia es un ideal que aspira a que los recursos se distribuyan según el esfuerzo y talento personal [@young_rise_2006]. No obstante, este ideal fomenta la frustración de los jóvenes y corroe en ellos los principios de la democracia, especialmente en contextos desiguales. Por ello, el creciente aumento de la desigualdad social [@solt_Measuring_2020] amenaza con agravar las injusticias y la discriminación. Los jóvenes seguirán enfrentados a diversos problemas como la desigualdad de oportunidades [@woodman_Inequality_2020; @pitkanen_Parental_2021], a la vez que las creencias meritocraticas disminuyen el apoyo a las políticas enfocadas en disminuir dichas desigualdades [@hadjar_Meritokratie_2008; @suhay_Ideology_2021]. En este contexto desigual, el ideal meritocrático fomenta la frustración en los jóvenes, implicando mayores presiones por conseguir estatus, menor autoestima, sintomatología ansiosa e incluso depresión adolescente [@nadler_Relative_2020;@du_Perceived_2021; @kim_Does_2020]. Igualmente, en sociedades desiguales donde la promesa meritocrática ofrece oportunidades infinitas que contrastan con la realidad [@allen_Top_2016; @guzman_Legitimacion_2016], los jóvenes serán expuestos a vivir más experiencias de discriminación [@conde_Desigualdad_2014]. En suma, este tipo de vivencias negativas en contextos desiguales pueden ser agravadas por el ideal meritocrático [@major_Perceived_2007]. En la misma línea, las creencias meritocraticas se asocian a valores contrarios a los promovidos por la educación cívica y ciudadana, ya que fomentan creencias antidemocráticas e intolerantes [@azevedo_Neoliberal_2019; @madeira_Primes_2019], así como corroe el sentido de comunidad [@sandel_tirania_2021 p.292].
 
 
-Pese a la importancia evidenciada de la meritocracia en las vivencias juveniles de la desigualdad, se ha puesto poca atención a la formación de estas creencias en etapas tempranas. En el último tiempo se ha incrementado el interés por el estudio de la meritocracia en las ciencias sociales [e.g. @madeira_Primes_2019; @atria_STUDYING_2019; [@mijs_paradox_2019]. Desde la sociología, se ha desarrollado una agenda de investigación que ha aportado en resaltar los aspectos subjetivos de la meritocracia [@jasso_New_1980; @kluegel_Beliefs_1981; @janmaat_Subjective_2013], trabajando teórica y empíricamente en torno a conceptos cómo preferencias redistributivas, atribuciones de pobreza o percepciones meritocráticas, [e.g. @newman_False_2015; @reynolds_Perceptions_2014] siendo estas últimas el objeto de este estudio. Las percepciones meritocráticas se entienden cómo la convicción de los sujetos sobre que su sociedad realmente distribuye recursos según el mérito individual [@castillo_Meritocracia_2019]. Pese a recientes avances en el estudio de la meritocracia, se ha puesto poca atención al origen de estas percepciones en etapas previas a la vida adulta, y en cómo la meritocracia podría ser transmitida intergeneracionalmente. Desde una perspectiva de socialización, distintos agentes tienen el potencial de contribuir a la formación de percepciones, actitudes y creencias en los jóvenes, siendo dos de ellos los más importantes: la familia y la escuela [@gidengil_Political_2016; @torney-purta_School_2002]. En el presente trabajo, el objetivo es estudiar en qué medida las ideas parentales y las experiencias escolares influyen en las percepciones meritocráticas de estudiantes secundarios. Basados en los trabajos sobre justicia en la escuela y en la agenda de socialización política familiar se busca responder dos preguntas: ¿De qué modo se asocia el sentido de justicia sobre la asignación de notas con las percepciones meritocráticas de los jóvenes? y ¿Cómo las percepciones meritocráticas de los padres pueden fomentar o disminuir las percepciones meritocráticas de sus hijos?
+Pese a la importancia evidenciada de la meritocracia en las vivencias juveniles de la desigualdad, se ha puesto poca atención a la formación de estas creencias en etapas tempranas. En el último tiempo se ha incrementado el interés por el estudio de la meritocracia en las ciencias sociales [e.g. @madeira_Primes_2019; @atria_STUDYING_2019; @mijs_paradox_2019]. Desde la sociología, se ha desarrollado una agenda de investigación que ha aportado en resaltar los aspectos subjetivos de la meritocracia [@jasso_New_1980; @kluegel_Beliefs_1981; @janmaat_Subjective_2013], trabajando teórica y empíricamente en torno a conceptos cómo preferencias redistributivas, atribuciones de pobreza o percepciones meritocráticas, [e.g. @newman_False_2015; @reynolds_Perceptions_2014] siendo estas últimas el objeto de este estudio. Las percepciones meritocráticas se entienden cómo la convicción de los sujetos sobre que su sociedad realmente distribuye recursos según el mérito individual [@castillo_Meritocracia_2019]. Pese a recientes avances en el estudio de la meritocracia, se ha puesto poca atención al origen de estas percepciones en etapas previas a la vida adulta, y en cómo la meritocracia podría ser transmitida intergeneracionalmente. Desde una perspectiva de socialización, distintos agentes tienen el potencial de contribuir a la formación de percepciones, actitudes y creencias en los jóvenes, siendo dos de ellos los más importantes: la familia y la escuela [@gidengil_Political_2016; @torney-purta_School_2002]. En el presente trabajo, el objetivo es estudiar en qué medida las ideas parentales y las experiencias escolares influyen en las percepciones meritocráticas de estudiantes secundarios. Basados en los trabajos sobre justicia en la escuela y en la agenda de socialización política familiar se busca responder dos preguntas: ¿De qué modo se asocia el sentido de justicia sobre la asignación de notas con las percepciones meritocráticas de los jóvenes? y ¿Cómo las percepciones meritocráticas de los padres pueden fomentar o disminuir las percepciones meritocráticas de sus hijos?
 
 
 La literatura sobre justicia en la escuela ha logrado evidenciar la importancia que tienen las experiencias distributivas en la configuración de la visión del mundo en los jóvenes. Trabajos como los de Resh y Sabbagh han demostrado que el sentido de justicia que tienen los estudiantes con respecto a la distribución de notas tiene un impacto en sus actitudes y comportamientos democráticos [@resh_Sense_2014; @resh_Sense_2017], así como también en la confianza institucional y social [@resh_Sense_2018]. Esta evidencia llama a profundizar en el efecto del sentido de justicia en otros aspectos de la visión del mundo de los jóvenes, como por ejemplo las percepciones de meritocracia. Esta propuesta se refuerza si se considera a la escuela no sólo como un formador de visiones, sino como un determinante de la forma en que se percibe la desigualdad de una sociedad, o como lo denomina @mijs_Inequality_2018, *espacios inferenciales*. Los espacios inferenciales consisten en instituciones que son capaces de formar percepciones sobre las causas de la desigualdad a partir de la información y experiencias que proveen. En este caso, un estudiante que siente que sus esfuerzos son recompensados podría inferir que dicha situación se replica a nivel general, o dicho de otro modo, percibe mayor meritocracia. En base a este planteamiento, la primera hipótesis de este trabajo es que, para el contexto chileno, la sensación de justicia en las notas implica mayores percepciones de meritocracia.
@@ -742,7 +742,7 @@ correlationtable=kable(cor.mat,
 # bootstrap_options=c("striped", "bordered")
 # Save table
 
-#save_kable(correlationtable, "output/tables/cor.png")
+save_kable(correlationtable, "output/tables/cor.png")
 correlationtable # Visualizar tabla
 ```
 
@@ -766,7 +766,7 @@ La Tabla N° \@ref(tab:getah) [^4] presenta los resultados de la estimación del
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
-pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, lme4, ordinal) # librerias
+pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, lme4, ordinal, webshot) # librerias
 knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
                       message = FALSE,  # mensajes/avisos de librerias  
                       cache = FALSE,    # cache de los chunks,usar analisis pesados
@@ -861,7 +861,7 @@ coef_names <- c(
 
 # Renderizar tabla
 knitreg(list(getah.or1,getah.or3,getah.or4,getah.or5,getah.or6,getah.or7,getah.or8),
-        caption = paste("(\\#tab:getah)",cap1), # Se agrega key para que se pueda referenciar
+        caption = paste(cap1), # Se agrega key para que se pueda referenciar
         caption.above=TRUE,
         omit.coef=omit_coef,
         include.thresholds=FALSE,
@@ -871,8 +871,10 @@ knitreg(list(getah.or1,getah.or3,getah.or4,getah.or5,getah.or6,getah.or7,getah.o
         #             "Sentido justicia (directo)"=7:8),
         custom.coef.names=coef_names,
         custom.note="*** p < 0.001; ** p < 0.01; * p < 0.05; ¹'Es importante' (Muy importante + Importante + Algo Importante) y 'No es importante' (Nada importante)"
+        #file = "output/tables/trabajoduro_ppt.html"
         )
 
+#webshot::webshot("output/tables/trabajoduro_ppt.html","output/tables/trabajoduro_ppt.png")
 ```
 
 
@@ -1016,7 +1018,7 @@ Pese a los aportes de esta investigación, es necesario señalar algunas limitac
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
-pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, lme4, ordinal) # librerias
+pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, lme4, ordinal, webshot) # librerias
 knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
                       message = FALSE,  # mensajes/avisos de librerias  
                       cache = FALSE,    # cache de los chunks,usar analisis pesados
@@ -1119,7 +1121,7 @@ texreg::knitreg(list(effort.or1,effort.or2,effort.or3,effort.or4,effort.or5,effo
         #             "Setido justicia (indirecto)"=4:6,
         #             "Sentido justicia (directo)"=7:8),
         custom.coef.names=coef_names
-        )
+)
 
 ```
 
