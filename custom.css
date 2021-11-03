@@ -1,0 +1,103 @@
+
+body {
+  font-family: Lato, 'Palatino Linotype', 'Book Antiqua', Palatino, 'Microsoft YaHei', 'Songti SC', serif;
+  font-weight: 300;
+  color: #000;
+}
+
+p{
+  
+  font-size: 1.5em;
+}  
+
+
+h1,h2{
+  color: red; 
+}
+
+.inverse {
+  background-color: #272822;
+  color: #d6d6d6;
+  
+}
+.inverse h1, .inverse h2, .inverse h3 {
+  color: #f3f3f3;
+}
+
+
+.inverse .remark-slide-number {
+  display: none;
+}
+
+a, a > code {
+  color: red;
+  text-decoration: none;
+}
+
+
+.pull-left {
+  float: left;
+  width: 47%;
+}
+.pull-right {
+  float: right;
+  width: 47%;
+}
+
+
+.number_list ol {
+  font: normal 1.2em 'Arial', Helvetica, text-align:justify;
+}
+
+.number_list ol li {
+  list-style: lower-alpha;
+  list-style-position: outside;
+  margin-right: 5px;
+  font-size: 1.5em;
+}
+
+
+
+.large { font-size: 130%
+}
+
+.medium { font-size: 85%
+}
+
+.small { font-size: 70%
+}
+
+.smally { font-size: 60%
+}
+.tiny { 
+    font-size: 50%;
+    line-height: 0em;
+}
+
+
+.espaciosimple{
+  line-height: 1em
+} 
+
+
+
+/**************
+ *
+ * Font colours
+ *
+ **************/
+
+
+.black { color: black; }
+.red { color: red; }
+.blue { color: blue; }
+.green { color: green; }
+.yellow { color: yellow; }
+.orange { color: orange; }
+.purple { color: purple; }
+.gray { color: gray; }
+.grey { color: gray; }
+.white{ color: white; }
+
+.bold { font-weight: bold; }
+.bolder { font-weight: bolder; }
