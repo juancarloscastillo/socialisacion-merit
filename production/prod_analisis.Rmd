@@ -2,15 +2,16 @@
 title: "Análisis de datos - Socialización de la meritocracia"
 author: "Castillo, J.C., Iturra, J., Meneses, F. & Venegas, M."
 date: '`r Sys.Date()`'
-output:
-  html_document:
-    df_print: paged
-    theme: paper
+output: 
+  html_document: 
     toc: yes
-    toc_float: yes
-    numbersections: true
-    code_folding: "hide"
-editor_options:
+    code_folding: hide
+    toc_float: 
+      collapsed: true
+      smooth_scroll: false
+      number_sections: true
+    css: "https://jciturras.github.io/ayudantia-sol3051/style.css"    
+editor_options: 
   chunk_output_type: console
 ---
 ```{r setup, include=FALSE}
@@ -94,7 +95,7 @@ ap_est <- sjlabelled::remove_all_labels(ap_est)
 
 ## Parte 2: Análisis descriptivos univariados {.tabset}
 
-### Gráfico de barras: percepción trabajo duro esutudiantes y apoderados
+### Gráfico barras: percepción trabajo duro estudiantes y apoderados
 
 ```{r fig.width= 10}
 # Plot Likert: perc. trabajo duro apoderados y estudiantes
@@ -128,7 +129,7 @@ sjPlot::plot_likert(baselik,
 ```
 Las respuestas de estudiantes y apoderados sobre la importancia del trabajo duro se concentran en las categorías más altas de la escala Likert. Un 81.2% de apoderados considera importante o muy importante el trabajo duro para surgir en la vida. En la misma linea, un 83.4% de los estudiantes comparte tal afirmación.
 
-### Gráfico de barras: Percepción esfuerzo esutudiantes y apoderados
+### Gráfico barras: Percepción esfuerzo esutudiantes y apoderados
 
 
 ```{r fig.width= 10}
@@ -164,14 +165,14 @@ sjPlot::plot_likert(baselik,
 
 Para el caso del grado de acuerdo con respecto a la afirmación "En Chile, los que se esfuerzan salen adelante" los resultados son similares al indicador anterior. Tanto en estudiantes como apoderados más del 80% de las respuestas se concentran en las categorías más altas, en este caso: "De acuerdo" y "Muy de acuerdo".
 
-### Tabla de descriptivos univariados: sentido de justicia indirecto (logaritmico y no logaritmico) 
+### Sentido de justicia indirecto (logaritmico y no logaritmico) 
 ```{r}
 select(ap_est, sj_indirect_ln, sj_indirect_noln) %>% summarytools::descr() %>% kable( format = "markdown",digits = 2,col.names = c("Sentido de justicia en las notas (Log)","Sentido de justicia en las notas (no Log)"), caption = "Freqs. Sentido Justicia Indirecto")
 ```
 
 Llama la atención que los datos del sentido de justicia indirecto logaritmico y el sin logaritmo son exactamente iguales.
 
-### Gráfico de densidad: Sentido de justicia indirecto
+### Gráfico densidad: Sentido de justicia indirecto
 ```{r}
 # Density plot 
 ggplot(ap_est, aes(x=sj_indirect_ln))+
@@ -179,7 +180,7 @@ ggplot(ap_est, aes(x=sj_indirect_ln))+
 ```
 Tanto los estadísticos como el gráfico de densidad sobre el sentido de justicia indirecto dan cuenta de una distribución con alta concentración de casos al medio (leptocúrtica) y asimetría positiva moderada (s=1.82). La mediana de -0.03 indica que al menos la mitad de los estudiantes de la muestra se siente subrecompensado con respecto a sus notas.
 
-### Tabla de frecuencias: sentido de justicia directo
+### Frecuencias sentido de justicia directo
 
 ```{r}
 
@@ -192,7 +193,7 @@ Respecto al indicador sobre sentido de justicia directo resalta que más del 60%
 
 Estos datos son contradictorios con los obtenidos a partir del sentido de justicia indirecto, lo que lleva a pensar que quizás no están midiendo el mismo constructo.
 
-### Tabla de descriptivos univariados: todas las variables
+### Resumen todas las variables
 
 A continuación se presentan los descriptivos de la base de datos completa:
 
@@ -203,11 +204,11 @@ sjPlot::view_df(ap_est, show.type = T, show.prc = T, show.na = T)
 Se realizan dos gráficos para variables likert. El primero corresponde a la comparación de percepción del trabajo duro en estudiantes y apoderados. El segundo es la misma comparación pero para la percepción de esfuerzo.
 
 
-## Parte 3: Análisis descriptivo bivariado {.tabset}
+## Parte 3: Análisis descriptivo bivariado
 
 A continuación se presenta una serie de tablas bivariadas. Primero, tablas de estadísticos descriptivos de las principales variables númericas (percepción meritocrática de estudiantes y apoderados y sentido de justicia indirecto) y variables categoricas de interés. Segundo, tablas de contingencia entre variables categoricas de interés.
 
-### Tabla descriptivos bivariados: variables númericas x genero estudiante
+### Variables númericas x genero estudiante
 
 ```{r}
 ## Variables númericas x genero estudiante
@@ -222,7 +223,7 @@ table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | genero_fac
 **Sentido de justicia estudiantes:** A nivel de muestra, estudiantes que se identifican con el genero Otro se sienten menos subrecompensados que hombres y mujeres. De todos modos el N de este grupo de estudiantes es considerablemente bajo (N=33).
 
 
-### Tabla descriptivos bivariados: variables númericas x posición política estudiantes
+### Variables númericas x posición política estudiantes
 
 ```{r}
 ## Variables numericas x posicion politica estudiantes
@@ -238,7 +239,7 @@ table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | pos_pol_fa
 
 **Sentido de justicia indirecto:** Estudiantes que se identifican con la derecha y la centro derecha tienden a sentirse más subrecompensados en sus notas, con una media de -0.0464 y -0.0439 respectivamente. Estudiantes que reportan ser independientes son el grupo que reporta indices de subrecompensabilidad más bajos (-0.0189).
 
-### Tabla descriptivos bivariados: variables númericas x quintiles de ingresos
+### Variables númericas x quintiles de ingresos
 
 ```{r}
 ## Variables numericas x quintiles de ingresos
@@ -254,7 +255,7 @@ table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | quintiles_
 
 **Sentido de justicia indirecto:** Estudiantes de quintil 1 se sienten más subrecompensados que estudiantes de quintil 5, sin embargo, no se puede hablar de una tendencia progresiva ya que estudiantes de quintil 2 reportan valores similares a los de quintil 5.
 
-### Tabla descriptivos bivariados: variables númericas x sentido de justicia directo
+### Variables númericas x sentido de justicia directo
 
 ```{r}
 ## Variables numericas x sentido de justicia directo
@@ -299,7 +300,7 @@ table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | dependenci
 
 **Sentido de justicia indirecto:** Parece existir una tendencia, estudiantes de escuelas municipales se sientes más subrecompensados que estudiantes de escuelas particulares privadas.
 
-### Tabla descriptivos bivariados: variables númericas x respuesta del profesor
+### Variables númericas x respuesta del profesor
 
 ```{r}
 ## Variables numericas x respuesta profesor
@@ -313,7 +314,7 @@ table1::table1(~prom_percmer_est + prom_percmer_ap + sj_indirect_ln | resp_prof_
 
 **Sentido de justicia indirecto:** No parece haber una tendencia entre la relación del sentido de justicia indirecto y el hecho de que el profesor considere la opinión de los estudiantes. Sin embargo, si resalta que estudiantes que están muy de acuerdo con la sentencia presentan menos sensación de subrecompensa (app .6 puntos) que los otros grupos.
 
-### Tabla de contingencia: sentido de justicia directo x genero estudiantes 
+### Sentido de justicia directo x genero estudiantes 
 
 ```{r}
 # Sentido de justicia directo x genero estudiante
@@ -329,7 +330,7 @@ chisq.test(ap_est$genero_factor_est, ap_est$sj_direct_factor)
 # Ojo, hay una casilla con menos de 5 casos.
 ```
 
-### Tabla de contingencia: sentido de justicia directo x posición política estudiantes 
+### Sentido de justicia directo x posición política estudiantes 
 
 ```{r}
 # Sentido de justicia directo x posicion política estudiantes
@@ -341,7 +342,7 @@ sjt.xtab(ap_est$pos_pol_factor_est, ap_est$sj_direct_factor,
 
 chisq.test(ap_est$pos_pol_factor_est, ap_est$sj_direct_factor)
 ```
-### Tabla de contingencia: sentido de justicia directo x quintiles de ingreso
+### Sentido de justicia directo x quintiles de ingreso
 
 ```{r}
 # Sentido de justicia directo x quintiles
@@ -353,7 +354,7 @@ sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$sj_direct_factor,
 
 chisq.test(ap_est$quintiles_ingresos_pc_factor, ap_est$sj_direct_factor)
 ```
-### Tabla de contingencia: sentido de justicia directo x dependencia administrativa
+### Sentido de justicia directo x dependencia administrativa
 
 ```{r}
 # Sentido de justicia directo x dependencia administrativa
@@ -364,7 +365,7 @@ sjt.xtab(ap_est$dependencia_factor_est, ap_est$sj_direct_factor,
 )
 ```
 
-### Tabla de contingencia: Percepcion esfuerzo estudiante x genero estudiante
+### Percepcion esfuerzo estudiante x genero estudiante
 
 ```{r}
 # Percepcion esfuerzo estudiante x genero estudiante
@@ -375,7 +376,7 @@ sjt.xtab(ap_est$genero_factor_est, ap_est$perc_esfuerzo_factor_est,
 )
 ```
 
-### Tabla de contingencia: percepcion esfuerzo estudiante x posición política estudiantes
+### Percepcion esfuerzo estudiante x posición política estudiantes
 
 ```{r}
 # Percepcion esfuerzo estudiante x posicion política estudiantes
@@ -386,7 +387,7 @@ sjt.xtab(ap_est$pos_pol_factor_est, ap_est$perc_esfuerzo_factor_est,
 )
 ```
 
-### Tabla de contingencia: percepción esfuerzo estudiante x quintiles de ingreso
+### Percepción esfuerzo estudiante x quintiles de ingreso
 
 ```{r}
 # Percepcion esfuerzo estudiante x quintiles
@@ -399,7 +400,7 @@ sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$perc_esfuerzo_factor_est,
 
 ```
 
-### Tabla de contingencia: percepción esfuerzo estudiante x dependencia administrativa
+### Percepción esfuerzo estudiante x dependencia administrativa
 
 ```{r}
 # Percepcion esfuerzo estudiante x dependencia administrativa
@@ -410,7 +411,7 @@ sjt.xtab(ap_est$dependencia_factor_est, ap_est$perc_esfuerzo_factor_est,
 )
 ```
 
-### Tabla de contingencia: percepción esfuerzo estudiante x percepción esfuerzo apoderados
+### Percepción esfuerzo estudiante x percepción esfuerzo apoderados
 
 ```{r}
 # Percepcion esfuerzo estudiante x percepción esfuerzo apoderados
@@ -421,7 +422,7 @@ sjt.xtab(ap_est$perc_esfuerzo_factor_ap, ap_est$perc_esfuerzo_factor_est,
 )
 ```
 
-### Tabla de contingencia: percepción esfuerzo estudiante x percepción trabajo duro apoderados
+### Percepción esfuerzo estudiante x percepción trabajo duro apoderados
 
 ```{r}
 # Percepcion esfuerzo estudiante x percepción trabajo duro apoderados
@@ -432,7 +433,7 @@ sjt.xtab(ap_est$perc_trabajo_duro_factor_ap, ap_est$perc_esfuerzo_factor_est,
 )
 ```
 
-### Tabla de contingencia: percepcion trabajo duro estudiante x genero estudiante
+### Percepcion trabajo duro estudiante x genero estudiante
 
 ```{r}
 # Percepcion trabajo duro estudiante x genero estudiante
@@ -443,7 +444,7 @@ sjt.xtab(ap_est$genero_factor_est, ap_est$perc_trabajo_duro_factor_est,
 )
 ```
 
-### Tabla de contingencia: percepcion trabajo duro estudiante x posición política estudiante
+### Percepcion trabajo duro estudiante x posición política estudiante
 
 ```{r}
 # Percepcion trabajo duro estudiante x posicion política estudiantes
@@ -454,7 +455,7 @@ sjt.xtab(ap_est$pos_pol_factor_est, ap_est$perc_trabajo_duro_factor_est,
 )
 ```
 
-### Tabla de contingencia: percepcion trabajo duro estudiante x quintiles de ingreso
+### Percepcion trabajo duro estudiante x quintiles de ingreso
 
 ```{r}
 # Percepcion trabajo duro estudiante x quintiles
@@ -465,7 +466,7 @@ sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$perc_trabajo_duro_factor_es
 )
 ```
 
-### Tabla de contingencia: Percepcion trabajo duro estudiante x dependencia administrativa
+### Percepcion trabajo duro estudiante x dependencia administrativa
 
 ```{r}
 # Percepcion trabajo duro estudiante x dependencia administrativa
@@ -476,7 +477,7 @@ sjt.xtab(ap_est$dependencia_factor_est, ap_est$perc_trabajo_duro_factor_est,
 )
 ```
 
-### Tabla de contingencia: percepcion trabajo duro estudiante x percepción trabajo duro apoderados
+### Percepcion trabajo duro estudiante x percepción trabajo duro apoderados
 
 ```{r}
 # Percepcion trabajo duro estudiante x percepción trabajo duro apoderados
@@ -487,7 +488,7 @@ sjt.xtab(ap_est$perc_trabajo_duro_factor_ap, ap_est$perc_trabajo_duro_factor_est
 )
 ```
 
-### Tabla de contingencia: percepcion trabajo duro estudiante x percepción esfuerzo apoderados
+### Percepcion trabajo duro estudiante x percepción esfuerzo apoderados
 
 ```{r}
 # Percepcion trabajo duro estudiante x percepción esfuerzo apoderados
@@ -498,7 +499,7 @@ sjt.xtab(ap_est$perc_esfuerzo_factor_ap, ap_est$perc_trabajo_duro_factor_est,
 )
 ```
 
-### Tabla de contingencia: recompensa justa estudiantes x genero estudiante
+### Recompensa justa estudiantes x genero estudiante
 
 ```{r}
 # Recompensa justa estudiantes x genero estudiante
@@ -509,7 +510,7 @@ sjt.xtab(ap_est$genero_factor_est, ap_est$recompensa_factor_est,
 )
 ```
 
-### Tabla de contingencia: recompensa justa estudiantes x posición política estudiantes
+### Recompensa justa estudiantes x posición política estudiantes
 
 ```{r}
 # Recompensa justa estudiantes x posicion política estudiantes
@@ -520,7 +521,7 @@ sjt.xtab(ap_est$pos_pol_factor_est, ap_est$recompensa_factor_est,
 )
 ```
 
-### Tabla de contingencia: recompensa justa estudiantes x quintiles de ingresos
+### Recompensa justa estudiantes x quintiles de ingresos
 
 ```{r}
 # Recompensa justa estudiantes x quintiles
@@ -531,7 +532,7 @@ sjt.xtab(ap_est$quintiles_ingresos_pc_factor, ap_est$recompensa_factor_est,
 )
 ```
 
-### Tabla de contingencia: recompensa justa estudiantes x dependencia administrativa
+### Recompensa justa estudiantes x dependencia administrativa
 
 ```{r}
 # Recompensa justa estudiantes x dependencia administrativa
@@ -542,7 +543,7 @@ sjt.xtab(ap_est$dependencia_factor_est, ap_est$recompensa_factor_est,
 )
 ```
 
-### Matriz de correlación entre variales principales (pearson)
+### Correlaciones Pearson variales principales
 
 ```{r}
 # Matriz de correlación entre variales principales (pearson)
@@ -622,7 +623,7 @@ corrplot(polycor$rho,
 ```
 
 
-### Matriz de correlación entre variables nivel 2
+### Correlaciones variables nivel 2
 ```{r}
 # Matriz de correlación entre variables nivel 2
 
@@ -653,7 +654,7 @@ cormat,
 
 Las variables nivel 2 del estudio muestran una correlación media alta, principalmente porque ingresos del hogar por escuela, ingresos per capita por escuela y heterogeneidad socioeconómica de la escuela están construidas a partr de la agregación de ingresos. Destacan las correlaciones entre el porcentaje de educación terciaria por escuela y la heterogeneidad socioeconómica con una correlación de 0.62, entre el porcentaje de ed. terciara por escuela y la dependencia administrativa con 0.63 y la heterogeneidad socioeconómica con la dependencia adminsitrativacon 0.45.
 
-### Matriz de correlación entre ingresos + variables control
+### Correlaciones ingresos + variables control
 ```{r}
 # Matriz de correlación entre ingresos + variables control
 basecor<- ap_est %>% select(ingresos_tramos, ingresos, ingresos_pc, ingresos_esc, ingresos_pc_esc, heterogen_esc, educ_madre, educ_padre, educ_ap, univ, univ_esc, libros_hogar_est, libros_hogar_ap, genero_est, genero_ap, pos_pol_est, pos_pol_ap, edad_ap, recompensa_est, recompensa_ap )

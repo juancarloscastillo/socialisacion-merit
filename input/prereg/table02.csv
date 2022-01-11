@@ -1,16 +1,15 @@
-﻿v;p;cat
-Percepción Meritocrática de los padres;En Chile, los que se esfuerzan salen adelante;(1) Muy en desacuerdo
-Percepción Meritocrática de los padres;En Chile, los que se esfuerzan salen adelante;(4) Muy deacuerdo
-Percepción Meritocrática de los padres;Actualmente en Chile, para surgir en la vida ¿Cuán importante es: El trabajo duro?;(1) Nada  importante
-Percepción Meritocrática de los padres;Actualmente en Chile, para surgir en la vida ¿Cuán importante es: El trabajo duro?;(4) Muy importante
-Sentido de justicia en la escuela (Indirecto);¿Qué promedio de notas obtuviste el año pasado?;(min) 1
-Sentido de justicia en la escuela (Indirecto);¿Qué promedio de notas obtuviste el año pasado?;(max) 7
-Sentido de justicia en la escuela (Indirecto);¿Qué promedio de nota piensas que merecías?;(min) 1
-Sentido de justicia en la escuela (Indirecto);¿Qué promedio de nota piensas que merecías?;(max) 7
-Sentido de justicia en la escuela (Directo);Tomando en cuenta el tiempo que le dedico a mis estudios, las notas que me saco son…;(1) Menos de las que merezco
-Sentido de justicia en la escuela (Directo);Tomando en cuenta el tiempo que le dedico a mis estudios, las notas que me saco son…;(2)Las que merezco
-Sentido de justicia en la escuela (Directo);Tomando en cuenta el tiempo que le dedico a mis estudios, las notas que me saco son…;(3)Más de las que merezco
-Estatus socioeconómico de los padres;A continuación, le presentamos un listado de rangos de ingreso. ¿Podría usted indicarme en cuál de ellos se encuentra el ingreso total de su hogar en el último mes?;(1) Menos de $101.000 mensuales liquidos
-Estatus socioeconómico de los padres;A continuación, le presentamos un listado de rangos de ingreso. ¿Podría usted indicarme en cuál de ellos se encuentra el ingreso total de su hogar en el último mes?;(11) Más de $3.000.000 mensuales liquidos
-Estatus socioeconómico de los padres;¿Cuál es el último curso o nivel de estudios que completó usted?;(1) 8vo básico o menos
-Estatus socioeconómico de los padres;¿Cuál es el último curso o nivel de estudios que completó usted?;(5) Una carrera en la Universidad o estudios de posgrado
+﻿v;p;cat,
+Percepción Meritocrática de los padres;En Chile, los que se esfuerzan salen adelante;1. Muy en desacuerdo
+Percepción Meritocrática de los padres;En Chile, los que se esfuerzan salen adelante;4. Muy deacuerdo
+Percepción Meritocrática de los padres;Actualmente en Chile, para surgir en la vida ¿Cuán importante es: El trabajo duro?;1. Nada  importante
+Percepción Meritocrática de los padres;Actualmente en Chile, para surgir en la vida ¿Cuán importante es: El trabajo duro?;4. Muy importante
+Sentido de justicia en la escuela (Indirecto);¿Qué promedio de notas obtuviste el año pasado?;(min) 1,
+Sentido de justicia en la escuela (Indirecto);¿Qué promedio de notas obtuviste el año pasado?;(max) 7,
+Sentido de justicia en la escuela (Indirecto);¿Qué promedio de nota piensas que merecías?;(min) 1,
+Sentido de justicia en la escuela (Indirecto);¿Qué promedio de nota piensas que merecías?;(max) 7,
+Sentido de justicia en la escuela (Directo);Tomando en cuenta el tiempo que le dedico a mis estudios, las notas que me saco son…;1. Menos de las que merezco
+Sentido de justicia en la escuela (Directo);Tomando en cuenta el tiempo que le dedico a mis estudios, las notas que me saco son…;3. Más de las que merezco
+Estatus socioeconómico de los padres;A continuación, le presentamos un listado de rangos de ingreso. ¿Podría usted indicarme en cuál de ellos se encuentra el ingreso total de su hogar en el último mes?;1. Menos de $101.000 mensuales liquidos
+Estatus socioeconómico de los padres;A continuación, le presentamos un listado de rangos de ingreso. ¿Podría usted indicarme en cuál de ellos se encuentra el ingreso total de su hogar en el último mes?;11. Más de $3.000.000 mensuales liquidos
+Estatus socioeconómico de los padres;¿Cuál es el último curso o nivel de estudios que completó usted?;1. 8vo básico o menos,
+Estatus socioeconómico de los padres;¿Cuál es el último curso o nivel de estudios que completó usted?;5. Una carrera en la Universidad o estudios de posgrado,

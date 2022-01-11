@@ -9,7 +9,7 @@ output:
     toc: yes
     toc_float: yes
 editor_options:
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -65,7 +65,7 @@ Las librerías a utilizar para la elaboración del documento serán:
 - *misty* funciones miscelaneas
 
 ```{r}
-pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, SciViews, summarytools, misty)
+pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, SciViews, summarytools, misty,sjPlot)
 ```
 
 ## Parte 2: Cargar datos
@@ -86,7 +86,6 @@ Cabe señalar que dentro de la base de datos existe un caso mal pareado (relaci�
 ## Parte 3: Seleccionar variables
 
 ```{r}
-
 # Seleccionar  y renombrar variables de la base de datos de apoderados
 ap_proc <- ap %>% dplyr::select(rbd = RBD,
                                 folio = FOLIO_EST,
@@ -122,8 +121,6 @@ est_proc <- est  %>% dplyr::select(rbd = RBD,
                                  sj_direct = P29,
                                  recompensa = P25C,
                                  tiempo_compartido = P36) 
-                                 
-                                 
 ```   
 
 ## Parte 4: Procesamiento
@@ -147,7 +144,8 @@ est_proc$perc_trabajo_duro <- set_na(est_proc$perc_trabajo_duro, na = c(5,9), dr
 ##### Etiquetado
 
 ```{r}
-est_proc$perc_trabajo_duro <- set_label(x = est_proc$perc_trabajo_duro,label = "Percepcion meritocracia: Importancia trabajo duro estudiantes") # Etiquetar
+est_proc$perc_trabajo_duro <- set_label(x = est_proc$perc_trabajo_duro,
+                                        label = "Percepción meritocracia: Importancia trabajo duro estudiantes") # Etiquetar
 ```
 
 ##### Descriptivo post-rec
@@ -175,7 +173,7 @@ est_proc$perc_esfuerzo <- set_na(est_proc$perc_esfuerzo, na = c(5,9), drop.level
 
 ##### Etiquetado
 ```{r}
-est_proc$perc_esfuerzo <- set_label(x = est_proc$perc_esfuerzo, label = "Percepcion meritocracia: Esfuerzo para salir adelante estudiantes")
+est_proc$perc_esfuerzo <- set_label(x = est_proc$perc_esfuerzo, label = "Percepción meritocracia: Esfuerzo para salir adelante (estudiantes)")
 ```
 
 ##### Descriptivo post-rec
@@ -190,23 +188,22 @@ Creación variable: promedio de percepción de meritocracia en estudiantes
 est_proc$prom_percmer_est <- ((est_proc$perc_trabajo_duro + est_proc$perc_esfuerzo)/2)
 
 # Etiquetar
-est_proc$prom_percmer_est <- set_label(x = est_proc$prom_percmer_est, label = "Promedio percepcion meritocratica estudiantes")
+est_proc$prom_percmer_est <- set_label(x = est_proc$prom_percmer_est, label = "Promedio Percepción meritocratica estudiantes")
 ```
 
-Creación variables factores
+Creación variables factores 
 ```{r}
 # Esfuerzo
 est_proc$perc_esfuerzo_factor <- factor(est_proc$perc_esfuerzo, levels = c(1,2,3,4), labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo"))
 
 # Etiquetar
-est_proc$perc_esfuerzo_factor <- set_label(x = est_proc$perc_esfuerzo_factor, label = "Percepcion meritocracia: Esfuerzo para salir adelante estudiantes")
-
+est_proc$perc_esfuerzo_factor <- set_label(x = est_proc$perc_esfuerzo_factor, label = "Percepción meritocracia: Esfuerzo para salir adelante (estudiantes)")
 
 # Trabajo duro
 est_proc$perc_trabajo_duro_factor <- factor(est_proc$perc_trabajo_duro, levels = c(1,2,3,4), labels = c("Nada importante", "Algo importante", "Importante", "Muy importante"))
 
 # Etiquetar
-est_proc$perc_trabajo_duro_factor <- set_label(x = est_proc$perc_trabajo_duro_factor, label = "Percepcion meritocracia: Importancia trabajo duro estudiantes factor")
+est_proc$perc_trabajo_duro_factor <- set_label(x = est_proc$perc_trabajo_duro_factor, label = "Percepción meritocracia: Importancia trabajo duro (estudiantes)")
 ```
 
 
@@ -217,8 +214,6 @@ est_proc$perc_trabajo_duro_factor <- set_label(x = est_proc$perc_trabajo_duro_fa
 summary(est_proc$prom_obt) # Descriptivo
 frq(est_proc$prom_obt)
 
-
-
 # Promedio merecido
 summary(est_proc$prom_mer)
 frq(est_proc$prom_mer)
@@ -227,7 +222,7 @@ frq(est_proc$prom_mer)
 ##### Recodificación
 Se recodifica a NA las siguientes situaciones:
 - Datos 99, correspondiente a No responde.
-- Datos menores a 1
+- Datos menores a 1s
 - Datos mayores a 7
 
 ```{r}
@@ -238,7 +233,6 @@ est_proc$prom_obt[est_proc$prom_obt < 1 | est_proc$prom_obt > 7] <- NA
 # Promedio merecido
 est_proc$prom_mer[est_proc$prom_mer == 99] <- NA
 est_proc$prom_mer[est_proc$prom_mer < 1 | est_proc$prom_mer > 7] <- NA
-
 ```
 
 ##### Etiquetado
@@ -280,10 +274,34 @@ summary(est_proc$sj_indirect_noln)
 
 ##### ---- Etiquetado varibles nuevas ----
 # Sentido de justicia
-est_proc$sj_indirect_ln <- set_label(x = est_proc$sj_indirect_ln, label = "Sentido de justicia indirecto")
+est_proc$sj_indirect_ln <- set_label(x = est_proc$sj_indirect_ln, label = "Sentido de Justicia indirecto (ln)")
 
 # Sentido de justicia sin ln
-est_proc$sj_indirect_noln <- set_label(x = est_proc$sj_indirect_ln, label = "Sentido de justicia indirecto SIN LN")
+est_proc$sj_indirect_noln <- set_label(x = est_proc$sj_indirect_noln, label = "Sentido de Justicia indirecto")
+```
+
+* recodificamos sentido de justicia indirecto en grupos:
+  * < 0 son "Nota subrecompensada"
+  * = 1 son "Nota justa"
+  * > 1 son "Nota sobrerecompensada"
+  
+```{r}
+est_proc$sj_indirect_cat<- car::recode(var = est_proc$sj_indirect_noln,
+                                       "lo:0.99='Nota subrecompensada';1='Nota justa';1.01:hi='Nota sobrerecompensada'",
+                                       as.factor = T) 
+est_proc$sj_indirect_cat<- set_label(x = est_proc$sj_indirect_cat, label = "Sentido de Justicia indirecto (categórico)")
+frq(est_proc$sj_indirect_cat)
+```  
+
+* Sentido de justicia indirecto en cuartiles
+
+```{r}
+est_proc$sj_indirect_qtil <- ntile(est_proc$sj_indirect_noln,n = 4)
+est_proc$sj_indirect_qtil <- factor(est_proc$sj_indirect_qtil,
+                                    levels = c(1:4),
+                                    labels = c("Cuartil 1","Cuartil 2","Cuartil 3","Cuartil 4"))
+est_proc$sj_indirect_qtil<- set_label(x = est_proc$sj_indirect_qtil, label = "Sentido de Justicia indirecto (cuartiles)")
+frq(est_proc$sj_indirect_qtil)
 ```
 
 #### Sentido de justicia (directo) (Var. Indep. N1)
@@ -301,7 +319,7 @@ est_proc$sj_direct <- set_na(est_proc$sj_direct, na = c(4,9), drop.levels = TRUE
 
 ##### Etiquetado
 ```{r}
-est_proc$sj_direct <- set_label(x = est_proc$sj_direct, label = "Sentido de justicia directo")
+est_proc$sj_direct <- set_label(x = est_proc$sj_direct, label = "Sentido de Justicia directo")
 ```
 
 ##### Descriptivo post-rec
@@ -316,6 +334,9 @@ Crear variable factor
 # Factor
 est_proc$sj_direct_factor <- factor(est_proc$sj_direct, levels = c(1,2,3), labels = c("Menos de las que merezco", "Las que merezco", "Más de las que merezco"))
 
+est_proc$sj_direct_factor <- relevel(est_proc$sj_direct_factor,ref = 2)
+
+frq(est_proc$sj_direct_factor)
 # Etiquetar
 est_proc$sj_direct_factor <- set_label(x = est_proc$sj_direct_factor, label = "Sentido de justicia directo factor")
 ```
@@ -333,7 +354,6 @@ Se transforma el valor 9 (Nr) y el 8 (Marca mas de 1 alternativa) en NA em ambas
 ```{r}
 # Cuestionario estudiantes
 est_proc$educ_madre <- set_na(est_proc$educ_madre, na = c(8,9), drop.levels = TRUE, as.tag = FALSE)
-
 est_proc$educ_padre <- set_na(est_proc$educ_padre, na = c(8,9), drop.levels = TRUE, as.tag = FALSE)
 ```
 
@@ -341,7 +361,6 @@ est_proc$educ_padre <- set_na(est_proc$educ_padre, na = c(8,9), drop.levels = TR
 ```{r}
 # Cuestionario estudiantes
 est_proc$educ_madre <- set_label(x = est_proc$educ_madre, label = "Nivel educacional más alto de la madre")
-
 est_proc$educ_padre <- set_label(x = est_proc$educ_padre, label = "Nivel educacional más alto del padre")
 ```
 
@@ -386,7 +405,7 @@ est_proc$genero <- set_na(est_proc$genero, na = c(4,9), drop.levels = TRUE, as.t
 ##### Etiquetado
 ```{r}
 # Genero estudiantes
-est_proc$genero <- set_label(x = est_proc$genero, label = "Genero estudiantes")
+est_proc$genero <- set_label(x = est_proc$genero, label = "Sexo estudiante")
 ```
 
 ##### Descriptivo post-rec
@@ -403,17 +422,14 @@ Crear variable factor
 est_proc$genero_factor <- factor(est_proc$genero, levels = c(1,2,3), labels = c("Hombre", "Mujer", "Otro"))
 
 # Etiquetar
-est_proc$genero_factor <- set_label(x = est_proc$genero_factor, label = "Genero estudiantes factor")
-
+est_proc$genero_factor <- set_label(x = est_proc$genero_factor, label = "Sexo estudiante")
 
 # Crear variable Porcentaje de estudiantes mujeres en la escuela (N2)
-
 porc_muj_esc <- est_proc %>%group_by(rbd)%>%summarise(porc_muj_esc = length(which(genero == 2))/(length(which(genero == 1)) + length(which(genero == 2)) + length(which(genero == 3))))
 
-est_proc <- merge(est_proc, porc_muj_esc, by = "rbd")
-
+est_proc <- left_join(est_proc, porc_muj_esc, by = "rbd")
 # Etiquetar
-ap_proc$porc_muj_ap_esc <- set_label(x = ap_proc$porc_muj_ap_esc, label = "Porcentaje de mujeres apoderadas por escuela")
+est_proc$porc_muj_esc <-  set_label(x = est_proc$porc_muj_esc, label = "Porcentaje de mujeres estudiantes por escuela")
 ```
 
 
@@ -421,16 +437,14 @@ ap_proc$porc_muj_ap_esc <- set_label(x = ap_proc$porc_muj_ap_esc, label = "Porce
 
 ##### Descriptivo
 ```{r}
- frq(est_proc$resp_prof)
+frq(est_proc$resp_prof)
 ```
 
 ##### Etiquetado
 ```{r}
 #Etiquetado  perdidos
-
 est_proc$resp_prof <- set_na(est_proc$resp_prof, na = c(5,9), drop.levels = TRUE, as.tag = FALSE)
 est_proc$resp_prof <- set_label(x = est_proc$resp_prof, label = "Siento que mi opinión es tomada en cuenta por mis profesores")
-
 ```
 
 ##### Descriptivo post-rec
@@ -442,9 +456,7 @@ frq(est_proc$resp_prof)
 ```{r}
 # Transformación a factor
 est_proc$resp_prof_factor <- factor(est_proc$resp_prof, levels = c(1,2,3,4), labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo"))
-
-# Etiquetado factor
-est_proc$rest_prof_factor <- set_label(x = est_proc$resp_prof_factor, label = "Siento que mi opinión es tomada en cuenta por mis profesores factor")
+est_proc$resp_prof_factor <- set_label(x = est_proc$resp_prof_factor, label = "Justicia en el trato profesores")
 ```
 
 
@@ -478,7 +490,7 @@ est_proc$pos_pol<- set_na(est_proc$pos_pol, na = c(88), drop.levels = TRUE, as.t
 ##### Etiquetado
 ```{r}
 # Posición política estudiantes
-est_proc$pos_pol <- set_label(x = est_proc$pos_pol, label = "Posicion politica estudiantes")
+est_proc$pos_pol <- set_label(x = est_proc$pos_pol, label = "Posición política estudiantes")
 ```
 
 ##### Descriptivo post-rec
@@ -495,9 +507,8 @@ Crear variable factor
 est_proc$pos_pol_factor <- factor(est_proc$pos_pol, levels = c(1,2,3,4,5,6,7,99), labels = c("Derecha", "Centro derecha", "Centro", "Centro Izquierda", "Izquierda", "Independiente", "Ninguna", "Ns/Nr"))
 
 # Etiquetar
-est_proc$pos_pol_factor <- set_label(x = est_proc$pos_pol_factor, label = "Posición política estudiantes factor")
+est_proc$pos_pol_factor <- set_label(x = est_proc$pos_pol_factor, label = "Posición política estudiantes")
 ```
-
 
 #### Cantidad de libros en el hogar (Control N1)
 ##### Descriptivo
@@ -587,7 +598,7 @@ est_proc$recompensa <- set_na(est_proc$recompensa, na = c(5,9), drop.levels = TR
 ##### Etiquetado
 ```{r}
 # Cuestionario estudiantes
-est_proc$recompensa <- set_label(x = est_proc$recompensa, label = "Recompensa en la escuela estudiantes")
+est_proc$recompensa <- set_label(x = est_proc$recompensa, label = "Esfuerzo es recompensado en escuela (estudiantes)")
 ```
 
 ##### Descriptivo post-rec
@@ -604,7 +615,7 @@ Crear variable factor
 est_proc$recompensa_factor <- factor(est_proc$recompensa, levels = c(1,2,3,4), labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo"))
 
 # Etiquetar
-est_proc$recompensa_factor <- set_label(est_proc$recompensa_factor, label = "Recomepensa en la escuela estudiantes factor")
+est_proc$recompensa_factor <- set_label(est_proc$recompensa_factor, label = "Esfuerzo es recompensado en escuela (estudiantes)")
 ```
 
 
@@ -634,7 +645,7 @@ Crear variable factor
 
 ```{r}
 # Transformación a factor
-est_proc$dependencia_factor <- factor(est_proc$dependencia, levels = c(1,2,3), labels = c("Municipal", "Part. Subvencionado", "Part. Privado"))
+est_proc$dependencia_factor <- factor(est_proc$dependencia, levels = c(1,2,3), labels = c("Municipal", "Particular Subvencionado", "Particular Pagado"))
 
 # Etiquetar
 est_proc$dependencia_factor <- set_label(est_proc$dependencia_factor, label = "Dependencia estudiantes factor")
@@ -658,7 +669,7 @@ ap_proc$perc_trabajo_duro <- set_na(ap_proc$perc_trabajo_duro, na = c(9), drop.l
 
 ##### Etiquetado
 ```{r}
-ap_proc$perc_trabajo_duro <- set_label(x = ap_proc$perc_trabajo_duro,label = "Percepcion meritocracia: Importancia trabajo duro apoderados")
+ap_proc$perc_trabajo_duro <- set_label(x = ap_proc$perc_trabajo_duro,label = "Percepción meritocracia: Importancia trabajo duro apoderados")
 ```
 
 ##### Descriptivo post-rec
@@ -673,7 +684,7 @@ Crear variable factor
 ap_proc$perc_trabajo_duro_factor <- factor(ap_proc$perc_trabajo_duro, levels = c(1,2,3,4), labels = c("Nada importante", "Algo importante", "Importante", "Muy importante"))
 
 # Etiquetar
-ap_proc$perc_trabajo_duro_factor <- set_label(x = ap_proc$perc_trabajo_duro_factor, label = "Percepcion meritocracia: Importancia trabajo duro apoderados factor")
+ap_proc$perc_trabajo_duro_factor <- set_label(x = ap_proc$perc_trabajo_duro_factor, label = "Percepción meritocracia: Importancia trabajo duro (apoderado)")
 ```
 
 
@@ -693,7 +704,7 @@ ap_proc$perc_esfuerzo <- set_na(ap_proc$perc_esfuerzo, na = c(9), drop.levels = 
 
 ##### Etiquetado
 ```{r}
-ap_proc$perc_esfuerzo <- set_label(x = ap_proc$perc_esfuerzo, label = "Percepcion meritocracia: Esfuerzo para salir adelante apoderados")
+ap_proc$perc_esfuerzo <- set_label(x = ap_proc$perc_esfuerzo, label = "Percepción meritocracia: Esfuerzo para salir adelante apoderados")
 ```
 
 ##### Descriptivo post-rec
@@ -708,7 +719,7 @@ Crear variable factor
 ap_proc$perc_esfuerzo_factor <- factor(ap_proc$perc_esfuerzo, levels = c(1,2,3,4), labels = c("Muy en desacuerdo","En desacuerdo", "De acuerdo", "Muy de acuerdo"))
 
 # Etiquetar
-ap_proc$perc_esfuerzo_factor <- set_label(x = ap_proc$perc_esfuerzo_factor, label = "Percepcion meritocracia: Esfuerzo para salir adelante apoderados factor")
+ap_proc$perc_esfuerzo_factor <- set_label(x = ap_proc$perc_esfuerzo_factor, label = "Percepción meritocracia: Esfuerzo para salir adelante (apoderados)")
 ```
 
 Creación variable: promedio de percepción de meritocracia en apoderados
@@ -717,7 +728,7 @@ Creación variable: promedio de percepción de meritocracia en apoderados
 ap_proc$prom_percmer_ap <- ((ap_proc$perc_trabajo_duro + ap_proc$perc_esfuerzo)/2)
 
 # Etiquetar
-ap_proc$prom_percmer_ap <- set_label(x = ap_proc$prom_percmer_ap, label = "Promedio percepcion meritocratica apoderados")
+ap_proc$prom_percmer_ap <- set_label(x = ap_proc$prom_percmer_ap, label = "Promedio Percepción meritocratica apoderados")
 ```
 
 
@@ -768,7 +779,8 @@ Se construyen cuatro variables nuevas. La primera es el ingreso a partir de las 
 ```{r}
 # Construcción ingresos numerico
 
-ap_proc$ingresos[ap_proc$ingresos_tramos == 1] <- 50500 
+
+ap_proc$ingresos[ap_proc$ingresos_tramos == 1] <- 50500
 ap_proc$ingresos[ap_proc$ingresos_tramos == 2] <- 117500
 ap_proc$ingresos[ap_proc$ingresos_tramos == 3] <- 156500
 ap_proc$ingresos[ap_proc$ingresos_tramos == 4] <- 201500
@@ -785,18 +797,20 @@ ap_proc$ingresos_pc <- ap_proc$ingresos/ap_proc$personas_hogar
 ap_proc$ingresos_pc <- trunc(ap_proc$ingresos_pc)
 
 # Construcción ingreso tramos como factor
-ap_proc$ingresos_tramos_factor <- factor(ap_proc$ingresos_tramos, levels = c(1,2,3,4,5,6,7,8,9,10,11,99), labels = c("Menos de $101.000 mensuales líquidos",
-                                                                                              "De $101.001 a $134.000 mensuales líquidos",
-                                                                                              "De $134.001 a $179.000 mensuales líquidos",
-                                                                                              "De $179.001 a $224.000 mensuales líquidos",
-                                                                                              "De $224.001 a $291.000 mensuales líquidos",
-                                                                                              "De $291.001 a $358.000 mensuales líquidos",
-                                                                                              "De $358.001 a $448.000 mensuales líquidos",
-                                                                                              "De $448.001 a $1.000.000 mensuales líquidos",
-                                                                                              "De $1.000.001 a $2.000.000 mensuales líquidos",
-                                                                                              "De $2.000.001 a $3.000.000 mensuales líquidos",
-                                                                                              "Más de $3.000.000 mensuales líquidos",
-                                                                                              "Ns/Nr"))
+ap_proc$ingresos_tramos_factor <- factor(ap_proc$ingresos_tramos, 
+                                         levels = c(1,2,3,4,5,6,7,8,9,10,11,99), 
+                                         labels = c("Menos de $101.000 mensuales líquidos",
+                                                    "De $101.001 a $134.000 mensuales líquidos",
+                                                    "De $134.001 a $179.000 mensuales líquidos",
+                                                    "De $179.001 a $224.000 mensuales líquidos",
+                                                    "De $224.001 a $291.000 mensuales líquidos",
+                                                    "De $291.001 a $358.000 mensuales líquidos",
+                                                    "De $358.001 a $448.000 mensuales líquidos",
+                                                    "De $448.001 a $1.000.000 mensuales líquidos",
+                                                    "De $1.000.001 a $2.000.000 mensuales líquidos",
+                                                    "De $2.000.001 a $3.000.000 mensuales líquidos",
+                                                    "Más de $3.000.000 mensuales líquidos",
+                                                    "Ns/Nr"))
 
 # Construccion ingresos per capita quintiles
 ap_proc <- ap_proc %>% mutate(quintiles_ingresos_pc = ntile(ingresos_pc,5))
@@ -805,12 +819,16 @@ ap_proc <- ap_proc %>% mutate(quintiles_ingresos_pc = ntile(ingresos_pc,5))
 ap_proc$quintiles_ingresos_pc[is.na(ap_proc$quintiles_ingresos_pc)] <- 99
 
 # Construcción ingresos per capita quintiles factor
-ap_proc$quintiles_ingresos_pc_factor <- factor(ap_proc$quintiles_ingresos_pc, levels = c(1,2,3,4,5,99), labels = c("Quintil 1", "Quintil 2", "Quintil 3", "Quintil 4", "Quintil 5", "Ns/Nr"))
+ap_proc$quintiles_ingresos_pc_factor <- factor(ap_proc$quintiles_ingresos_pc, levels = c(1,2,3,4,5,99), labels = c("Quintil 1", "Quintil 2", "Quintil 3", "Quintil 4", "Quintil 5", "No sabe/No responde"))
+ap_proc$quintiles_ingresos_pc_factor <- set_label(ap_proc$quintiles_ingresos_pc_factor,label = "Quintiles de ingreso per capita del hogar ")
+
+# Construcción ingresos per capita quintiles factor con NS/NR al medio para correlaciones
+ap_proc$quintiles_ingresos_pc_factor_cor <- factor(ap_proc$quintiles_ingresos_pc, levels = c(1,2,99,3,4,5), labels = c("Quintil 1", "Quintil 2", "Quintil 3", "No sabe/No responde", "Quintil 4", "Quintil 5"))
+ap_proc$quintiles_ingresos_pc_factor_cor <- set_label(ap_proc$quintiles_ingresos_pc_factor,label = "Quintiles de ingreso per capita del hogar (NS/NR al medio) ")
 
 ## Eliminar 99 de la variable numerica
 ap_proc$quintiles_ingresos_pc[ap_proc$quintiles_ingresos_pc == 99] <- NA
-
- # ---- Descripción variables nuevas ----
+ap_proc$quintiles_ingresos_pc <- set_label(ap_proc$quintiles_ingresos_pc,label = "Quintiles de ingreso per capita del hogar (numerica)") 
 
 # ingresos
 summary(ap_proc$ingresos)
@@ -979,7 +997,8 @@ ap_proc$genero_factor <- set_label(x = ap_proc$genero_factor, label = "Genero ap
 
 porc_muj_esc <- ap_proc %>%group_by(rbd)%>%summarise(porc_muj_esc = length(which(genero == 2))/(length(which(genero == 1)) + length(which(genero == 2)) + length(which(genero == 3))))
 
-ap_proc <- merge(ap_proc, porc_muj_esc, by = "rbd")
+ap_proc <- left_join(ap_proc, porc_muj_esc, by = "rbd")
+ap_proc$porc_muj_esc <- set_label(ap_proc$porc_muj_esc,label = "Porcentaje de apoderadas mujeres en la escuela")
 ```
 
 
@@ -995,7 +1014,7 @@ summary(ap_proc$pos_pol)
 Se recodifican a "Ns/Nr" los valores 8 (No sabe) y 9 (Nr).
 
 ```{r}
-# Posicion politica apoderados
+# Posición política apoderados
 ap_proc$pos_pol[ap_proc$pos_pol == 8 | ap_proc$pos_pol == 9] <- 99
 ap_proc$pos_pol <- set_labels(ap_proc$pos_pol,
             labels=c("Derecha" = 1,
@@ -1011,7 +1030,7 @@ ap_proc$pos_pol <- set_labels(ap_proc$pos_pol,
 ##### Etiquetado
 ```{r}
 # Posición política apoderados
-ap_proc$pos_pol <- set_label(x = ap_proc$pos_pol, label = "Posicion politica apoderados")
+ap_proc$pos_pol <- set_label(x = ap_proc$pos_pol, label = "Posición política apoderados")
 ```
 
 ##### Descriptivo post-rec
@@ -1028,7 +1047,7 @@ Crear variable factor
 ap_proc$pos_pol_factor <- factor(ap_proc$pos_pol, levels = c(1,2,3,4,5,6,7,99), labels = c("Derecha", "Centro Derecha", "Centro", "Centro Izquierda", "Izquierda", "Independiente", "Ninguna", "Ns/Nr"))
 
 # Etiquetar
-ap_proc$pos_pol_factor <- set_label(x = ap_proc$pos_pol_factor, label = "Posición política apoderados factor")
+ap_proc$pos_pol_factor <- set_label(x = ap_proc$pos_pol_factor, label = "Posición política apoderados")
 ```
 
 
@@ -1067,7 +1086,7 @@ Crear variable factor
 ap_proc$libros_hogar_factor <- factor(ap_proc$libros_hogar, levels = c(1,2,3,4,5,6), labels = c("Entre 0 y 10 libros", "Entre 11 y 25 libros", "Entre 26 y 100 libros", "Entre 101 y 200 libros", "Entre 201 y 500 libros", "Más de 500 libros"))
 
 # Etiquetar
-ap_proc$libros_hogar_factor <- set_label(x = ap_proc$libros_hogar_factor, label = "Libros en el hogar apoderados factor")
+ap_proc$libros_hogar_factor <- set_label(x = ap_proc$libros_hogar_factor, label = "Libros en el hogar (apoderados)")
 ```
 
 
@@ -1120,7 +1139,7 @@ ap_proc$recompensa <- set_na(ap_proc$recompensa, na = c(9), drop.levels = TRUE, 
 ##### Etiquetado
 ```{r}
 # Cuestionario apoderados
-ap_proc$recompensa <- set_label(x = ap_proc$recompensa, label = "Recompensa en la escuela apoderados")
+ap_proc$recompensa <- set_label(x = ap_proc$recompensa, label = "Esfuerzo es recompensado en escuela (apoderados)")
 ```
 
 ##### Descriptivo post-rec
@@ -1136,7 +1155,7 @@ Crear variable factor
 ap_proc$recompensa_factor <- factor(ap_proc$recompensa, levels = c(1,2,3,4), labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo"))
 
 # Etiquetar
-ap_proc$recompensa_factor <- set_label(x = ap_proc$recompensa_factor, label = "Recompensa en la escuela apoderados factor")
+ap_proc$recompensa_factor <- set_label(x = ap_proc$recompensa_factor, label = "Esfuerzo es recompensado en escuela (apoderados)")
 ```
 
 
@@ -1171,7 +1190,6 @@ No aplica.
 Se construyen dos variables para el ingreso a nivel escuela. La primera a partir de la agregación del ingreso del hogar. La segunda a partir de la agregación del ingreso per capita.
 
 ```{r}
-
 # Ingresos a nivel escuela
  ap_proc <- ap_proc %>%
      group_by(rbd) %>%
@@ -1191,7 +1209,7 @@ summary(ap_proc$ingresos_pc_esc)
 
 #---- Etiquetado variables nuevas----
 # Ingresos a nivel escuela
-ap_proc$ingresos_esc <- set_label(x = ap_proc$ingresos_esc, label = "Ingresos por escuela")
+ap_proc$ingresos_esc <- set_label(x = ap_proc$ingresos_esc, label = "Promedio ingresos por escuela")
 
 # Ingresos per capita a nivel escuela
 ap_proc$ingresos_pc_esc <- set_label(x = ap_proc$ingresos_pc_esc, label = "Ingreso per capita por escuela")
@@ -1249,7 +1267,7 @@ Crear variable factor
 ap_proc$dependencia_factor <- factor(ap_proc$dependencia, levels = c(1,2,3), labels = c("Municipal", "Part. Subvencionado", "Part. Privado"))
 
 # Etiquetar
-ap_proc$dependencia_factor <- set_label(x = ap_proc$dependencia_factor, label = "Dependencia apoderados factor")
+ap_proc$dependencia_factor <- set_label(x = ap_proc$dependencia_factor, label = "Dependencia administrativa")
 ```
 
 
@@ -1276,7 +1294,6 @@ ap_proc$heterogen_esc <- set_label(x = ap_proc$heterogen_esc, label = "Heterogen
 Unir bases.
 ```{r results='asis'}
 # Join
-
 ap_est <- left_join(x = est_proc,y = ap_proc,by =c("folio"="folio"),suffix=c("_est","_ap"))
 ```
 
@@ -1291,11 +1308,10 @@ ap_est$educ_ap <- set_label(x = ap_est$educ,label = "Nivel educacional de los ap
 Crear variable factor para educación
 ```{r}
 # Transformacion a factor
-ap_est$educ_factor_ap <- factor(ap_est$educ_ap, levels = c(1,2,3,4), labels = c("8vo básico o menos", "Educación media", "Educación Técnica Superior", "Educación universitaria o posgrado"))
-
-# Etiquetar
-ap_est$educ_factor_ap <- set_label(x = ap_est$educ_factor_ap,label = "Nivel educacional de los apoderados factor")
-
+ap_est$educ_factor_ap <- factor(ap_est$educ_ap, 
+                                levels = c(1,2,3,4), 
+                                labels = c("8vo básico o menos", "Educación media", "Educación Técnica Superior", "Educación universitaria o posgrado"))
+ap_est$educ_factor_ap <- set_label(x = ap_est$educ_factor_ap,label = "Nivel educacional de los apoderados factor") # Etiquetar
 ```
 
 Centrado de variables a la media grupal
@@ -1304,214 +1320,288 @@ Centrado de variables a la media grupal
 
 ## Promedio percepción meritocracia apoderados
 ap_est$prom_percmer_ap_cwc <- center(ap_est$prom_percmer_ap, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$prom_percmer_ap_cwc <- set_label(x = ap_est$prom_percmer_ap_cwc, label = "Promedio percepcion meritocratica apoderados CWC")
+ap_est$prom_percmer_ap_cwc <- set_label(x = ap_est$prom_percmer_ap_cwc, label = "Promedio Percepción meritocratica apoderados (CWC)")
 
 ## Sentido justicia indirecto Ln
 ap_est$sj_indirect_ln_cwc <- center(ap_est$sj_indirect_ln, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$sj_indirect_ln_cwc <- set_label(x = ap_est$sj_indirect_ln_cwc, label = "Sentido justicia indirecto ln CWC")
+ap_est$sj_indirect_ln_cwc <- set_label(x = ap_est$sj_indirect_ln_cwc, label = "Sentido justicia indirecto ln (CWC)")
 
 ## Sentido justicia directo
 ap_est$sj_direct_cwc <- center(ap_est$sj_direct, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$sj_direct_cwc < set_label(x = ap_est$sj_direct_cwc, label = "Sentido justicia directo CWC")
+ap_est$sj_direct_cwc <- set_label(x = ap_est$sj_direct_cwc, label = "Sentido justicia directo (CWC)")
 
 ## Posición Política estudiante
 ap_est$pos_pol_est_cwc <- center(ap_est$pos_pol_est, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$pos_pol_est_cwc <- set_label(x = ap_est$pos_pol_est_cwc, "Posicion politica estudiantes CWC")
+ap_est$pos_pol_est_cwc <- set_label(x = ap_est$pos_pol_est_cwc, "Posición política estudiantes (CWC)")
 
 ## Recompensa estudiante
 ap_est$recompensa_est_cwc <- center(ap_est$recompensa_est, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$recompensa_est_cwc <- set_label(x = ap_est$recompensa_est_cwc, label = "Recompensa en la escuela estudiantes CWC")
+ap_est$recompensa_est_cwc <- set_label(x = ap_est$recompensa_est_cwc, label = "Esfuerzo es recompensado en escuela (estudiantes - CWC)")
 
 ## La opinion es tomada en cuenta por los profesores
-
 ap_est$resp_prof_cwc <- center(ap_est$resp_prof, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$resp_prof_cwc <- set_label(x = ap_est$resp_prof_cwc, label = "Opiniones tomadas en cuenta por profesores CWC")
+ap_est$resp_prof_cwc <- set_label(x = ap_est$resp_prof_cwc, label = "Justicia en el trato profesores (CWC)")
 
 # Promedio de notas obtenido
 ap_est$prom_obt_cwc <- center(ap_est$prom_obt, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$prom_obt_cwc <- set_label(x = ap_est$prom_obt_cwc, label = "Promedio de notas obtenido CWC")
+ap_est$prom_obt_cwc <- set_label(x = ap_est$prom_obt_cwc, label = "Promedio de notas obtenido (CWC)")
 
 # Promedio de notas merecido
 ap_est$prom_mer_cwc <- center(ap_est$prom_mer, type = "CWC", group = ap_est$rbd_est)
-
 ap_est$prom_mer_cwc <- set_label(x = ap_est$prom_mer_cwc, label = "Promedio de notas obtenido CWC")
 
 ## Posición Política apoderado
 ap_est$pos_pol_ap_cwc <- center(ap_est$pos_pol_ap, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$pos_pol_ap_cwc <- set_label(x = ap_est$pos_pol_ap_cwc, label = "Posicion politica apoderados CWC" )
+ap_est$pos_pol_ap_cwc <- set_label(x = ap_est$pos_pol_ap_cwc, label = "Posición política (apoderados - CWC)" )
 
 ## Educación apoderado
 ap_est$educ_ap_cwc <- center(ap_est$educ_ap, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$educ_ap_cwc <- set_label(x = ap_est$educ_ap_cwc, label = "Nivel educacional más alto apoderados CWC")
+ap_est$educ_ap_cwc <- set_label(x = ap_est$educ_ap_cwc, label = "Nivel educacional más alto apoderados (CWC)")
 
 ## Libros Hogar apoderado
 ap_est$libros_hogar_ap_cwc <- center(ap_est$libros_hogar_ap, type = "CWC", group = ap_est$rbd_est)
 
-ap_est$libros_hogar_ap_cwc <- set_label(x = ap_est$libros_hogar_ap_cwc, label = "Libros en el hogar apoderados CWC")
+ap_est$libros_hogar_ap_cwc <- set_label(x = ap_est$libros_hogar_ap_cwc, label = "Libros en el hogar (apoderados - CWC)")
 
 ## Recompensa apoderado
 ap_est$recompensa_ap_cwc <- center(ap_est$recompensa_ap, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$recompensa_ap_cwc <- set_label(x = ap_est$recompensa_ap_cwc, label = "Recompensa en la escuela apoderados CWC")
+ap_est$recompensa_ap_cwc <- set_label(x = ap_est$recompensa_ap_cwc, label = "Esfuerzo es recompensado en escuela (apoderados - CWC)")
 
 ## Edad apoderado
 ap_est$edad_ap_cwc <- center(ap_est$edad_ap, type = "CWC", group = ap_est$rbd_est)
+ap_est$edad_ap_cwc <- set_label(x = ap_est$edad_ap_cwc, label = "Edad apoderados (CWC)")
 
-ap_est$edad_ap_cwc <- set_label(x = ap_est$edad_ap_cwc, label = "Edad apoderados CWC")
-
-## Percepcion desigualdad apoderados
+## Percepción desigualdad apoderados
 ap_est$dem_desig_cwc <- center(ap_est$dem_desig, type = "CWC", group = ap_est$rbd_est)
-
-ap_est$dem_desig_cwc <- set_label(x = ap_est$dem_desig_cwc, label = "Percepcion desigualdad CWC")
+ap_est$dem_desig_cwc <- set_label(x = ap_est$dem_desig_cwc, label = "Percepción desigualdad (CWC)")
 ```
 
 ```{r eval=FALSE, include=FALSE}
-# Centrado a la media grupal (CWC) (rbd_ap)
+# Centrado a la media grupal (cwc) (rbd_ap)
 
 ## Promedio percepción meritocracia apoderados
 ap_est$prom_percmer_ap_cwc <- center(ap_est$prom_percmer_ap, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$prom_percmer_ap_cwc <- set_label(x = ap_est$prom_percmer_ap_cwc, label = "Promedio percepcion meritocratica apoderados CWC")
+ap_est$prom_percmer_ap_cwc <- set_label(x = ap_est$prom_percmer_ap_cwc, label = "Promedio Percepción meritocratica apoderados (CWC)")
 
 ## Sentido justicia indirecto Ln
 ap_est$sj_indirect_ln_cwc <- center(ap_est$sj_indirect_ln, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$sj_indirect_ln_cwc <- set_label(x = ap_est$sj_indirect_ln_cwc, label = "Sentido justicia indirecto ln CWC")
+ap_est$sj_indirect_ln_cwc <- set_label(x = ap_est$sj_indirect_ln_cwc, label = "Sentido justicia indirecto ln (CWC)")
 
 ## Sentido justicia directo
 ap_est$sj_direct_cwc <- center(ap_est$sj_direct, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$sj_direct_cwc < set_label(x = ap_est$sj_direct_cwc, label = "Sentido justicia directo CWC")
+ap_est$sj_direct_cwc < set_label(x = ap_est$sj_direct_cwc, label = "Sentido justicia directo (CWC)")
 
 ## Posición Política estudiante
 ap_est$pos_pol_est_cwc <- center(ap_est$pos_pol_est, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$pos_pol_est_cwc <- set_label(x = ap_est$pos_pol_est_cwc, "Posicion politica estudiantes CWC")
+ap_est$pos_pol_est_cwc <- set_label(x = ap_est$pos_pol_est_cwc, "Posición política (estudiantes - CWC)")
 
 ## Recompensa estudiante
 ap_est$recompensa_est_cwc <- center(ap_est$recompensa_est, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$recompensa_est_cwc <- set_label(x = ap_est$recompensa_est_cwc, label = "Recompensa en la escuela estudiantes CWC")
+ap_est$recompensa_est_cwc <- set_label(x = ap_est$recompensa_est_cwc, label = "Esfuerzo es recompensado en escuela (estudiantes - CWC)")
 
 ## La opinion es tomada en cuenta por los profesores
-
 ap_est$resp_prof_cwc <- center(ap_est$resp_prof, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$resp_prof_cwc <- set_label(x = ap_est$resp_prof_cwc, label = "Opiniones tomadas en cuenta por profesores CWC")
+ap_est$resp_prof_cwc <- set_label(x = ap_est$resp_prof_cwc, label = "Justicia en el trato profesores (CWC)")
 
 # Promedio de notas obtenido
 ap_est$prom_obt_cwc <- center(ap_est$prom_obt, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$prom_obt_cwc <- set_label(x = ap_est$prom_obt_cwc, label = "Promedio de notas obtenido CWC")
+ap_est$prom_obt_cwc <- set_label(x = ap_est$prom_obt_cwc, label = "Promedio de notas obtenido (CWC)")
 
 # Promedio de notas merecido
 ap_est$prom_mer_cwc <- center(ap_est$prom_mer, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$prom_mer_cwc <- set_label(x = ap_est$prom_mer_cwc, label = "Promedio de notas obtenido CWC")
+ap_est$prom_mer_cwc <- set_label(x = ap_est$prom_mer_cwc, label = "Promedio de notas obtenido (CWC)")
 
 ## Posición Política apoderado
 ap_est$pos_pol_ap_cwc <- center(ap_est$pos_pol_ap, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$pos_pol_ap_cwc <- set_label(x = ap_est$pos_pol_ap_cwc, label = "Posicion politica apoderados CWC" )
+ap_est$pos_pol_ap_cwc <- set_label(x = ap_est$pos_pol_ap_cwc, label = "Posición política apoderados (CWC)" )
 
 ## Educación apoderado
 ap_est$educ_ap_cwc <- center(ap_est$educ_ap, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$educ_ap_cwc <- set_label(x = ap_est$educ_ap_cwc, label = "Nivel educacional más alto apoderados CWC")
+ap_est$educ_ap_cwc <- set_label(x = ap_est$educ_ap_cwc, label = "Nivel educacional más alto apoderados (CWC)")
 
 ## Libros Hogar apoderado
 ap_est$libros_hogar_ap_cwc <- center(ap_est$libros_hogar_ap, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$libros_hogar_ap_cwc <- set_label(x = ap_est$libros_hogar_ap_cwc, label = "Libros en el hogar apoderados CWC")
+ap_est$libros_hogar_ap_cwc <- set_label(x = ap_est$libros_hogar_ap_cwc, label = "Libros en el hogar (apoderados - CWC)")
 
 ## Recompensa apoderado
 ap_est$recompensa_ap_cwc <- center(ap_est$recompensa_ap, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$recompensa_ap_cwc <- set_label(x = ap_est$recompensa_ap_cwc, label = "Recompensa en la escuela apoderados CWC")
+ap_est$recompensa_ap_cwc <- set_label(x = ap_est$recompensa_ap_cwc, label = "Esfuerzo es recompensado en escuela (apoderados - CWC)")
 
 ## Edad apoderado
 ap_est$edad_ap_cwc <- center(ap_est$edad_ap, type = "CWC", group = ap_est$rbd_ap)
+ap_est$edad_ap_cwc <- set_label(x = ap_est$edad_ap_cwc, label = "Edad apoderados (CWC)")
 
-ap_est$edad_ap_cwc <- set_label(x = ap_est$edad_ap_cwc, label = "Edad apoderados CWC")
-
-## Percepcion desigualdad apoderados
+## Percepción desigualdad apoderados
 ap_est$dem_desig_cwc <- center(ap_est$dem_desig, type = "CWC", group = ap_est$rbd_ap)
-
-ap_est$dem_desig_cwc <- set_label(ap_est$dem_desig, type = "CWC", group = ap_est$rbd_ap)
+ap_est$dem_desig_cwc <- set_label(x = ap_est$dem_desig_cwc, label = "Percepción desigualdad apoderados (CWC)")
 ```
 
 
+### Dummy percepción meritocracia estudiantes
+
 ```{r}
-# Tabla general
+#Importancia trabajo duro (estudiante): 1 = 0; 2,3,4 = 1
+ap_est$perc_tduro_bi_est <- car::recode(ap_est$perc_trabajo_duro_est,recodes = "1=0;2:4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi_est)
+ap_est$perc_tduro_bi_est <- factor(ap_est$perc_tduro_bi_est,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi_est)
 
-print(dfSummary(ap_est, headings = FALSE,varnumbers = F),method = "render")
+ap_est$perc_tduro_bi_est <- set_label(ap_est$perc_tduro_bi_est, label = "Importancia del trabajo duro (estudiante)")
+frq(ap_est$perc_tduro_bi_est)
 
-# Guardar base de datos conjunta
+# Importancia trabajo duro (estudiante): 1,2 = 0; 3,4 = 1 
+ap_est$perc_tduro_bi2_est <- car::recode(ap_est$perc_trabajo_duro_est,recodes = "1:2=0;3:4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi2_est)
+ap_est$perc_tduro_bi2_est <- factor(ap_est$perc_tduro_bi2_est,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi2_est)
+ap_est$perc_tduro_bi2_est <- set_label(ap_est$perc_tduro_bi2_est, label = "Importancia del trabajo duro (estudiante)")
+frq(ap_est$perc_tduro_bi2_est)
 
-save(ap_est, file = "../input/data/ap_est.RData")
+# Importancia trabajo duro (estudiante): 1,2,3 = 0; 4 = 1 
+ap_est$perc_tduro_bi3_est <- car::recode(ap_est$perc_trabajo_duro_est,recodes = "1:3=0;4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi3_est)
+ap_est$perc_tduro_bi3_est <- factor(ap_est$perc_tduro_bi3_est,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi3_est)
+ap_est$perc_tduro_bi3_est <- set_label(ap_est$perc_tduro_bi3_est, label = "Importancia del trabajo duro (estudiante)")
+frq(ap_est$perc_tduro_bi3_est)
 
-# Guardar base de datos apoderados
-save(ap_proc, file = "../input/data/ap_proc.RData")
 
-# Guardar base de datos estudiantes
-save(est_proc, file = "../input/data/est_proc.RData")
+ap_est$perc_esfuerzo_bi_est <- car::recode(ap_est$perc_esfuerzo_est,recodes = "1:2=0;3:4=1",as.factor = T) 
+table(ap_est$perc_esfuerzo_bi_est)
+ap_est$perc_esfuerzo_bi_est <- factor(ap_est$perc_esfuerzo_bi_est,labels = c("En desacuerdo","De acuerdo"))
+table(ap_est$perc_tduro_bi_est)
+
+ap_est$perc_esfuerzo_bi_est <- set_label(ap_est$perc_esfuerzo_bi_est, label = "Esfuerzo es recompensado (estudiante)")
+frq(ap_est$perc_esfuerzo_bi_est)
+```
+
+### Dummy percepción meritocracia padres
+
+```{r}
+#Importancia trabajo duro (apoderado): 1 = 0; 2,3,4 = 1
+ap_est$perc_tduro_bi_ap <- car::recode(ap_est$perc_trabajo_duro_ap,recodes = "1=0;2:4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi_ap)
+ap_est$perc_tduro_bi_ap <- factor(ap_est$perc_tduro_bi_ap,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi_ap)
+
+ap_est$perc_tduro_bi_ap <- set_label(ap_est$perc_tduro_bi_ap, label = "Importancia del trabajo duro (apoderado)")
+frq(ap_est$perc_tduro_bi_ap)
+
+# Importancia trabajo duro (apoderado): 1,2 = 0; 3,4 = 1 
+ap_est$perc_tduro_bi2_ap <- car::recode(ap_est$perc_trabajo_duro_ap,recodes = "1:2=0;3:4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi2_ap)
+ap_est$perc_tduro_bi2_ap <- factor(ap_est$perc_tduro_bi2_ap,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi2_ap)
+
+ap_est$perc_tduro_bi2_ap <- set_label(ap_est$perc_tduro_bi2_ap, label = "Importancia del trabajo duro (apoderado)")
+frq(ap_est$perc_tduro_bi2_ap)
+
+# Importancia trabajo duro (apoderado): 1,2,3 = 0; 4 = 1 
+ap_est$perc_tduro_bi3_ap <- car::recode(ap_est$perc_trabajo_duro_ap,recodes = "1:3=0;4=1",as.factor = T) 
+table(ap_est$perc_tduro_bi3_ap)
+ap_est$perc_tduro_bi3_ap <- factor(ap_est$perc_tduro_bi3_ap,labels = c("Nada importante","Es importante"))
+table(ap_est$perc_tduro_bi3_ap)
+ap_est$perc_tduro_bi3_ap <- set_label(ap_est$perc_tduro_bi3_ap, label = "Importancia del trabajo duro (apoderado)")
+frq(ap_est$perc_tduro_bi3_ap)
+
+
+ap_est$perc_esfuerzo_bi_ap <- car::recode(ap_est$perc_esfuerzo_ap,recodes = "1:2=0;3:4=1",as.factor = T) 
+table(ap_est$perc_esfuerzo_bi_ap)
+ap_est$perc_esfuerzo_bi_ap <- factor(ap_est$perc_esfuerzo_bi_ap,labels = c("En desacuerdo","De acuerdo"))
+table(ap_est$perc_tduro_bi_ap)
+ap_est$perc_esfuerzo_bi_ap <- set_label(ap_est$perc_esfuerzo_bi_ap, label = "Esfuerzo es recompensado (apoderado)")
+frq(ap_est$perc_esfuerzo_bi_ap)
+```
+
+### Ingreso imputado
+
+```{r}
+ap_est$ingresos_pc.im <- ifelse(test =is.na(ap_est$ingresos_pc),
+                                yes = ap_est$ingresos_pc_esc,
+                                no=ap_est$ingresos_pc) 
+View(ap_est[,c("rbd_est","rbd_ap","ingresos_pc","ingresos_pc_esc","quintiles_ingresos_pc_factor","ingresos_pc.im")])
+
+ap_est$ingresos_pc.im <- set_label(ap_est$ingresos_pc.im,label = "Ingreso per cap (imputado media escuela)")
+
+
+ap_est$quintiles_ingresos_pc.im <- ntile(ap_est$ingresos_pc.im,5)
+# ap_est$quintiles_ingresos_pc.im[is.na(ap_est$quintiles_ingresos_pc.im)] <- 99
+# 
+# ap_est$quintiles_ingresos_pc.im<- factor(ap_est$quintiles_ingresos_pc.im,
+#                                          levels = c(1,2,3,4,5,99),
+#                                          labels = c("Quintil 1", "Quintil 2", 
+#                                                     "Quintil 3", "Quintil 4", 
+#                                                     "Quintil 5", "No sabe/No responde"))
+
+ap_est$quintiles_ingresos_pc.im <- set_label(ap_est$quintiles_ingresos_pc.im, "Quintiles de ingreso per capita del hogar")
+sjmisc::frq(ap_est$quintiles_ingresos_pc.im)
+sjmisc::frq(ap_est$quintiles_ingresos_pc_factor)
+```
+
+
+
+```{r}
+save(est_proc, file = "../input/data/est_proc.RData",ascii = T)# Guardar base de datos estudiantes
+save(ap_proc, file = "../input/data/ap_proc.RData",ascii = T)  # Guardar base de datos apoderados
+save(ap_est, file = "../input/data/ap_est.RData")    # Guardar base de datos conjunta
+save(ap_est, file = "../input/data/ap_est.sav")    # Guardar base de datos conjunta
+
+```
+
+```{r echo=FALSE}
+df<- dfSummary(ap_est,
+               plain.ascii = FALSE,
+               style = "grid",
+               tmp.img.dir = "/tmp",
+               graph.magnif = 0.75,
+               headings = F,  # encabezado
+               varnumbers = F, # num variable
+               labels.col = T, # etiquetas
+               na.col = F,    # missing
+               graph.col = T, # plot
+               valid.col = T, # n valido
+               )
+view(df,method = "render")
+```
+
+
+```{r eval=FALSE, include=FALSE}
+view_df(est_proc,use.viewer = F) # check base de datos estudiantes
+view_df(ap_proc,use.viewer = F)  # check base de datos apoderados
+view_df(ap_est,use.viewer = F)   # check base de datos conjunta
+# source(knitr::purl("production/prod_preparacion-datos.Rmd", quiet=TRUE,output = tempfile()))
 ```
 
 # Evaluar perdida de casos y representatividad de la muestra 
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 dim(est)
-
 dim(ap_est) # ap_est posee todos los estudiantes. 
-
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 table(is.na(ap_est$genero_ap)) # 919 padres no responden.  
-
 ap_est$ap_responde <- ifelse(is.na(ap_est$genero_ap),0,1)
-
 table(ap_est$ap_responde)
-
-
 table(ap_est$educ_padre)
-
 ap_est_sinap<- ap_est %>% filter(ap_responde==0)
 ap_est_conap<- ap_est %>% filter(ap_responde==1)
-
 freq(ap_est_sinap$educ_padres_factor)
 freq(ap_est_conap$educ_padres_factor)
 sjPlot::tab_xtab(var.row = ap_est$educ_padres_factor, var.col = ap_est$ap_responde, title = "Table Title", show.row.prc = TRUE,show.exp=T)
-
 sjPlot::tab_xtab(var.row = ap_est$educ_madre, var.col = ap_est$ap_responde, title = "Table Title", show.row.prc = TRUE,show.exp=T)
-
-
 ```
 
 
 > A partir de la educación de los padres señalada por los estudiantes se puede decir que no hay un desajuste socioeconomico de la muestra a partir de la perdida por apoderados. 
 
 
-```{r}
-
+```{r eval=FALSE, include=FALSE}
 sjPlot::tab_xtab(var.row = ap_est$tiempo_compartido, var.col = ap_est$ap_responde, title = "Table Title", show.row.prc = TRUE, show.exp=T)
-
 ap_est$tiempo_compartido <- set_na(ap_est$tiempo_compartido, na = c(5,9), drop.levels = TRUE, as.tag = FALSE)
-
 # Cuestionario apoderados
 ap_est$tiempo_compartido <- set_label(x = ap_est$tiempo_compartido, label = "Tiempo compartido")
-
 sjPlot::tab_xtab(var.row = ap_est$tiempo_compartido, var.col = ap_est$ap_responde, title = "Tiempo compartido segun si el apoderado responde", show.row.prc = TRUE, show.exp=T)
-
 table(ap_est$tiempo_compartido)
 ```
 
