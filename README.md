@@ -1,2 +1,2 @@
 # socialisacion-merit
-La socialización de la meritocracia en la familia y la escuela 
+La socialización de la meritocracia en la familia y la escuela
