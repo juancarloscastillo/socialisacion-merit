@@ -26,6 +26,7 @@ La estructura para la preparación consistirá en cinco partes. La primera corre
 Se listan los puntos mas importantes:
 
 ## Registro para revisar
+
 - Para la variable de promedios (obtenido y merecido) existían datos menores a 1 y mayores a 7. En detalle, existían 6 casos para el promedio obtenido y 12 casos para el promedio merecido que no se ajustan a la escala. Provisoriamente fueron recodificados a NA.
 
 - Para la variable de año de nacimiento del apoderado existían datos poco probables. En detalle, existían 10 casos que indican años mayores a 1992. Provisoriamente fueron recodificados a NA.
@@ -204,6 +205,11 @@ est_proc$perc_trabajo_duro_factor <- factor(est_proc$perc_trabajo_duro, levels =
 
 # Etiquetar
 est_proc$perc_trabajo_duro_factor <- set_label(x = est_proc$perc_trabajo_duro_factor, label = "Percepción meritocracia: Importancia trabajo duro (estudiantes)")
+
+# Finales
+freq(est_proc$perc_esfuerzo_factor)
+freq(est_proc$perc_trabajo_duro_factor)
+
 ```
 
 
@@ -1541,10 +1547,10 @@ sjmisc::frq(ap_est$quintiles_ingresos_pc_factor)
 
 
 ```{r}
-save(est_proc, file = "../input/data/est_proc.RData",ascii = T)# Guardar base de datos estudiantes
-save(ap_proc, file = "../input/data/ap_proc.RData",ascii = T)  # Guardar base de datos apoderados
-save(ap_est, file = "../input/data/ap_est.RData")    # Guardar base de datos conjunta
-save(ap_est, file = "../input/data/ap_est.sav")    # Guardar base de datos conjunta
+save(est_proc, file = "input/data/est_proc.RData",ascii = T)# Guardar base de datos estudiantes
+save(ap_proc, file = "input/data/ap_proc.RData",ascii = T)  # Guardar base de datos apoderados
+save(ap_est, file = "input/data/ap_est.RData")    # Guardar base de datos conjunta
+save(ap_est, file = "input/data/ap_est.sav")    # Guardar base de datos conjunta
 
 ```
 
