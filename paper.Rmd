@@ -164,15 +164,9 @@ La evidencia en torno a las creencias meritocráticas destacan el rol que juegan
 
   > Hipótesis 5: El estatus socioeconómico de la escuela posee un efecto positivo sobre las percepciones meritocráticas del estudiante
 
-Un corolario del efecto del nivel socioeconómico de la familia sobre la percepción de los padres y el efecto de las percepciones de estos sobre la de sus hijos, es la posibilidad de que la crianza en entornos de mayor nivel socioeconómico implique un contexto familiar con mayor percepción de meritocracia. Esto supone una cadena de asociaciones donde el nivel socioeconómico de la familia fomenta una mayor percepción de meritocracia por parte de los padres, lo que a su vez genera una mayor percepción meritocrática en sus hijos. De ser efectivo que el nivel socioeconómico afecta las creencias meritocráticas de los hijos mediante las creencias de los padres, se podría discutir hasta qué punto el efecto registrado en la literatura del nivel socioeconómico sobre las creencias meritocráticas se explica más por la socialización familiar que por la posición socioeconómica en sí misma. Por ello, se plantea que:
+La figura X muestra un esquema resumen de las hipótesis del estudio:
 
-> Hipótesis 6: La percepción meritocrática de los padres media la relación entre el estatus socioeconómico de los padres y la percepción meritocrática de los estudiantes.
-
-Finalmente, respecto a la relación entre nivel socioeconómico y sentido de justicia en las notas se puede decir algo similar.  Las investigaciones de Resh y Sabbagh en Israel [@resh_Sense_2010] han evidenciado que los recursos de los padres poseen un efecto no solo en las notas de los estudiante sino también en la sensación de justicia que siente el estudiante respecto a sus notas. Siguiendo a @solt_SWIID_2020, si consideramos que en Chile existe mayor desigualdad social que en Israel, podríamos suponer que dicho efecto se mantendrá e incluso podría ser mayor.  Por ende se podría hipotetizar una segunda mediación, donde los estudiantes de familias con mayor nivel socioeconómico tendrán una mayor sensación de justicia en sus notas, lo cual fomentará una mayor percepción de meritocracia. Para sintetizar esto último se propone que:
-
-> Hipótesis 7: La sensación de justicia en las notas media la relación entre el estatus socioeconómico de la escuela y la percepción meritocrática estudiantes.
-
-[esquema resumen]
+![](input/images/model.png)
 
 # Metodología
 
@@ -614,11 +608,7 @@ Los resultados son consistentes con lo vislumbrado por el análisis bivariado. E
 
 Respecto a la hipótesis del sentido de justicia en la escuela, se puede observar que en ninguna de las formas en que se mide la sensación de justicia en las notas permite concluir una relación positiva con la percepción meritocrática de los estudiantes. Sin embargo, si es posible evidenciar un efecto del nivel socioeconómico en las percepciones meritocráticas de los estudiantes. En comparación con el primer quintil, los estudiantes de los tres quintiles superiores poseen más probabilidades de indicar que el trabajo duro es importante para surgir en la vida, aunque solo el efecto del tercer quintil perdura al incluir como control el nivel educativo de los padres (ver *logit* Modelos 5,6 y 7 con *p* \< 0.05). Esta evidencia es consistente con los antecedentes que señalan la importancia del nivel socioeconómico al explicar las percepciones meritocráticas, a la vez que aporta evidencia para señalar que dicha asociación, evaluada comúnmente en adultos, es aplicable a los jóvenes. Por su parte, no se encuentra un efecto significativo del nivel socioeconómico de la escuela medido mediante la proporción de apoderados con título universitario. En suma, los hallazgos confirman la relación del nivel socioeconómico con la percepción meritocrática a nivel individual, pero no a nivel escuela.
 
-Respecto a las interacciones, se observa que, aunque la justicia en las notas no tenga un efecto en sí misma, si posee una interacción significativa con la percepción meritocrática de los padres. Esto va en la línea de lo hipotetizado, en tanto se esperaba que la experiencia escolar debilite la asociación entre la percepción meritocrática de los padres y los estudiantes. Efectivamente, como se puede observar en la Figura N° \@ref(fig:interac), la relación positiva entre creencias meritocráticas entre padres e hijos se ve atenuada (disminuye) en el caso de que se perciba ser sub-recompensado con notas en la escuela.
-
-Por último, este estudio propuso dos caminos para explicar la relación entre nivel socioeconómico y percepciones de meritocracia en los estudiantes, señalando como posibles mediadores las percepciones meritocráticas de los padres y las experiencias de justicia en las notas (hipótesis $H_6$ y $H_7$). Sin embargo, este estudio no encuentra evidencia para respaldar estas hipótesis. [^5].
-
-[^5]: El análisis de mediación en detalle se puede ver en la Tabla N° \@ref(tab:meds) en la sección de Apéndice.
+Respecto a las interacciones, se observa que, aunque la justicia en las notas no tenga un efecto en sí misma, si posee una interacción significativa con la percepción meritocrática de los padres. Esto va en la línea de lo hipotetizado, en tanto se esperaba que la experiencia escolar de injusticia pudiera debilitar la asociación entre la percepción meritocrática de los padres y los estudiantes. Efectivamente, como se puede observar en la Figura N° \@ref(fig:interac), la relación positiva entre creencias meritocráticas entre padres e hijos se ve atenuada (disminuye) en el caso de que se perciba ser sub-recompensado con notas en la escuela. Por lo tanto, la escuela parece jugar un rol relevante como agente socializador, pudiendo incluso interferir con aspectos de socialización familiar.
 
 
 ```{r interac, fig.width=11,fig.cap="Interacción entre percepciones meritocraticas parentales, del estudiante y justicia en las notas", echo=FALSE, out.width='100%'}

@@ -9,9 +9,17 @@
 - mejorar etiqueta de variable "Es importante" ... no se entiende
 - bib
 - esquema resumen hipótesis
+- mediación? Sacar
+
 - en tabla de modelos de regresión incluir en los primeros modelos el N solo de estudiantes para poder reflejar el efecto de disminución de la muestra en la caida del efecto de justicia en la escuela.
+
+- tabla correlaciones corregir, con muestra estudiantes y agregar luego variables padres con N restringido, sacar todas las otras variables, corrplot
+
 - darle una vuelta más a las interacciones?
 
+Yo:
+- esquema y comentar
+- ampliar tema interacciones
 
 
 Otros
