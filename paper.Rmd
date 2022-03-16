@@ -164,9 +164,13 @@ La evidencia en torno a las creencias meritocráticas destacan el rol que juegan
 
   > Hipótesis 5: El estatus socioeconómico de la escuela posee un efecto positivo sobre las percepciones meritocráticas del estudiante
 
-La figura X muestra un esquema resumen de las hipótesis del estudio:
+La Figura \@ref(fig:modelo) muestra un esquema resumen de las hipótesis del estudio:
 
-![](input/images/model.png)
+
+```{r modelo, echo=FALSE, fig.cap='Modelo resumen de hipótesis'}
+knitr::include_graphics(path = "input/images/model-hip.PNG")
+```
+
 
 # Metodología
 
@@ -329,9 +333,7 @@ file.remove(c("desc01.html","desc01_esc.html")) # Remover archivo HTML
 ```
 
 ```{r desc01, echo=FALSE, results='asis'}
-
 # REVISAR EL N
-
 knitr::kable(data.frame(image='![](output/tables/desc01.png){height=80%}'),    # generar tabla
              caption="Variables nivel individual",
              col.names = "",
@@ -704,7 +706,6 @@ El sentido de justicia directo se relaciona de manera positiva y no significativ
 La Tabla \@ref(tab:getah) presenta los resultados de la estimación del modelo de regresión ordinal multinivel para la variable de “importancia atribuida al trabajo duro para salir adelante” como indicador de percepción meritocrática en estudiantes. Las estimaciones de los modelos siguen un orden de complejidad ascendente con tal de poder analizar el comportamiento de los coeficientes en la medida que son controlados por otros predictores. Bajo esta lógica, primero se estiman modelos simples para las variables principales, luego modelos multivariados, y finalmente se introducen controles e interacciones.
 
 ```{r getah, results='asis', echo=FALSE}
-
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
@@ -743,6 +744,7 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              prom_percmer_ap,
                              sj_direct_factor,
                              sj_indirect_noln,
+                             sj_indirect_ln,
                              sj_indirect_cat,
                              sj_indirect_qtil,
                              quintiles_ingresos_pc_factor,
@@ -780,7 +782,7 @@ omit_coef="(Intercept)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_fac
 con <-c(
   "quintiles_ingresos_pc_factor",
   "libros_hogar_factor_ap",
-  "educ_factor_ap",
+  "univ",
   "pos_pol_factor_ap",
   "pos_pol_factor_est",
   "genero_factor_est",
@@ -789,60 +791,74 @@ con <-c(
 
 ref <- "(1|rbd_est)" # Cluster
 
-cap1 <- "Modelos ordinal logit multinivel para Socialización de importancia del trabajo duro" # Título tabla
-
-
+cap1 <- "Multilevel ordinal logit models for Socialization of the Importance of Hard Work" # Título tabla
 # Modelos
 
 # N de estudiantes
-getah.or0.1 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg_est)
-getah.or0.2 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_ln",ref),collapse="+"))), basereg_est)
-getah.or0.3 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor","sj_indirect_ln",ref),collapse="+"))), basereg_est)
+getah.or0.1 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_ln",ref),collapse="+"))), basereg_est)
+getah.or0.2 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg_est)
+getah.or0.3 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_ln","sj_direct_factor",ref),collapse="+"))), basereg_est)
 
-texreg::knitreg(l=list(getah.or0.1,getah.or0.2,getah.or0.3),
-                include.thresholds=FALSE)
-
+# texreg::knitreg(l=list(getah.or0.1,getah.or0.2,getah.or0.3),
+#                 include.thresholds=FALSE)
 
 # N de estudiantes y apoderados
 getah.or1 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
-getah.or2 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
-getah.or3 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
-getah.or4 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
-getah.or5 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con[-3],ref),collapse="+"))), basereg)
-getah.or6 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con,ref),collapse="+"))), basereg, nAGQ = 10)
-getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
-getah.or8 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","univ_esc",ref),collapse="+"))), basereg)
+# getah.or2 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
+# getah.or3 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
+# getah.or4 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",ref),collapse="+"))), basereg)
+# getah.or5 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor",con[-3],ref),collapse="+"))), basereg)
+getah.or6 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor",con,ref),collapse="+"))), basereg, nAGQ = 10)
+getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+getah.or8 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","nse_grupo",ref),collapse="+"))), basereg)
 
 coef_names <- c(
-  # "Algo importante","Importante","Muy importante",
-  "Es importante ¹",
-  "SJ indirecto",
-  "Menos de las que merezco","Más de las que merezco",
-  "Quintil 2","Quintil 3","Quintil 4","Quintil 5","Quintil No sabe/No responde",
-  "Educación media", "Educación Técnica Superior", "Educación universitaria o postgrado",
-  #"Padres universitarios",
-  #"Es importante x SJ indirecto",
-  "Es importante x Menos de las que merezco",
-  "Es importante x Más de las que merezco",
-  "% apoderados Universitarios"
+  "Sense of Justice in grades - Indirect (ln)", 
+  "Less than I deserve",
+  "More than I deserve ",
+  "Hard work is important¹",
+  "Quintile 2","Quintile 3","Quintile 4","Quintile 5","Quintile Don't know/No Answer",
+  "Parents have universitary degree (ref: does not have)",
+  "Hard work is important x Less than I deserve",
+  "Hard work is important x More than I deserve",
+  "School Socio-economic status"
   ) # Nombre coeficientes
 
-# Renderizar tabla
-knitreg(list(getah.or1,getah.or3,getah.or4,getah.or5,getah.or6,getah.or7,getah.or8),
+
+knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
+             getah.or1,
+             getah.or6,
+             getah.or7,
+             getah.or8),
         caption = paste(cap1), # Se agrega key para que se pueda referenciar
         caption.above=TRUE,
         omit.coef=omit_coef,
         include.thresholds=FALSE,
-        custom.gof.rows=list(Controls=c("No","No","No","Yes","Yes","Yes","Yes")),
-        # groups=list("Perc. Meritocracia (apoderado)"=1:3,
-        #             "Setido justicia (indirecto)"=4:6,
-        #             "Sentido justicia (directo)"=7:8),
+        # custom.coef.names=coef_names
+        )
+
+# Renderizar tabla
+knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
+             getah.or1,
+             getah.or6,
+             getah.or7,
+             getah.or8),
+        caption = paste(cap1), # Se agrega key para que se pueda referenciar
+        caption.above=TRUE,
+        omit.coef=omit_coef,
+        include.thresholds=FALSE,
+        custom.gof.rows=list(Controls=c("No","No","No","No","Yes","Yes","Yes")),
+        groups=list("Sense of Justice in grades - Direct (ref: The ones I deserve)"=2:3,
+                    "Parental Perc. Meritocracy (ref: Not important)"=4,
+                    "Household income (ref: Quintile 1)"=5:9,
+                    "Interaction: Parental Perc. Meritocracy x SJ in grades - Direct" = 11:12),
         custom.coef.names=coef_names,
-        custom.note="*** p < 0.001; ** p < 0.01; * p < 0.05; ¹'Es importante' (Muy importante + Importante + Algo Importante) y 'No es importante' (Nada importante)"
+        threeparttable = T,
+        custom.note="*** p < 0.001; ** p < 0.01; * p < 0.05; \\item ¹Note: the perception of parent’s meritocracy was collapsed into dummies, where the category ’It is important’ (1) includes the categories ’Very important’, ’Important’ and ’Somewhat important’ and the reference category ’Not important’ (0) corresponds to the category ’Not at all important’."
         #file = "output/tables/trabajoduro_ppt.html"
         )
 
-#webshot::webshot("output/tables/trabajoduro_ppt.html","output/tables/trabajoduro_ppt.png")
+  #webshot::webshot("output/tables/trabajoduro_ppt.html","output/tables/trabajoduro_ppt.png")
 ```
 
 <!-- [SUBIR TABLA DE RECOMENSA AQUI] -->
