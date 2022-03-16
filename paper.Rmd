@@ -244,7 +244,7 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              dependencia_factor_ap,
                              ingresos_esc,
                              ingresos_pc_esc,
-                             univ_esc,
+                             univ_esc
                              # rbd_est
 ) %>% na.omit(basereg) %>% select(-recompensa_factor_est,-resp_prof_factor) # Estas dos variables son parte de análisis exploratorios. Se seleccionaron para que el N fuera homogeneo a través de todos los análisis, sin embargo, no son incluídas dentro de los análisis principales de hipótesis.
 
@@ -267,7 +267,49 @@ view(df,file = "desc01.html") # Ver tabla en un archivo HTML
 webshot(url ="desc01.html" ,file ="output/tables/desc01.png") # Remover archivo HTML
 
 # Df variables nivel 2
-df.esc<- dfSummary(select(basereg,dependencia_factor_ap:univ_esc),
+
+df_rbd <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             sj_direct_factor,
+                             sj_indirect_ln,
+                             quintiles_ingresos_pc_factor,
+                             educ_factor_ap,
+                             libros_hogar_factor_ap,
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             recompensa_factor_est,
+                             resp_prof_factor,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             ingresos_esc,
+                             ingresos_pc_esc,
+                             univ_esc,
+                             nse_grupo,
+                             rbd_est
+) %>% na.omit(basereg) %>% 
+  select(rbd_est,dependencia_factor_ap,nse_grupo)
+
+df_n2 <- 
+df_rbd %>% 
+  group_by(rbd_est) %>% 
+  summarise(dependencia_factor_ap=mean(as.numeric(dependencia_factor_ap), na.rm=T),
+            nse_grupo=mean(as.numeric(nse_grupo), na.rm=T))
+  
+df_n2$dependencia_factor_ap <- factor(df_n2$dependencia_factor_ap, 
+                                      levels = c("Municipal",
+                                                 "Part. Subvencionado",
+                                                 "Part. Pagado"))
+
+df_n2$nse_grupo <- factor(df_n2$nse_grupo, 
+                                      levels = c("Bajo",
+                                                 "Medio-Bajo",
+                                                 "Medio",
+                                                 "Medio-Alto",
+                                                 "Alto"))
+  
+df.esc<- dfSummary(select(df_n2,dependencia_factor_ap,nse_grupo),
                plain.ascii = FALSE,
                style = "grid",
                tmp.img.dir = "/tmp",
@@ -287,6 +329,9 @@ file.remove(c("desc01.html","desc01_esc.html")) # Remover archivo HTML
 ```
 
 ```{r desc01, echo=FALSE, results='asis'}
+
+# REVISAR EL N
+
 knitr::kable(data.frame(image='![](output/tables/desc01.png){height=80%}'),    # generar tabla
              caption="Variables nivel individual",
              col.names = "",
@@ -311,7 +356,7 @@ knitr::kable(data.frame(image='![](output/tables/desc01_esc.png){width=width_tab
              format = "pandoc") %>% kable_styling(latex_options = c("HOLD_position"),full_width = fwidth)
 ```
 
-La principal variable independiente de nivel escuela del estudio corresponde al estatus socioeconómico de la escuela. Se utilizaron dos formas para su medición. En primer lugar, se construyó un promedio de los ingresos a nivel escuela. En segundo lugar, se cuantificó el porcentaje de apoderados con educación universitaria a nivel escuela. Para elaborar este indicador, se construyó una variable tipo dummy donde 1 = “posee educación universitaria” y 0 = “no posee educación universitaria”. A partir de la variable tipo dummy se calculó el porcentaje de apoderados con educación universitaria por escuela. A modo de énfasis, ambas formas  de medir el estatus socioeconómico significaron un cambio en su nivel de medición original (ordinal a intervalar), así cómo una agregación de datos de nivel uno (apoderados) a nivel dos (escuelas).
+La principal variable independiente de nivel escuela del estudio corresponde al estatus socioeconómico de la escuela. Esta variable proviene de datos administrativos del Ministerio de Educación y corresponde a una clasificación en cinco grupos socioeconómicos. Para su elaboración, se consideran cuatro variables: 1) Nivel educacional de la Madre, 2) Nivel Educacional del Padre, 3) Ingreso económico total mensual en el hogar y 4) el Índice de Vulnerabilidad. Las tres primeras variables provienen del cuestionario de apoderados del Sistema Nacional de Evaluación de Resultados de Aprendizaje (SIMCE); y la cuarta es aportada por la Junta Nacional de Auxilio Escolar y Becas (JUNAEB) [@mineduc_metodologia_2013]
 
 Las variables control incluyeron sexo, posición política de padres y estudiantes, ciudad, dependencia administrativa de la escuela y cantidad de libros en el hogar.
 
@@ -327,13 +372,209 @@ Los análisis se basarán en las hipótesis que han sido pre-registradas y se pu
 
 # Resultados
 
-En la Tabla N° \@ref(tab:correl)[^3] se presentan las correlaciones entre las variables principales del estudio. Las correlaciones deben interpretarse como asociaciones positivas o negativas según el signo y de mayor intensidad según se acerque el valor absoluto a 1.
 
-[^3]: Con tal de poder efectuar los análisis de correlación, los 71 casos de la categoría “NS/NR” de la variable quintiles de ingresos fueron imputados por los promedios de ingresos de la escuela.
+<!-- [AQUI likertplot meritocracia padre hijos] -->
+
+```{r likert-merit, echo=FALSE, fig.cap='Indicadores de Percepción de Meritocracia para estudiantes y apoderados'}
+# Funciones para renderizar tablas tanto en HTML como en pdf
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(dplyr, haven, sjPlot,ggplot2) # librerias
+knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
+                      message = FALSE,  # mensajes/avisos de librerias
+                      cache = FALSE,    # cache de los chunks,usar analisis pesados
+                      out.width = '85%',# largo de imagen en %
+                      fig.pos= "H",     # posicion figuras H = HERE
+                      echo = FALSE      # incluir chunk en output
+                      )
+
+# Otras configuraciones
+options(scipen=999) # notacion cientifica
+options(knitr.kable.NA = '') # NA en kable = ''
+
+# Cargar base de datos procesada
+load(file = "input/data/ap_est.RData")
+
+# Seleccionar variables para el análisis
+base_lik <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             perc_tduro_bi_est,
+                             perc_tduro_bi2_est,
+                             perc_tduro_bi3_est,
+                             perc_esfuerzo_bi_est,
+                             perc_tduro_bi_ap,
+                             perc_tduro_bi2_ap,
+                             perc_tduro_bi3_ap,
+                             perc_esfuerzo_bi_ap,
+                             prom_percmer_est,
+                             prom_percmer_ap,
+                             sj_direct_factor,
+                             sj_indirect_noln,
+                             sj_indirect_cat,
+                             sj_indirect_qtil,
+                             quintiles_ingresos_pc_factor,
+                             educ_factor_ap,
+                             libros_hogar_factor_ap,
+                             recompensa_est,  # recompensa en escuela
+                             resp_prof,# justicia trato profesor
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             ingresos_esc,
+                             ingresos_pc_esc,
+                             univ_esc,
+                             univ,
+                             rbd_est
+                             ) %>% na.omit(base_lik) %>% 
+  select(perc_trabajo_duro_factor_est,
+         perc_trabajo_duro_factor_ap,
+         perc_esfuerzo_factor_est,
+         perc_esfuerzo_factor_ap
+         )
+
+  # update.packages("sjPlot") # please install version 2.8.9 or above
+  ggplot2::theme_set(ggplot2::theme(panel.background = ggplot2::element_rect(fill = "gray85",
+                                                                             colour = "gray85"),
+                                    panel.border = ggplot2::element_blank(),
+                                    axis.text.y = ggplot2::element_text(size = 13,
+                                                                        hjust = 1),
+                                    title = ggplot2::element_text(size = 13,
+                                                                  face = "bold"),
+                                    legend.text = ggplot2::element_text(size = 12),
+                                    plot.caption = ggplot2::element_text(size = 10,
+                                                                         face = "plain",
+                                                                         hjust = 1)))
+  #Plot : Perception of meritocracy student and family
+  p1<-
+    base_lik %>%
+    sjPlot::plot_likert(geom.colors = "PuBu",
+                        # title = c("a. Perceptions"),
+                        geom.size = 0.8,
+                        # axis.labels = c("Effort", "Talent", "Rich Parents", "Contacts"),
+                        catcount = 4,
+                        # cat.neutral = 3,
+                        grid.range  =  c (1.2 , 1.2),
+                        values  =  "sum.outside",
+                        reverse.colors = T,
+                        reverse.scale = T,
+                        show.n = FALSE) +
+    theme(legend.position="bottom") +
+    labs(caption = 
+           paste0("Source: Authors calculations based on PACES Study"," (n=",dim(na.omit(base_lik))[1],")"))
+
+  p1
+```
+
+La Figura \ref(fig:likert-merit )permite comparar la distribución de las variables de percepción de meritocracia de estudiantes y apoderados. Los
+resultados dan cuenta de que en general existe una alta percepción de meritocracia, tanto en estudiantes como en apoderados en ambas mediciones. Por un lado, la importancia que se atribuye al trabajo duro en estudiantes concentra aproximadamente un 86% de las respuestas en las categorías "Importante" y "Muy importante" siendo un 82% en apoderados. Adicionalmente, el panel inferior muestra frente a la afirmación de que en Chile las personas que se esfuerzan salen adelante, se puede observar una distribución similar en las respuestas de la variable del panel superior, concentrando un 81% de respuestas de estudiantes en las categorías "De acuerdo" y "Muy deacuerdo" y un 82% en el caso de las respuestas de sus apoderados. En conjunto, se puede afirmar que estos resultados van en línea con lo planteado en las hipótesis, es decir, que las respuestas de estudiantes tienden a distribuirse similar con respecto a las de los apoderados.
+
+<!-- [AQUI densidad de SJ indirecto] -->
+
+```{r dens-sjust, echo=FALSE, fig.cap='Distribución de promedio notas Obtenidas y Merecidas de estudiantes }
+# Funciones para renderizar tablas tanto en HTML como en pdf
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, lme4, ordinal, webshot) # librerias
+knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
+                      message = FALSE,  # mensajes/avisos de librerias
+                      cache = FALSE,    # cache de los chunks,usar analisis pesados
+                      out.width = '85%',# largo de imagen en %
+                      fig.pos= "H",     # posicion figuras H = HERE
+                      echo = FALSE      # incluir chunk en output
+                      )
+
+# Otras configuraciones
+options(scipen=999) # notacion cientifica
+options(knitr.kable.NA = '') # NA en kable = ''
+
+# Cargar base de datos procesada
+load(file = "input/data/ap_est.RData")
 
 
-```{r correl, echo=FALSE}
+# Seleccionar variables para el análisis
+base_sj <- ap_est %>% select(
+  perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             perc_tduro_bi_est,
+                             perc_tduro_bi2_est,
+                             perc_tduro_bi3_est,
+                             perc_esfuerzo_bi_est,
+                             perc_tduro_bi_ap,
+                             perc_tduro_bi2_ap,
+                             perc_tduro_bi3_ap,
+                             perc_esfuerzo_bi_ap,
+                             prom_percmer_est,
+                             prom_percmer_ap,
+                             sj_direct_factor,
+                             sj_indirect_noln,
+                             sj_indirect_cat,
+                             sj_indirect_qtil,
+                             quintiles_ingresos_pc_factor,
+                             educ_factor_ap,
+                             libros_hogar_factor_ap,
+                             recompensa_est,  # recompensa en escuela
+                             resp_prof,# justicia trato profesor
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             ingresos_esc,
+                             ingresos_pc_esc,
+                             univ_esc,
+                             univ,
+                             rbd_est, 
+                             prom_obt,
+                             prom_mer
+                             ) %>% na.omit(base_sj) %>% 
+  select(prom_obt,
+         prom_mer
+         )
 
+  # update.packages("sjPlot") # please install version 2.8.9 or above
+  ggplot2::theme_set(ggplot2::theme(panel.background = ggplot2::element_rect(fill = "gray85",
+                                                                             colour = "gray85"),
+                                    panel.border = ggplot2::element_blank(),
+                                    axis.text.y = ggplot2::element_text(size = 13,
+                                                                        hjust = 1),
+                                    title = ggplot2::element_text(size = 13,
+                                                                  face = "bold"),
+                                    legend.text = ggplot2::element_text(size = 12),
+                                    plot.caption = ggplot2::element_text(size = 10,
+                                                                         face = "plain",
+                                                                         hjust = 1)))
+a <- data.frame(base_sj$prom_obt); 
+a$grupo <- "Obtenido"
+names(a) <- c("promedio","Nota")
+b <- data.frame(base_sj$prom_mer)
+b$grupo <- "Merecido"
+names(b) <- c("promedio","Nota")
+df_notas<- rbind(b,a)
+
+  ggplot(df_notas) +
+  geom_density(aes(x=promedio,fill=Nota), alpha=0.4) +
+  scale_x_continuous(name = "Promedio de notas", 
+                     breaks=1:7,
+                     labels = as.character(1:7)) +
+  ylab("Densidad")+  
+  theme(legend.position="bottom") +
+    labs(caption = 
+           paste0("Authors calculations based on PACES Study"," (n=",dim(na.omit(base_sj))[1],")"))
+```
+
+La Figura \@ref(fig:desn-sjust) permite la distribución de las variables correspondientes al promedio notas obtenido y merecido que los estudiantes declararon. Por un lado, se observa que la distribución de la nota obtenida posee una media (M = 5.82) más baja que la nota merecida (M = 6.01). Por otro lado, al comparar las distribuciones, se puede observar que la nota obtenida se encuentra menos dispersa (DS = 0.58) que la nota merecida (DS = 0.64). Este resultado da luces de una proporción mayoritaria de estudiantes muestran consistencia respecto a la nota que declaran obtener y merecer. Sin embargo, es posible identificar discordancias en torno a la asignación de las notas, es decir, existe un grupo de estudiantes que pueden ser considerados como “subrecomensados” y otros como “sobrerecomensados,” lo cual en última instancia se busca medir a través del Sentido de Justicia en las Notas Indirecto.
+
+En la Figura \@ref(fig:correl) se presentan las correlaciones entre las variables principales del estudio. Las correlaciones deben interpretarse como asociaciones positivas o negativas según el signo y de mayor intensidad según se acerque el valor absoluto a 1. Para el caso de las correlaciones entre percepción de meritocracia de estudiantes y sentido de justicia en las notas, se ha empleado una muestra que considera únicamente las respuestas válidas de estudiantes (_n_ = 1415), mientras que las correlaciones con la percepción de meritocracia de apoderados se emplea una muestra acotada a los casos válidos de estudiantes que poseen información de sus apoderados (_n_ = 537)
+
+```{r correl, echo=FALSE, fig.cap='Matriz de correlación de Pearson para percepción de meritocracia y sentido de justicia en las notas'}
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
@@ -374,119 +615,93 @@ stars.pval2=function (p.value) # Usar en correlaciones policloricas
 load(file = "input/data/ap_est.RData")
 
 # Seleccionar variables a introducir en el análisis
-basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
+df_completa <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              perc_esfuerzo_factor_est,
-                             perc_trabajo_duro_factor_ap,
-                             perc_esfuerzo_factor_ap,
+                             # perc_trabajo_duro_factor_ap,
+                             # perc_esfuerzo_factor_ap,
                              sj_direct,
                              sj_indirect_ln,
-                             quintiles_ingresos_pc_factor,
-                             libros_hogar_factor_ap,
-                             educ_factor_ap,
-                             recompensa_est,
-                             resp_prof_factor,
-                             pos_pol_factor_ap,
-                             pos_pol_factor_est,
-                             genero_factor_est,
-                             dependencia_factor_ap,
-                             univ_esc,
-                             ingresos_esc
                              # rbd_est
-                             ) %>% na.omit(basereg)
+                             ) %>% na.omit(df_completa) %>% 
+  mutate(perc_trabajo_duro_factor_est=as.numeric(perc_trabajo_duro_factor_est),
+         perc_esfuerzo_factor_est = as.numeric(perc_esfuerzo_factor_est),
+         perc_trabajo_duro_factor_ap=1,
+         perc_esfuerzo_factor_ap=1,
+         sj_direct=as.numeric(sj_direct),
+         sj_indirect_ln=as.numeric(sj_indirect_ln)) %>% 
+  select(perc_trabajo_duro_factor_est,
+         perc_esfuerzo_factor_est,
+         perc_trabajo_duro_factor_ap,
+         perc_esfuerzo_factor_ap,
+         sj_direct,
+         sj_indirect_ln)
 
-# Crear dataframe para correlacion
-cor.df<- data.frame(lapply(basereg[,c("perc_trabajo_duro_factor_est",
+cor_1 <- cor(df_completa) %>% data.frame()
+
+
+  
+df_reducida <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                                 perc_esfuerzo_factor_est,
+                                 perc_trabajo_duro_factor_ap,
+                                 perc_esfuerzo_factor_ap,
+                                 sj_direct,
+                                 sj_indirect_ln,
+                             # rbd_est
+                             ) %>% na.omit(df_reducida)
+
+
+df_reducida<- data.frame(lapply(df_reducida[,c("perc_trabajo_duro_factor_est",
                                        "perc_esfuerzo_factor_est",
                                        "perc_trabajo_duro_factor_ap",
                                        "perc_esfuerzo_factor_ap",
                                        "sj_direct",
-                                       "sj_indirect_ln",
-                                       "quintiles_ingresos_pc_factor",
-                                       "educ_factor_ap",
-                                       "univ_esc",
-                                       "ingresos_esc")], function(x) as_numeric(x)))
+                                       "sj_indirect_ln")], function(x) sjlabelled::as_numeric(x)))
 
-set_label(cor.df$educ_factor_ap) ="Nivel educacional de los apoderados"  # Cambiar etiqueta
-cor.label <- as.character(get_label(cor.df)) # guardar var labels
-cor.tab<-sjPlot::tab_corr(cor.df,
-                  triangle = "lower",
-                  digits = 2,
-                  string.diag = rep(x = "-",max(length(cor.df)))) #Tabla de correlacion
-cor.mat <- as.data.frame(read_html(x = cor.tab[["page.content"]]) %>% html_table(fill=FALSE))
-cor.mat <- cor.mat[-max(length(cor.mat)),]                    # matriz as dataframe
-cor.mat$Var.1 <- paste0(1:length(cor.label),". ",cor.label)   # eliminar fila
-colnames(cor.mat) <- as.character(c(" ",1:length(cor.label))) # asignar colnames
+cor_2 <- cor(df_reducida) %>% data.frame()
 
+cor_3 <- cor_1
+cor_3$perc_esfuerzo_factor_est <- ifelse(test = cor_3$perc_esfuerzo_factor_est,
+                yes = cor_2$perc_esfuerzo_factor_est,
+                no = cor_3$perc_esfuerzo_factor_est
+                  )
 
-# Correccion de correlaciones policoricas
+for (i in names(cor_3)) {
+cor_3[,i] <-  ifelse(test = is.na(cor_3[,i]),
+                 yes = cor_2[,i],
+                 no = cor_3[,i]
+                 )
+}
 
-cor.poly=psych::cor.ci(dplyr::select(cor.df,"perc_trabajo_duro_factor_est", #Correlaciones pol entre mer
-                                       "perc_esfuerzo_factor_est",
-                                       "perc_trabajo_duro_factor_ap", "perc_esfuerzo_factor_ap"),poly = TRUE,plot=F)
+cor_3 <- as.matrix(cor_3)
 
-
-cor.poly2=psych::cor.ci(dplyr::select(cor.df,"perc_trabajo_duro_factor_est","perc_esfuerzo_factor_est",
-                                       "perc_trabajo_duro_factor_ap", "perc_esfuerzo_factor_ap", "quintiles_ingresos_pc_factor","educ_factor_ap","sj_direct"),poly = TRUE,plot=F)
-
-
-
-
-cor.mat[2,2] = paste0(round(cor.poly$rho[1,2],2), stars.pval2(cor.poly$ci[1,c("p")]))
-cor.mat[3,2] = paste0(round(cor.poly$rho[1,3],2), stars.pval2(cor.poly$ci[2,c("p")]))
-cor.mat[3,3] = paste0(round(cor.poly$rho[2,3],2), stars.pval2(cor.poly$ci[4,c("p")]))
-cor.mat[4,2] = paste0(round(cor.poly$rho[1,4],2), stars.pval2(cor.poly$ci[3,c("p")]))
-cor.mat[4,3] = paste0(round(cor.poly$rho[2,4],2), stars.pval2(cor.poly$ci[5,c("p")]))
-cor.mat[4,4] = paste0(round(cor.poly$rho[3,4],2), stars.pval2(cor.poly$ci[6,c("p")]))
-
-cor.mat[5,2] = paste0(round(cor.poly2$rho[7,1],2), stars.pval2(cor.poly2$ci[6,c("p")]))
-cor.mat[5,3] = paste0(round(cor.poly2$rho[7,2],2), stars.pval2(cor.poly2$ci[11,c("p")]))
-cor.mat[5,4] = paste0(round(cor.poly2$rho[7,3],2), stars.pval2(cor.poly2$ci[15,c("p")]))
-cor.mat[5,5] = paste0(round(cor.poly2$rho[7,4],2), stars.pval2(cor.poly2$ci[18,c("p")]))
-
-cor.mat[7,2] = paste0(round(cor.poly2$rho[5,1],2), stars.pval2(cor.poly2$ci[4,c("p")]))
-cor.mat[7,3] = paste0(round(cor.poly2$rho[5,2],2), stars.pval2(cor.poly2$ci[9,c("p")]))
-cor.mat[7,4] = paste0(round(cor.poly2$rho[5,3],2), stars.pval2(cor.poly2$ci[13,c("p")]))
-cor.mat[7,5] = paste0(round(cor.poly2$rho[5,4],2), stars.pval2(cor.poly2$ci[16,c("p")]))
-
-cor.mat[8,2] = paste0(round(cor.poly2$rho[6,1],2), stars.pval2(cor.poly2$ci[5,c("p")]))
-cor.mat[8,3] = paste0(round(cor.poly2$rho[6,2],2), stars.pval2(cor.poly2$ci[10,c("p")]))
-cor.mat[8,4] = paste0(round(cor.poly2$rho[6,3],2), stars.pval2(cor.poly2$ci[14,c("p")]))
-cor.mat[8,5] = paste0(round(cor.poly2$rho[6,4],2), stars.pval2(cor.poly2$ci[17,c("p")]))
-
-
-# Crear y guardar tabla de correlación
-correlationtable=kable(cor.mat,
-      align = c("l",rep(x = "c",max(length(cor.df)))),
-      caption = "Relaciones entre percepciones meritocraticas, sentido justicia en las notas, nivel socioeconómico de familia y escuela",
-      booktabs=TRUE,
-      format = table_format,
-      linesep = "") %>%
-  kable_styling(full_width = fwidth,latex_options = c("scale_down","HOLD_position")) %>%
-  column_spec(column = 1, width = "10 cm", ) %>%
-  footnote(paste0("N= ",dim(basereg)[1],", ","*** p< 0.001; ** p< 0.01; * p< 0.05; Se utilizan correlaciones policoricas entre variables categoricas, el resto de las correlaciones son de Pearson"),
-           footnote_as_chunk = T,
-           general_title = "Nota: " )
-
-
-# bootstrap_options=c("striped", "bordered")
-# Save table
-
-save_kable(correlationtable, "output/tables/cor.png")
-correlationtable # Visualizar tabla
+  diag(cor_3) = NA #set diagonal values to NA
+  # Set Row names of the matrix
+  rownames(cor_3) <- c("A. Percepción meritocracia: Importancia trabajo duro (est.)",
+                       "B. Percepción meritocracia: Esfuerzo para salir adelante (est.)",
+                       "C. Percepción meritocracia: Importancia trabajo duro (ap.)*",
+                       "D. Percepción meritocracia: Esfuerzo para salir adelante (ap.)*",
+                       "E. Sentido justica notas (directo)",
+                       "F. Sentido justicia notas (indirecto)r")
+  #set Column names of the matrix
+  colnames(cor_3) <-c("(A)", "(B)","(C)","(D)","(E)","(F)")
+  #Plot the matrix using corrplot
+  corrplot::corrplot(cor_3,
+    method = "color",
+    addCoef.col = "#000390",
+    type = "upper",
+    tl.col = "black",
+    col=colorRampPalette(c("white","#0068DC"))(12),
+    bg = "white",
+    na.label = "-")
 ```
 
-En general, las correlaciones ofrecen evidencia parcial a las hipótesis planteadas en este estudio. Se evidencia una relación entre las percepciones meritocráticas de padres e hijos, aunque solo en uno de los cuatro cruces posibles y con una fuerza de relación más bien pequeña. Padres que consideran importante el trabajo duro para surgir en la vida están asociados a hijos que respaldan la afirmación de que en Chile quienes se esfuerzan salen adelante (*r* = 0.13; *p* \< 0.01). Pese a ello, el respaldo de los padres a la afirmación sobre el rol del esfuerzo no está asociado significativamente con ninguna variable de los estudiantes.
-
-Ninguna de las dos formas de medir la sensación de justicia en las notas posee la relación esperada con las percepciones meritocráticas de los estudiantes. Las hipótesis de nivel socioeconómico se sostienen solamente para el indicador de “trabajo duro” en estudiantes, correlacionando significativamente a nivel individual,  con la educación de los padres (*r* = 0.14; *p* \< 0.05 ) y a nivel escuela, tanto por el nivel de ingresos (*r* = 0.14; *p* \< 0.01 ), como por el porcentaje de apoderados con educación terciaria (*r* = 0.12; *p* \< 0.01 ). En contradicción con nuestras hipótesis, padres de mayores ingresos respaldan menos la afirmación de que en chile quien se esfuerza sale adelante (*r* = 0.16; *p* \< 0.01 ).
-
-Dada la alta correlación entre ambos indicadores de nivel socioeconómico a nivel escuela (*r* = 0.85; *p* \< 0.001 ), en los modelos se incluirá solamente un indicador con tal de evitar problemas de multicolinealidad.
+En general, las correlaciones ofrecen evidencia parcial a las hipótesis planteadas en este estudio. Se evidencia una relación entre las percepciones meritocráticas de padres e hijos, aunque solo en uno de los cuatro cruces posibles y con una fuerza de relación más bien pequeña. Padres que consideran importante el trabajo duro para surgir en la vida están asociados a hijos que respaldan la afirmación de que en Chile quienes se esfuerzan salen adelante (_r_ = 0.09; _p_ < 0.05; _n_ = 537). Pese a ello, el respaldo de los padres a la afirmación sobre el rol del esfuerzo no está asociado significativamente con ninguna variable de los estudiantes.
+ 
+El sentido de justicia directo se relaciona de manera positiva y no significativa con la importancia del trabajo duro de estudiantes (_r_ = 0.03; _p_ > 0.05; _n_ = 1415), así también muestra una relación en el mismo sentido y no significativa con la afirmación de que en Chile quienes se esfuerzan salen adelante (_r_ = 0.04; _p_ > 0.05; _n_ = 1415). En la misma línea, el sentido de justicia indirecto muestra una relación positiva y no significativa con la importancia del trabajo duro de estudiantes (_r_ = 0.05; _p_ > 0.05; _n_ = 1415), mientras que con el apoyo a la afirmación de que en Chile quienes se esfuerzan salen adelante tiene una relación negativa y no significativa (_r_ = -0.01; _p_ > 0.05; _n_ = 1415). Finalmente, respecto de las medidas de Sentido de Justicia en las notas se observa una asociación baja, positiva y significativa ente ambas (_r_ =  0.15; _p_ < 0.001; _n_ = 1415)
 
 ## Análisis multivariado
 
-La Tabla N° \@ref(tab:getah) [^4] presenta los resultados de la estimación del modelo de regresión ordinal multinivel para la variable de “importancia atribuida al trabajo duro para salir adelante” como indicador de percepción meritocrática en estudiantes. Las estimaciones de los modelos siguen un orden de complejidad ascendente con tal de poder analizar el comportamiento de los coeficientes en la medida que son controlados por otros predictores. Bajo esta lógica, primero se estiman modelos simples para las variables principales, luego modelos multivariados, y finalmente se introducen controles e interacciones.
-
-[^4]: Los modelos que consideran como variable dependiente el indicador de esfuerzo no presentaron resultados estadísticamentesignificativos en el análisis multivariado, por lo que no se incorpora en esta sección. Se puede ver en la Tabla N° \@ref(tab:effort) en la sección de Apéndice.
-
+La Tabla \@ref(tab:getah) presenta los resultados de la estimación del modelo de regresión ordinal multinivel para la variable de “importancia atribuida al trabajo duro para salir adelante” como indicador de percepción meritocrática en estudiantes. Las estimaciones de los modelos siguen un orden de complejidad ascendente con tal de poder analizar el comportamiento de los coeficientes en la medida que son controlados por otros predictores. Bajo esta lógica, primero se estiman modelos simples para las variables principales, luego modelos multivariados, y finalmente se introducen controles e interacciones.
 
 ```{r getah, results='asis', echo=FALSE}
 
@@ -543,8 +758,23 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              ingresos_pc_esc,
                              univ_esc,
                              univ,
+                             rbd_est, 
+                             nse_grupo,univ
+                             ) %>% na.omit(basereg)
+
+basereg_est <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             sj_direct_factor,
+                             sj_indirect_ln_cwc,
+                             sj_indirect_ln,
+                             # sj_indirect_cat,
+                             # sj_indirect_qtil,
                              rbd_est
                              ) %>% na.omit(basereg)
+# dim(basereg_est)
+
 
 omit_coef="(Intercept)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
 con <-c(
@@ -563,6 +793,17 @@ cap1 <- "Modelos ordinal logit multinivel para Socialización de importancia del
 
 
 # Modelos
+
+# N de estudiantes
+getah.or0.1 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg_est)
+getah.or0.2 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_ln",ref),collapse="+"))), basereg_est)
+getah.or0.3 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor","sj_indirect_ln",ref),collapse="+"))), basereg_est)
+
+texreg::knitreg(l=list(getah.or0.1,getah.or0.2,getah.or0.3),
+                include.thresholds=FALSE)
+
+
+# N de estudiantes y apoderados
 getah.or1 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
 getah.or2 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
 getah.or3 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
@@ -603,6 +844,10 @@ knitreg(list(getah.or1,getah.or3,getah.or4,getah.or5,getah.or6,getah.or7,getah.o
 
 #webshot::webshot("output/tables/trabajoduro_ppt.html","output/tables/trabajoduro_ppt.png")
 ```
+
+<!-- [SUBIR TABLA DE RECOMENSA AQUI] -->
+
+<!-- - PROBAR LA RESTA EN SJ INDIRECTO -->
 
 Los resultados son consistentes con lo vislumbrado por el análisis bivariado. En el caso de la hipótesis de transmisión intergeneracional se observa un efecto significativo entre las percepciones meritocráticas de los padres y las percepciones meritocráticas de los estudiantes, relación que se mantiene significativa pese a los controles estadísticos (Model 7 : *logit* = 1.47; *p* \< 0.001 ). Por ello, las probabilidades naturales de observar mayores niveles de percepción meritocrática en un estudiante aumentan 1.47 cuando el padre posee similares creencias.
 
@@ -785,6 +1030,19 @@ basereg <- ap_est %>% dplyr::select(perc_trabajo_duro_factor_est,
                              ) %>% na.omit(basereg)
 
 
+basereg_est <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             sj_direct_factor,
+                             sj_indirect_ln_cwc,
+                             sj_indirect_noln,
+                             # sj_indirect_cat,
+                             # sj_indirect_qtil,
+                             rbd_est
+                             ) %>% na.omit(basereg)
+
+
 omit_coef="(Intercept)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
 con <-c(
   "quintiles_ingresos_pc_factor",
@@ -801,6 +1059,16 @@ ref <- "(1|rbd_est)" #Cluster
 cap1 <- "Modelos ordinal logit multinivel para Socialización de Esfuerzo recompensado" # Título tabla
 
 # Elaboración modelos
+
+# N de estudiantes
+effort.or0.1 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg_est)
+effort.or0.2 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg_est)
+effort.or0.3 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_direct_factor","sj_indirect_noln",ref),collapse="+"))), basereg_est)
+
+texreg::knitreg(l=list(effort.or0.1,effort.or0.2,effort.or0.3),
+                include.thresholds=FALSE)
+
+# N de estudiantes y apoderados
 effort.or1 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap",ref),collapse="+"))), basereg)
 effort.or2 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_indirect_noln",ref),collapse="+"))), basereg)
 effort.or3 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
