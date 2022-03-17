@@ -509,7 +509,7 @@ La Figura \ref(fig:likert-merit) permite comparar la distribución de las variab
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
-pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, lme4, ordinal, webshot) # librerias
+pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, lme4, ordinal, webshot,ggplot2) # librerias
 knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
                       message = FALSE,  # mensajes/avisos de librerias
                       cache = FALSE,    # cache de los chunks,usar analisis pesados
@@ -583,14 +583,14 @@ base_sj <- ap_est %>% select(
                                                                          hjust = 1)))
 a <- data.frame(base_sj$prom_obt);
 a$grupo <- "Obtained"
-names(a) <- c("promedio","Nota")
+names(a) <- c("promedio","Grade")
 b <- data.frame(base_sj$prom_mer)
 b$grupo <- "Deserved"
-names(b) <- c("promedio","Nota")
+names(b) <- c("promedio","Grade")
 df_notas<- rbind(b,a)
 
   ggplot(df_notas) +
-  geom_density(aes(x=promedio,fill=Nota), alpha=0.4) +
+  geom_density(aes(x=promedio,fill=Grade), alpha=0.4) +
   scale_x_continuous(name = "Grade average",
                      breaks=1:7,
                      labels = as.character(1:7)) +
@@ -708,7 +708,7 @@ cor_3 <- as.matrix(cor_3)
   # Set Row names of the matrix
   rownames(cor_3) <- c("A. Perception of meritocracy: Importance of hard work (std.)",
                        "B. Perception of meritocracy: Effort to get ahead (std.)",
-                       "C. Percepción meritocracia: Importancia trabajo duro (par.)*",
+                       "C. Perception of meritocracy: Importance of hard work (par.)*",
                        "D. Perception of meritocracy: Effort to get ahead (par.)*",
                        "E. Sense of Justice in grades (direct)",
                        "F. Sense of Justice in grades (indirect)")
