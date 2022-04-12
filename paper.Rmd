@@ -171,7 +171,7 @@ La evidencia en torno a las creencias meritocráticas destacan el rol que juegan
 La Figura \@ref(fig:modelo) muestra un esquema resumen de las hipótesis del estudio:
 
 
-```{r modelo, echo=FALSE, fig.cap='Modelo resumen de hipótesis'}
+```{r modelo, echo=FALSE, fig.cap='Hypothesis summary model'}
 knitr::include_graphics(path = "input/images/model-hip-eng.PNG")
 ```
 
@@ -179,13 +179,77 @@ knitr::include_graphics(path = "input/images/model-hip-eng.PNG")
 
 ## Datos
 
-Los datos provienen de la encuesta Panel de Ciudadanía Escolar (PACES), un estudio sobre socialización política familiar que fue realizado aplicando una encuesta a estudiantes, sus apoderados y sus profesores durante 2019-2021. Este estudio fue desarrollado en el marco del  proyecto FONDECYT N°1181239 "Socialización política y experiencia escolar: el rol de la familia y la escuela" financiado por la Agencia Nacional de Investigación (ANID) del Ministerio de Ciencia y Tecnología chileno. En este artículo utilizamos la primera ola del panel disponible al momento de realizar esta investigación, por lo que este es un estudio transversal. La muestra es representativa de los estudiantes de segundo medio (décimo grado) que asisten a escuelas de la Región Metropolitana y las comunas de Antofagasta, Calama, Talca, Curicó y Linares. En total se seleccionaron 64 escuelas. En cada establecimiento educacional seleccionado se consideró encuestar a un curso completo, sus apoderados y sus docentes de historia, ciencias sociales y/o formación ciudadana. En concreto, se cuenta con los datos de 1635 estudiantes, 744 apoderados y 103 profesores. Los datos de esta ola fueron producidos entre agosto y diciembre del año 2019. Eliminando los casos perdidos y considerando solo aquellos alumnos cuyos apoderados contestaron la encuesta, contamos con una muestra final de 537 alumnos y apoderados en 59 escuelas.
+```{r n-datos, include=FALSE}
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(dplyr) # librerias
+load(file = "input/data/ap_est.RData")
+df_reducida <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             perc_tduro_bi_est,
+                             perc_tduro_bi2_est,
+                             perc_tduro_bi3_est,
+                             perc_esfuerzo_bi_est,
+                             perc_tduro_bi_ap,
+                             perc_tduro_bi2_ap,
+                             perc_tduro_bi3_ap,
+                             perc_esfuerzo_bi_ap,
+                             prom_percmer_est,
+                             prom_percmer_ap,
+                             sj_direct_factor,
+                             sj_indirect_noln,
+                             sj_indirect_ln,
+                             sj_indirect_cat,
+                             sj_indirect_qtil,
+                             quintiles_ingresos_pc_factor,
+                             educ_factor_ap,
+                             libros_hogar_factor_ap,
+                             recompensa_est,  # recompensa en escuela
+                             resp_prof,# justicia trato profesor
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             # ingresos_esc,
+                             # ingresos_pc_esc,
+                             # univ_esc,
+                             univ,
+                             rbd_est,
+                             nse_grupo,univ
+                             ) %>%
+  na.omit(df_reducida) %>%
+  select(perc_trabajo_duro_factor_est,
+         perc_esfuerzo_factor_est,
+         perc_trabajo_duro_factor_ap,
+         perc_esfuerzo_factor_ap,
+         sj_direct_factor,
+         sj_indirect_ln)
+
+df_completa <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             # perc_trabajo_duro_factor_ap,
+                             # perc_esfuerzo_factor_ap,
+                             sj_direct_factor,
+                             sj_indirect_ln,
+                             genero_est,pos_pol_est
+                             # rbd_est
+                             ) %>% na.omit(df_completa)
+```
+
+Los datos provienen de la encuesta Panel de Ciudadanía Escolar (PACES), un estudio sobre socialización política familiar que fue realizado aplicando una encuesta a estudiantes, sus apoderados y sus profesores durante 2019-2021. Este estudio fue desarrollado en el marco del  proyecto FONDECYT N°1181239 "Socialización política y experiencia escolar: el rol de la familia y la escuela" financiado por la Agencia Nacional de Investigación (ANID) del Ministerio de Ciencia y Tecnología chileno. En este artículo utilizamos la primera ola del panel disponible al momento de realizar esta investigación, por lo que este es un estudio transversal. La muestra es representativa de los estudiantes de segundo medio (décimo grado) que asisten a escuelas de la Región Metropolitana y las comunas de Antofagasta, Calama, Talca, Curicó y Linares. En total se seleccionaron 64 escuelas. En cada establecimiento educacional seleccionado se consideró encuestar a un curso completo, sus apoderados y sus docentes de historia, ciencias sociales y/o formación ciudadana. En concreto, se cuenta con los datos de 1635 estudiantes, 744 apoderados y 103 profesores. Los datos de esta ola fueron producidos entre agosto y diciembre del año 2019. 
+
+En primer lugar, para testear la hipótesis sobre a la influencia del sentido de justicia en las notas sobre la percepción de meritocracia de los estudiantes, empleamos una muestra de `r dim(df_completa)[1]` individuos correspondiente a los datos con información completa al interior de 64 escuelas. Luego se empleó una base de datos restringida con `r dim(df_reducida)[1]` casos correspondiente estudiantes con información completa de sus apoderados en 60 escuelas, con el objetivo de poner a prueba las hipótesis de transmisión intergeneracional de la percepción de meritocracia. Posteriormente, empleando este mismo conjunto de datos, se analizó la interacción entre la socialización de la meritocracia y el sentido de justicia en las notas, así como también la influencia del nivel socioeconómico familiar y escolar sobre la percepción de meritocracia de estudiantes.   
+
 
 El marco muestral utilizado para la selección de los establecimientos fue construido para la definición del universo, desde el Directorio de Establecimientos del Ministerio de Educación del año 2019, considerando todos los colegios de los sectores señalados. La selección fue aleatoria y sistemática, considerando localidad, dependencia administrativa (municipal, subvencionado o particular) y tipo de educación (Humanista científica, técnico profesional o mixto). La metodología de aplicación fue presencial y autoaplicada en el establecimiento para docentes y alumnos, siendo llevada a cabo por un encuestador especialmente entrenado para ello. En el caso de los apoderados fue autoaplicada en sus hogares.
 
 ## Variables
 
-En la Tabla \@ref(tab:desc01) se presentan las variables de nivel individual de este estudio. Las preguntas utilizadas corresponden a indicadores de percepción meritocrática que han sido utilizadas en otras investigaciones, en particular aquellas que analizan datos del módulo de desigualdad social del _International Social Survey Programme_ (ISSP) [@reynolds_perceptions_2014]. En este artículo, se midió la percepción meritocrática de los estudiantes  a partir de dos indicadores relativos al rol del esfuerzo y el trabajo duro para surgir en la vida. Ambos indicadores corresponden a escalas Likert de cuatro categorías, midiendo grado de acuerdo y grado de importancia, respectivamente.
+En la Tabla \@ref(tab:desc01) se presentan las variables de nivel individual de este estudio. Las preguntas utilizadas corresponden a indicadores de percepción meritocrática que han sido utilizadas en otras investigaciones, en particular aquellas que analizan datos del módulo de desigualdad social del _International Social Survey Programme_ (ISSP) [@reynolds_perceptions_2014]. En este artículo, se midió la percepción meritocrática de los estudiantes a partir de dos indicadores relativos al rol del esfuerzo y el trabajo duro para surgir en la vida. Ambos indicadores corresponden a escalas Likert de cuatro categorías, midiendo grado de importancia y grado de acuerdo, respectivamente. 
 
 ```{r include=FALSE, results='asis'}
 # Funciones para renderizar tablas tanto en HTML como en pdf
@@ -234,29 +298,71 @@ st_options(lang = "en",
 load(file = "input/data/ap_est.RData")
 
 # Seleccionar variables
-basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
+df_est<- ap_est %>% select(perc_trabajo_duro_factor_est,
                              perc_esfuerzo_factor_est,
-                             perc_trabajo_duro_factor_ap,
-                             perc_esfuerzo_factor_ap,
                              sj_direct_factor,
                              sj_indirect_ln,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             ) %>% na.omit(basereg) 
+
+df_est$genero_factor_est <- factor(df_est$genero_factor_est,
+                                   levels = levels(df_est$genero_factor_est), 
+                                   labels = c("Male",
+                                              "Female",
+                                              "Other"))
+sjlabelled::set_label(df_est$genero_factor_est) <- "Student Gender"
+df_pad <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             perc_tduro_bi_est,
+                             perc_tduro_bi2_est,
+                             perc_tduro_bi3_est,
+                             perc_esfuerzo_bi_est,
+                             perc_tduro_bi_ap,
+                             perc_tduro_bi2_ap,
+                             perc_tduro_bi3_ap,
+                             perc_esfuerzo_bi_ap,
+                             prom_percmer_est,
+                             prom_percmer_ap,
+                             sj_direct_factor,
+                             sj_indirect_noln,
+                             sj_indirect_ln,
+                             sj_indirect_cat,
+                             sj_indirect_qtil,
                              quintiles_ingresos_pc_factor,
                              educ_factor_ap,
                              libros_hogar_factor_ap,
+                             recompensa_est,  # recompensa en escuela
+                             resp_prof,# justicia trato profesor
                              pos_pol_factor_ap,
                              pos_pol_factor_est,
-                             recompensa_factor_est,
-                             resp_prof_factor,
                              genero_factor_est,
                              dependencia_factor_ap,
-                             ingresos_esc,
-                             ingresos_pc_esc,
-                             univ_esc
-                             # rbd_est
-) %>% na.omit(basereg) %>% select(-recompensa_factor_est,-resp_prof_factor) # Estas dos variables son parte de análisis exploratorios. Se seleccionaron para que el N fuera homogeneo a través de todos los análisis, sin embargo, no son incluídas dentro de los análisis principales de hipótesis.
+                             # ingresos_esc,
+                             # ingresos_pc_esc,
+                             # univ_esc,
+                             univ,
+                             rbd_est,
+                             nse_grupo,univ
+                             ) %>% na.omit(basereg) %>% 
+                      select(perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             libros_hogar_factor_ap,
+                             quintiles_ingresos_pc_factor,
+                             pos_pol_factor_ap,
+                             univ)
+df_pad$univ <- factor(x = df_pad$univ,
+                      levels = c(0,1),
+                      labels = c("Parents have universitary degree",
+                                 "Parents does not have universitary degree"))
+sjlabelled::set_label(df_pad$univ) <- "Parents have universitary degree"
 
-# Df variables nivel 1
-df<- dfSummary(select(basereg,perc_trabajo_duro_factor_est:pos_pol_factor_est),
+# Df variables nivel 1: estudiantes............................................
+df_1_est<- dfSummary(select(df_est,perc_trabajo_duro_factor_est:genero_factor_est),
                plain.ascii = FALSE,
                style = "grid",
                tmp.img.dir = "/tmp",
@@ -269,48 +375,51 @@ df<- dfSummary(select(basereg,perc_trabajo_duro_factor_est:pos_pol_factor_est),
                valid.col = T, # n valido
                col.widths = c(1000,10,10,10,10)
                )
-df$Variable <- NULL # delete variable column
-view(df,file = "desc01.html") # Ver tabla en un archivo HTML
+df_1_est$Variable <- NULL # delete variable column
+
+# Df variables nivel 1: apoderados..............................................
+df_1_pad<- dfSummary(select(df_pad,perc_trabajo_duro_factor_ap:univ),
+               plain.ascii = FALSE,
+               style = "grid",
+               tmp.img.dir = "/tmp",
+               graph.magnif = TRUE,
+               headings = F,  # encabezado
+               varnumbers = F, # num variable
+               labels.col = T, # etiquetas
+               na.col = F,    # missing
+               graph.col = T, # plot
+               valid.col = T, # n valido
+               col.widths = c(1000,10,10,10,10)
+               )
+df_1_pad$Variable <- NULL # delete variable column
+
+# combinar tabla estudiante y apoderados....................
+df_est_pad<- rbind(df_1_est,df_1_pad)
+df_est_pad<- df_est_pad[c(1,2,7,8,3,4,10,12,9,6,5,11),] # reordenar los niveles
+view(df_est_pad,file = "desc01.html") # Ver tabla en un archivo HTML
 webshot(url ="desc01.html" ,file ="output/tables/desc01.png") # Remover archivo HTML
 
-# Df variables nivel 2
-
-df_rbd <- ap_est %>% select(perc_trabajo_duro_factor_est,
-                             perc_esfuerzo_factor_est,
-                             perc_trabajo_duro_factor_ap,
-                             perc_esfuerzo_factor_ap,
-                             sj_direct_factor,
-                             sj_indirect_ln,
-                             quintiles_ingresos_pc_factor,
-                             educ_factor_ap,
-                             libros_hogar_factor_ap,
-                             pos_pol_factor_ap,
-                             pos_pol_factor_est,
-                             recompensa_factor_est,
-                             resp_prof_factor,
-                             genero_factor_est,
-                             dependencia_factor_ap,
-                             ingresos_esc,
-                             ingresos_pc_esc,
-                             univ_esc,
-                             nse_grupo,
-                             rbd_est) %>%
-  na.omit(basereg) %>%
-  select(rbd_est,dependencia_factor_ap,nse_grupo)
+# Df variables nivel 2..........................................................
+df_rbd <- ap_est %>% select(
+  dependencia_factor_est,
+  rbd_est,
+  nse_grupo
+  ) %>%
+  na.omit(basereg)
 
 df_n2 <-
 df_rbd %>%
   group_by(rbd_est) %>%
-  summarise(dependencia_factor_ap=mean(as.numeric(dependencia_factor_ap), na.rm=T),
-            nse_grupo=mean(as.numeric(nse_grupo), na.rm=T))
+  summarise(
+    dependencia_factor_est=mean(as.numeric(dependencia_factor_est), na.rm=T),
+    nse_grupo=mean(as.numeric(nse_grupo), na.rm=T))
 
-df_n2$dependencia_factor_ap <- factor(df_n2$dependencia_factor_ap,
+df_n2$dependencia_factor_est <- factor(df_n2$dependencia_factor_est,
                                       levels = 1:3,
                                       labels = c("Public",
                                                  "Private subsidized",
                                                  "Private"))
-sjlabelled::set_label(df_n2$dependencia_factor_ap) <- "Administration"
-
+sjlabelled::set_label(df_n2$dependencia_factor_est) <- "Administration"
 
 df_n2$nse_grupo <- factor(df_n2$nse_grupo,
                           levels = c(1,2,3,4,5),
@@ -319,10 +428,11 @@ df_n2$nse_grupo <- factor(df_n2$nse_grupo,
                                      "Middle",
                                      "Middle-high",
                                      "High"))
-
 sjlabelled::set_label(df_n2$nse_grupo) <- "School socioeconomic status"
 
-df.esc<- dfSummary(select(df_n2,dependencia_factor_ap,nse_grupo),
+df.esc<- dfSummary(select(df_n2,
+                          dependencia_factor_est,
+                          nse_grupo),
                plain.ascii = FALSE,
                style = "grid",
                tmp.img.dir = "/tmp",
@@ -342,17 +452,18 @@ file.remove(c("desc01.html","desc01_esc.html")) # Remover archivo HTML
 ```
 
 ```{r desc01, echo=FALSE, results='asis'}
-# REVISAR EL N
 knitr::kable(data.frame(image='![](output/tables/desc01.png){height=80%}'),    # generar tabla
-             caption="Student and family variables",
+             caption="Student variables",
              col.names = "",
              row.names = F,
              format = "pandoc") %>%  kable_styling(latex_options = c("HOLD_position"),full_width = fwidth)
 ```
 
-Las variables independientes de nivel individual se dividieron de acuerdo a si corresponden a padres o estudiantes. En el caso de los padres, existen dos variables relevantes: percepción de meritocracia y estatus socioeconómico. Para la percepción de meritocracia se les preguntó lo mismo que a los estudiantes, pero para simplificar el modelamiento posterior se procedió a agrupar las categorías “Muy importante”,  “Importante” y “Algo importante”. En el caso del estatus socioeconómico, se utilizaron los ingresos del hogar y el nivel educacional de los apoderados como indicadores. Se construyeron quintiles a partir del indicador original de 11 tramos de ingresos declarados por los padres. En el caso del nivel educacional de los apoderados, se utilizaron sus categorías originales: "8vo básico o menos" (1); "Educación Media" (2); "Educación Técnica Superior (IP o CFT)" (3); y "Una carrera en la Universidad o estudios de Posgrado" (4).
+Las variables independientes de nivel individual se dividieron de acuerdo a si corresponden a padres o estudiantes. En el caso de los padres, existen dos variables relevantes: percepción de meritocracia y estatus socioeconómico. Para la percepción de meritocracia se les preguntó lo mismo que a los estudiantes, pero para simplificar el modelamiento en la variable de apoderados  se procedió a agrupar las categorías ''Muy importante',  'Importante' y 'Algo importante' para la variable de Importancia del trabajo duro. Igualmente, para la afirmación respecto a que en Chile quienes se esfuerzan salen adelante, se agruparon las categorías 'De acuerdo' con 'Muy de acuerdo' y 'Desacuerdo' con 'Muy en desacuerdo', respectivamente.
 
-La variable de justicia en las notas es clave para nuestro estudio, ya que representa la experiencia escolar de justicia. Se emplearon dos formas de medir el sentido de justicia en las notas: directa e indirecta. La forma directa  obtiene de una pregunta sobre si las notas que se obtienen son merecidas, mientras la indirecta es un indicador numérico construido a partir de la fórmula propuesta por @jasso_new_1980. Esta fórmula corresponde la proporción entre la recompensa obtenida y la recompensa justa, a la cual se le aplica un término logarítmico. Por lo tanto en el caso de justicia absoluta (nota obtenida=nota merecida) el valor del término será cero (Log 1=0), menor a cero en caso de justicia por sub-recompensa, y mayor a cero en caso de justicia por sobre recompensa. Siguiendo las aplicaciones hechas al ámbito educativo por parte de @resh_sense_2014, @resh_sense_2017, @resh_sense_2018, se utilizaron las notas reportadas por los estudiantes como la recompensa que se distribuye en la escuela. La fórmula aplicada a los datos del artículo se pueden ver en la Ecuación \@ref(eq:jef).
+En el caso del estatus socioeconómico, se utilizaron los ingresos del hogar y el nivel educacional de los apoderados como indicadores. Se construyeron quintiles a partir del indicador original de 11 tramos de ingresos declarados por los padres. En el caso del nivel educacional de los apoderados original, se creó una variable dummy donde 1 es "Padres tienen título universitario" y 0 es "Padres no tienen título universitario".  
+
+La variable de justicia en las notas es clave para nuestro estudio, ya que representa la experiencia escolar de justicia. Se emplearon dos formas de medir el sentido de justicia en las notas: directa e indirecta. La forma directa se corresponde a una pregunta sobre si las notas que se obtienen son merecidas, mientras la indirecta es un indicador numérico construido a partir de la fórmula propuesta por @jasso_new_1980. Esta fórmula corresponde la proporción entre la recompensa obtenida y la recompensa justa, a la cual se le aplica un término logarítmico. Por lo tanto en el caso de justicia absoluta (nota obtenida=nota merecida) el valor del término será cero (Log 1=0), menor a cero en caso de justicia por sub-recompensa, y mayor a cero en caso de justicia por sobre recompensa. Siguiendo las aplicaciones hechas al ámbito educativo por parte de @resh_sense_2014, @resh_sense_2017, @resh_sense_2018, se utilizaron las notas reportadas por los estudiantes como la recompensa que se distribuye en la escuela. La fórmula aplicada a los datos del artículo se pueden ver en la Ecuación \@ref(eq:jef).
 
 \begin{equation}
    \text{Sentido de justicia en notas}= ln(\frac{\text{nota obtenida}}{\text{nota justa}}) (\#eq:jef)
@@ -369,13 +480,13 @@ knitr::kable(data.frame(image='![](output/tables/desc01_esc.png){height=20%}'), 
                 full_width = fwidth)
 ```
 
-La principal variable independiente de nivel escuela del estudio corresponde al estatus socioeconómico de la escuela. Esta variable proviene de datos administrativos del Ministerio de Educación y corresponde a una clasificación en cinco grupos socioeconómicos. Para su elaboración, se consideran cuatro variables: 1) Nivel educacional de la Madre, 2) Nivel Educacional del Padre, 3) Ingreso económico total mensual en el hogar y 4) el Índice de Vulnerabilidad. Las tres primeras variables provienen del cuestionario de apoderados del Sistema Nacional de Evaluación de Resultados de Aprendizaje (SIMCE); y la cuarta es aportada por la Junta Nacional de Auxilio Escolar y Becas (JUNAEB) [@mineduc_metodologia_2013]
+En la Tabla \@ref(tab:desc01-esc) se muestra el nivel socioeconómico de la escuela, la principal variable independiente a nivel contextual. Esta variable proviene de datos administrativos del Ministerio de Educación y corresponde a una clasificación en cinco grupos socioeconómicos. Para su elaboración, se consideran cuatro variables: 1) Nivel educacional de la Madre, 2) Nivel Educacional del Padre, 3) Ingreso económico total mensual en el hogar y 4) el Índice de Vulnerabilidad. Las tres primeras variables provienen del cuestionario de apoderados del Sistema Nacional de Evaluación de Resultados de Aprendizaje (SIMCE); y la cuarta es aportada por la Junta Nacional de Auxilio Escolar y Becas (JUNAEB) [@mineduc_metodologia_2013]
 
-Las variables control incluyeron sexo, posición política de padres y estudiantes, ciudad, dependencia administrativa de la escuela y cantidad de libros en el hogar.
+Las variables control incluyeron sexo del estudiante, posición política de padres y estudiantes, ciudad, dependencia administrativa de la escuela y cantidad de libros en el hogar.
 
 ## Métodos
 
-Debido a que la muestra posee una estructura jerárquica (estudiantes anidados en escuelas), se estimaron regresiones multinivel para contrastar las hipótesis siguiendo los pasos recomendados para estimar y reportar este tipo de modelos [@aguinis_bestpractice_2013a]. Dado que los dos indicadores de percepción de meritocracia de estudiantes son variables ordinales, se trabajó con modelos multinivel para variables ordinales [@arfan_ordinal_2017a][^2]. El análisis se llevará a cabo con el software estadístico `R` versión 4.0.3 "Bunny-Wunnies Freak Out".
+Debido a que la muestra posee una estructura jerárquica (estudiantes anidados en escuelas), se estimaron regresiones multinivel para contrastar las hipótesis siguiendo los pasos recomendados para estimar y reportar este tipo de modelos [@aguinis_bestpractice_2013a]. Dado que los dos indicadores de percepción de meritocracia de estudiantes son variables ordinales, se trabajó con modelos multinivel para variables de este tipo [@arfan_ordinal_2017a][^2]. El análisis se llevó a cabo con el software estadístico `R` versión 4.0.3 "Bunny-Wunnies Freak Out".
 
 [^2]: En modelos ordinales multinivel la variable dependiente representa el cálculo de la probabilidad acumulada de que un estudiante responda hasta $C$ en los indicadores de percepción de meritocracia, siendo $Y_{cij}$ una respuesta categórica ordenada de un estudiante $i^{th}$ en una escuela (cluster) $j^{th}$ con $C$ categorías ordenadas, codificadas como $C = 1,2,3,4$. Esta probabilidad se calcula en función de: el intercepto por cada categoría $a_c$, los coeficientes $\gamma_1$ y $\gamma_2$ para la percepción de meritocracia de los padres y el sentido de justicia en las notas respectivamente, $\gamma_n$ para las variables de control, $u_{0j}$ como término de error para una escuela $j$ y $e_{ij}$ como error de la estimación para el individuo $i$ en una escuela $j$. Para la estimación se utilizará la librería `clmm2` de R.
 
@@ -387,7 +498,7 @@ Los análisis se basarán en las hipótesis que han sido pre-registradas y se pu
 
 <!-- [AQUI likertplot meritocracia padre hijos] -->
 
-```{r likert-merit, echo=FALSE, fig.cap='Indicadores de Percepción de Meritocracia para estudiantes y apoderados'}
+```{r likert, echo=FALSE, fig.cap='Student and parents Perceived Meritocracy items'}
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
@@ -426,6 +537,7 @@ base_lik <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              prom_percmer_ap,
                              sj_direct_factor,
                              sj_indirect_noln,
+                             sj_indirect_ln,
                              sj_indirect_cat,
                              sj_indirect_qtil,
                              quintiles_ingresos_pc_factor,
@@ -437,11 +549,12 @@ base_lik <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              pos_pol_factor_est,
                              genero_factor_est,
                              dependencia_factor_ap,
-                             ingresos_esc,
-                             ingresos_pc_esc,
-                             univ_esc,
+                             # ingresos_esc,
+                             # ingresos_pc_esc,
+                             # univ_esc,
                              univ,
-                             rbd_est
+                             rbd_est,
+                             nse_grupo,univ
                              ) %>% na.omit(base_lik) %>%
   select(perc_trabajo_duro_factor_est,
          perc_trabajo_duro_factor_ap,
@@ -467,11 +580,8 @@ base_lik <- ap_est %>% select(perc_trabajo_duro_factor_est,
     select(perc_trabajo_duro_factor_est,
            perc_trabajo_duro_factor_ap) %>%
     sjPlot::plot_likert(geom.colors = "PuBu",
-                        # title = c("a. Perceptions"),
                         geom.size = 0.8,
-                        # axis.labels = c("Effort", "Talent", "Rich Parents", "Contacts"),
                         catcount = 4,
-                        # cat.neutral = 3,
                         grid.range  =  c (1.2 , 1.2),
                         values  =  "sum.outside",
                         reverse.colors = T,
@@ -484,11 +594,8 @@ base_lik <- ap_est %>% select(perc_trabajo_duro_factor_est,
     select(perc_esfuerzo_factor_est,
            perc_esfuerzo_factor_ap) %>%
     sjPlot::plot_likert(geom.colors = "PuBu",
-                        # title = c("a. Perceptions"),
                         geom.size = 0.8,
-                        # axis.labels = c("Effort", "Talent", "Rich Parents", "Contacts"),
                         catcount = 4,
-                        # cat.neutral = 3,
                         grid.range  =  c (1.2 , 1.2),
                         values  =  "sum.outside",
                         reverse.colors = T,
@@ -501,11 +608,11 @@ base_lik <- ap_est %>% select(perc_trabajo_duro_factor_est,
   sjPlot::plot_grid(list(p1,p2),tags = c("",""))
 ```
 
-La Figura \ref(fig:likert-merit) permite comparar la distribución de las variables de percepción de meritocracia de estudiantes y apoderados. Los resultados dan cuenta de que en general existe una alta percepción de meritocracia, tanto en estudiantes como en apoderados en ambas mediciones. Por un lado, la importancia que se atribuye al trabajo duro en estudiantes concentra aproximadamente un 86% de las respuestas en las categorías "Importante" y "Muy importante" siendo un 82% en apoderados. Adicionalmente, el panel inferior muestra frente a la afirmación de que en Chile las personas que se esfuerzan salen adelante, se puede observar una distribución similar en las respuestas de la variable del panel superior, concentrando un 81% de respuestas de estudiantes en las categorías "De acuerdo" y "Muy deacuerdo" y un 82% en el caso de las respuestas de sus apoderados. En conjunto, se puede afirmar que estos resultados van en línea con lo planteado en las hipótesis, es decir, que las respuestas de estudiantes tienden a distribuirse similar con respecto a las de los apoderados.
+La Figura \@ref(fig:likert) permite comparar la distribución de las variables de percepción de meritocracia de estudiantes y apoderados. Los resultados dan cuenta de que en general existe una alta percepción de meritocracia, tanto en estudiantes como en apoderados en ambas mediciones. Por un lado, la importancia que se atribuye al trabajo duro en estudiantes concentra aproximadamente un 86% de las respuestas en las categorías "Importante" y "Muy importante" siendo un 82% en apoderados. Adicionalmente, el panel inferior muestra frente a la afirmación de que en Chile las personas que se esfuerzan salen adelante, se puede observar una distribución similar en las respuestas de la variable del panel superior, concentrando un 81% de respuestas de estudiantes en las categorías "De acuerdo" y "Muy deacuerdo" y un 82% en el caso de las respuestas de sus apoderados. En conjunto, se puede afirmar que estos resultados van en línea con lo planteado en las hipótesis, es decir, que las respuestas de estudiantes tienden a distribuirse similar con respecto a las de los apoderados.
 
 <!-- [AQUI densidad de SJ indirecto] -->
 
-```{r dens-sjust, echo=FALSE, fig.cap='Distribución de promedio notas Obtenidas y Merecidas de estudiantes'}
+```{r dens-sjust, echo=FALSE, fig.cap='Distribution of average deserved and obtained grades'}
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
@@ -527,8 +634,7 @@ load(file = "input/data/ap_est.RData")
 
 
 # Seleccionar variables para el análisis
-base_sj <- ap_est %>% select(
-  perc_trabajo_duro_factor_est,
+base_sj <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              perc_esfuerzo_factor_est,
                              perc_trabajo_duro_est,
                              perc_esfuerzo_est,
@@ -546,6 +652,7 @@ base_sj <- ap_est %>% select(
                              prom_percmer_ap,
                              sj_direct_factor,
                              sj_indirect_noln,
+                             sj_indirect_ln,
                              sj_indirect_cat,
                              sj_indirect_qtil,
                              quintiles_ingresos_pc_factor,
@@ -557,13 +664,12 @@ base_sj <- ap_est %>% select(
                              pos_pol_factor_est,
                              genero_factor_est,
                              dependencia_factor_ap,
-                             ingresos_esc,
-                             ingresos_pc_esc,
-                             univ_esc,
+                             # ingresos_esc,
+                             # ingresos_pc_esc,
+                             # univ_esc,
                              univ,
                              rbd_est,
-                             prom_obt,
-                             prom_mer
+                             nse_grupo,univ,prom_obt,prom_mer
                              ) %>% na.omit(base_sj) %>%
   select(prom_obt,
          prom_mer
@@ -600,11 +706,11 @@ df_notas<- rbind(b,a)
            paste0("Authors calculations based on PACES Study"," (n=",dim(na.omit(base_sj))[1],")"))
 ```
 
-La Figura \@ref(fig:dens-sjust) permite la distribución de las variables correspondientes al promedio notas obtenido y merecido que los estudiantes declararon. Por un lado, se observa que la distribución de la nota obtenida posee una media (_M_ = 5.82) más baja que la nota merecida (_M_ = 6.01). Por otro lado, al comparar las distribuciones, se puede observar que la nota obtenida se encuentra menos dispersa (_DS_ = 0.58) que la nota merecida (_DS_ = 0.64). Este resultado da luces de una proporción mayoritaria de estudiantes muestran consistencia respecto a la nota que declaran obtener y merecer. Sin embargo, es posible identificar discordancias en torno a la asignación de las notas, es decir, existe un grupo de estudiantes que pueden ser considerados como “subrecomensados” y otros como “sobrerecomensados,” lo cual en última instancia se busca medir a través del Sentido de Justicia en las Notas Indirecto.
+La Figura \@ref(fig:dens-sjust) muestra la distribución de las variables correspondientes al promedio notas obtenido y merecido que los estudiantes declararon. Por un lado, se observa que la distribución de la nota obtenida posee una media (_M_ = 5.82) más baja que la nota merecida (_M_ = 6.01). Por otro lado, al comparar las distribuciones, se puede observar que la nota obtenida se encuentra menos dispersa (_DS_ = 0.58) que la nota merecida (_DS_ = 0.64). Este resultado da luces de una proporción mayoritaria de estudiantes muestran consistencia respecto a la nota que declaran obtener y merecer. Sin embargo, es posible identificar discordancias en torno a la asignación de las notas, es decir, existe un grupo de estudiantes que pueden ser considerados como “subrecomensados” y otros como “sobrerecomensados,” lo cual en última instancia se busca medir a través de la variable de sentido de justicia indirecto.
 
-En la Figura \@ref(fig:correl) se presentan las correlaciones entre las variables principales del estudio. Las correlaciones deben interpretarse como asociaciones positivas o negativas según el signo y de mayor intensidad según se acerque el valor absoluto a 1. Para el caso de las correlaciones entre percepción de meritocracia de estudiantes y sentido de justicia en las notas, se ha empleado una muestra que considera únicamente las respuestas válidas de estudiantes (_n_ = 1415), mientras que las correlaciones con la percepción de meritocracia de apoderados se emplea una muestra acotada a los casos válidos de estudiantes que poseen información de sus apoderados (_n_ = 537)
+En la Figura \@ref(fig:correl) se presentan las correlaciones entre las variables principales del estudio. Las correlaciones deben interpretarse como asociaciones positivas o negativas según el signo y de mayor intensidad según se acerque el valor absoluto a 1. Para el caso de las correlaciones entre percepción de meritocracia de estudiantes y sentido de justicia en las notas, se ha empleado una muestra que considera únicamente las respuestas válidas de estudiantes (_n_ = `r dim(df_completa)[1]`), mientras que las correlaciones con la percepción de meritocracia de apoderados se emplea una muestra acotada a los casos válidos de estudiantes que poseen información de sus apoderados (_n_ = `r dim(df_reducida)[1]`)
 
-```{r correl, echo=FALSE, fig.cap='Matriz de correlación de Pearson para percepción de meritocracia y sentido de justicia en las notas'}
+```{r correl, echo=FALSE, fig.cap="Pearson's correlation matrix for perception of meritocracy and sense of justice in grades"}
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
@@ -651,6 +757,7 @@ df_completa <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              # perc_esfuerzo_factor_ap,
                              sj_direct,
                              sj_indirect_ln,
+                             genero_est,pos_pol_est
                              # rbd_est
                              ) %>% na.omit(df_completa) %>%
   mutate(perc_trabajo_duro_factor_est=as.numeric(perc_trabajo_duro_factor_est),
@@ -664,20 +771,60 @@ df_completa <- ap_est %>% select(perc_trabajo_duro_factor_est,
          perc_trabajo_duro_factor_ap,
          perc_esfuerzo_factor_ap,
          sj_direct,
-         sj_indirect_ln)
+         sj_indirect_ln,
+         -genero_est,-pos_pol_est
+         )
+
+# sjPlot::tab_corr(df_completa[,c("perc_trabajo_duro_factor_est",
+#                                 "perc_esfuerzo_factor_est",
+#                                 "sj_direct","sj_indirect_ln")],)
 
 cor_1 <- cor(df_completa) %>% data.frame()
 
-
-
 df_reducida <- ap_est %>% select(perc_trabajo_duro_factor_est,
-                                 perc_esfuerzo_factor_est,
-                                 perc_trabajo_duro_factor_ap,
-                                 perc_esfuerzo_factor_ap,
-                                 sj_direct,
-                                 sj_indirect_ln,
-                             # rbd_est
-                             ) %>% na.omit(df_reducida)
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             perc_tduro_bi_est,
+                             perc_tduro_bi2_est,
+                             perc_tduro_bi3_est,
+                             perc_esfuerzo_bi_est,
+                             perc_tduro_bi_ap,
+                             perc_tduro_bi2_ap,
+                             perc_tduro_bi3_ap,
+                             perc_esfuerzo_bi_ap,
+                             prom_percmer_est,
+                             prom_percmer_ap,
+                             sj_direct,
+                             sj_indirect_noln,
+                             sj_indirect_ln,
+                             sj_indirect_cat,
+                             sj_indirect_qtil,
+                             quintiles_ingresos_pc_factor,
+                             educ_factor_ap,
+                             libros_hogar_factor_ap,
+                             recompensa_est,  # recompensa en escuela
+                             resp_prof,# justicia trato profesor
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             # ingresos_esc,
+                             # ingresos_pc_esc,
+                             # univ_esc,
+                             univ,
+                             rbd_est,
+                             nse_grupo,univ
+                             ) %>% na.omit(df_reducida) %>% 
+  select(perc_trabajo_duro_factor_est,
+         perc_esfuerzo_factor_est,
+         perc_trabajo_duro_factor_ap,
+         perc_esfuerzo_factor_ap,
+         sj_direct,
+         sj_indirect_ln)
+
 
 
 df_reducida<- data.frame(lapply(df_reducida[,c("perc_trabajo_duro_factor_est",
@@ -685,7 +832,13 @@ df_reducida<- data.frame(lapply(df_reducida[,c("perc_trabajo_duro_factor_est",
                                        "perc_trabajo_duro_factor_ap",
                                        "perc_esfuerzo_factor_ap",
                                        "sj_direct",
-                                       "sj_indirect_ln")], function(x) sjlabelled::as_numeric(x)))
+                                       "sj_indirect_ln")], function(x) as.numeric(x)))
+
+# sjPlot::tab_corr(df_reducida[,c("perc_trabajo_duro_factor_est",
+#                                 "perc_esfuerzo_factor_est",
+#                                    "perc_trabajo_duro_factor_ap",
+#                                    "perc_esfuerzo_factor_ap",
+#                                 "sj_direct","sj_indirect_ln")],)
 
 cor_2 <- cor(df_reducida) %>% data.frame()
 
@@ -706,10 +859,10 @@ cor_3 <- as.matrix(cor_3)
 
   diag(cor_3) = NA #set diagonal values to NA
   # Set Row names of the matrix
-  rownames(cor_3) <- c("A. Perception of meritocracy: Importance of hard work (std.)",
-                       "B. Perception of meritocracy: Effort to get ahead (std.)",
-                       "C. Perception of meritocracy: Importance of hard work (par.)*",
-                       "D. Perception of meritocracy: Effort to get ahead (par.)*",
+  rownames(cor_3) <- c("A. Importance of hard work (student)",
+                       "B. Effort to get ahead (student)",
+                       "C. Importance of hard work (parents)",
+                       "D. Effort to get ahead (parents)",
                        "E. Sense of Justice in grades (direct)",
                        "F. Sense of Justice in grades (indirect)")
   #set Column names of the matrix
@@ -725,9 +878,14 @@ cor_3 <- as.matrix(cor_3)
     na.label = "-")
 ```
 
-En general, las correlaciones ofrecen evidencia parcial a las hipótesis planteadas en este estudio. Se evidencia una relación entre las percepciones meritocráticas de padres e hijos, aunque solo en uno de los cuatro cruces posibles y con una fuerza de relación más bien pequeña. Padres que consideran importante el trabajo duro para surgir en la vida están asociados a hijos que respaldan la afirmación de que en Chile quienes se esfuerzan salen adelante (_r_ = 0.09; _p_ < 0.05; _n_ = 537). Pese a ello, el respaldo de los padres a la afirmación sobre el rol del esfuerzo no está asociado significativamente con ninguna variable de los estudiantes.
 
-El sentido de justicia directo se relaciona de manera positiva y no significativa con la importancia del trabajo duro de estudiantes (_r_ = 0.03; _p_ > 0.05; _n_ = 1415), así también muestra una relación en el mismo sentido y no significativa con la afirmación de que en Chile quienes se esfuerzan salen adelante (_r_ = 0.04; _p_ > 0.05; _n_ = 1415). En la misma línea, el sentido de justicia indirecto muestra una relación positiva y no significativa con la importancia del trabajo duro de estudiantes (_r_ = 0.05; _p_ > 0.05; _n_ = 1415), mientras que con el apoyo a la afirmación de que en Chile quienes se esfuerzan salen adelante tiene una relación negativa y no significativa (_r_ = -0.01; _p_ > 0.05; _n_ = 1415). Finalmente, respecto de las medidas de Sentido de Justicia en las notas se observa una asociación baja, positiva y significativa ente ambas (_r_ =  0.15; _p_ < 0.001; _n_ = 1415)
+Por un lado, para la muestra restringida (_n_ = `r dim(df_reducida)[1]`), la matriz de correlaciones muestra que existe una asociación positiva y estadísticamente significativa entre el nivel de importancia atribuida al trabajo duro de apoderados con la de sus hijos (_r_= 0.09, _p_ < 0.05) . Por otro lado, el respaldo de apoderados a la afirmación sobre que en Chile los esfuerzos son recompensados no está asociado significativamente con ninguna variable de los estudiantes. Adicionalmente, se puede observar una relación positiva y significativa (_r_= 0.09, _p_ < 0.05) entre la importancia del trabajo duro de estudiantes y el acuerdo con que en Chile quienes se esfuerzan salen adelante de apoderados.
+
+Respecto de las variables de sentido de justicia directo e indirecto de estudiantes (_n_ = `r dim(df_completa)[1]`), en general las asociaciones son positivas pero ninguna de las medidas muestra una asociación significativa con la importancia del trabajo duro y el nivel de acuerdo con la afirmación sobre que en Chile los esfuerzos son recompensados de estudiantes.
+
+<!-- El sentido de justicia directo se relaciona de manera positiva y no significativa con la importancia del trabajo duro de estudiantes (_r_ = 0.03; _p_ > 0.05; _n_ = 1415), así también muestra una relación en el mismo sentido y no significativa con la afirmación de que en Chile quienes se esfuerzan salen adelante (_r_ = 0.04; _p_ > 0.05; _n_ = 1415).  -->
+
+<!-- En la misma línea, el sentido de justicia indirecto muestra una relación positiva y no significativa con la importancia del trabajo duro de estudiantes (_r_ = 0.05; _p_ > 0.05; _n_ = 1415), mientras que con el apoyo a la afirmación de que en Chile quienes se esfuerzan salen adelante tiene una relación negativa y no significativa (_r_ = -0.01; _p_ > 0.05; _n_ = 1415).  -->
 
 ## Análisis multivariado
 
@@ -784,9 +942,9 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              pos_pol_factor_est,
                              genero_factor_est,
                              dependencia_factor_ap,
-                             ingresos_esc,
-                             ingresos_pc_esc,
-                             univ_esc,
+                             # ingresos_esc,
+                             # ingresos_pc_esc,
+                             # univ_esc,
                              univ,
                              rbd_est,
                              nse_grupo,univ
@@ -801,6 +959,7 @@ basereg_est <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              sj_indirect_ln,
                              # sj_indirect_cat,
                              # sj_indirect_qtil,
+                             genero_est, pos_pol_est,
                              rbd_est
                              ) %>% na.omit(basereg)
 # dim(basereg_est)
@@ -831,13 +990,13 @@ getah.or0.3 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste
 #                 include.thresholds=FALSE)
 
 # N de estudiantes y apoderados
-getah.or1 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
+# getah.or1 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap",ref),collapse="+"))), basereg)
 # getah.or2 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_indirect_ln",ref),collapse="+"))), basereg)
 # getah.or3 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("sj_direct_factor",ref),collapse="+"))), basereg)
 # getah.or4 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor",ref),collapse="+"))), basereg)
 # getah.or5 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor",con[-3],ref),collapse="+"))), basereg)
 getah.or6 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor",con,ref),collapse="+"))), basereg, nAGQ = 10)
-getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+# getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
 getah.or8 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","nse_grupo",ref),collapse="+"))), basereg)
 
 coef_names <- c(
@@ -847,27 +1006,38 @@ coef_names <- c(
   "Hard work is important¹",
   "Quintile 2","Quintile 3","Quintile 4","Quintile 5","Quintile Don't know/No Answer",
   "Parents have universitary degree (ref: does not have)",
+  "School Socio-economic status",
   "Hard work is important x Less than I deserve",
-  "Hard work is important x More than I deserve",
-  "School Socio-economic status"
+  "Hard work is important x More than I deserve"
   ) # Nombre coeficientes
 
+# knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
+#              # getah.or1,
+#              getah.or6,
+#              # getah.or7,
+#              getah.or8),
+#         omit.coef=omit_coef,
+#         include.thresholds=FALSE
+#         )
 
 # Renderizar tabla
 knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
-             getah.or1,
+             # getah.or1,
              getah.or6,
-             getah.or7,
+             # getah.or7,
              getah.or8),
         caption = paste("(\\#tab:getah)",cap1),
         caption.above=TRUE,
         omit.coef=omit_coef,
         include.thresholds=FALSE,
-        custom.gof.rows=list(Controls=c("No","No","No","No","Yes","Yes","Yes")),
+        custom.gof.rows=list(Controls=c("No","No","No",
+                                        # "No",
+                                        # "Yes",
+                                        "Yes","Yes")),
         groups=list("Sense of Justice in grades - Direct (ref: The ones I deserve)"=2:3,
                     "Parental Perc. Meritocracy (ref: Not important)"=4,
                     "Household income (ref: Quintile 1)"=5:9,
-                    "Interaction: Parental Perc. Meritocracy x SJ in grades - Direct" = 11:12),
+                    "Interaction: Parental Perc. Meritocracy x SJ in grades - Direct" = 12:13),
         custom.coef.names=coef_names,
         scalebox = 0.75,
         threeparttable = T,
@@ -881,14 +1051,14 @@ knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
 
 <!-- - PROBAR LA RESTA EN SJ INDIRECTO -->
 
-Los resultados son consistentes con lo vislumbrado por el análisis bivariado. En el caso de la hipótesis de transmisión intergeneracional se observa un efecto significativo entre las percepciones meritocráticas de los padres y las percepciones meritocráticas de los estudiantes, relación que se mantiene significativa pese a los controles estadísticos (Model 5 : *logit* = 1.21; *p* \< 0.001 ). Por ello, las probabilidades naturales de observar mayores niveles de percepción meritocrática en un estudiante aumentan 1.47 cuando el padre posee similares creencias.
+En el caso de la hipótesis de transmisión intergeneracional se observa un efecto significativo entre las percepciones meritocráticas de los padres y las percepciones meritocráticas de los estudiantes, relación que es significativa incluyendo controles estadísticos (Model 4 : *logit* = 1.21; *p* \< 0.01). 
 
-Respecto a la hipótesis del sentido de justicia en la escuela, se puede observar que en ninguna de las formas en que se mide la sensación de justicia en las notas permite concluir una relación positiva con la percepción meritocrática de los estudiantes. Sin embargo, si es posible evidenciar un efecto del nivel socioeconómico en las percepciones meritocráticas de los estudiantes. En comparación con el primer quintil, los estudiantes de los tres quintiles superiores poseen más probabilidades de indicar que el trabajo duro es importante para surgir en la vida, aunque solo el efecto del tercer quintil perdura en las especificaciones que consideran la interacción entre la percepción de meritocracia de los padres con el sentido de justicia en las notas directo (ver *logit* Modelos 5,6 y 7 con *p* \< 0.05). Esta evidencia es consistente con los antecedentes que señalan la importancia del nivel socioeconómico al explicar las percepciones meritocráticas, a la vez que aporta evidencia para señalar que dicha asociación, evaluada comúnmente en adultos, es aplicable a los jóvenes. Adicionalmente,  se encuentra un efecto significativo del nivel socioeconómico (Modelo 7: *logit* = 0.27, *p* \< 0.05) de la escuela. En suma, los hallazgos confirman la relación del nivel socioeconómico con la percepción meritocrática a nivel individual, como también al nivel escuela.
+Respecto a la hipótesis del sentido de justicia en la escuela, se puede observar que en ninguna de las formas en que se mide la sensación de justicia en las notas permite concluir una relación positiva con la percepción meritocrática de los estudiantes. Sin embargo, es posible evidenciar un efecto del nivel socioeconómico en las percepciones meritocráticas de los estudiantes. En comparación con el primer quintil, los estudiantes de los tres quintiles superiores poseen más probabilidades de indicar que el trabajo duro es importante para surgir en la vida, aunque solo el efecto del tercer quintil perdura en las especificaciones que consideran la interacción entre la percepción de meritocracia de los padres con el sentido de justicia en las notas directo (ver *logit* Modelos 4 y 5 con *p* \< 0.05). Esta evidencia es consistente con los antecedentes que señalan la importancia del nivel socioeconómico al explicar las percepciones meritocráticas, a la vez que aporta evidencia para señalar que dicha asociación, evaluada comúnmente en adultos, es aplicable a los jóvenes. Adicionalmente,  se encuentra un efecto significativo del nivel socioeconómico (Modelo 5: *logit* = 0.27, *p* \< 0.05) de la escuela. En suma, los hallazgos confirman la relación positiva del nivel socioeconómico con la percepción meritocrática a nivel individual, como también al nivel escuela.
 
 Respecto a las interacciones, se observa que, aunque la justicia en las notas no tenga un efecto en sí misma, si posee una interacción significativa con la percepción meritocrática de los padres. Esto va en la línea de lo hipotetizado, en tanto se esperaba que la experiencia escolar de injusticia pudiera debilitar la asociación entre la percepción meritocrática de los padres y los estudiantes. Efectivamente, como se puede observar en la Figura \@ref(fig:interac), la relación positiva entre creencias meritocráticas entre padres e hijos se ve atenuada (disminuye) en el caso de que se perciba ser sub-recompensado con notas en la escuela. Por lo tanto, la escuela parece jugar un rol relevante como agente socializador, pudiendo incluso interferir con aspectos de socialización familiar.
 
 
-```{r interac, fig.width=11,fig.cap="Interacción entre percepciones meritocraticas parentales, del estudiante y justicia en las notas", echo=FALSE, out.width='100%'}
+```{r interac, fig.width=11, fig.height=6, fig.cap="Interaction between parental, student and meritocratic perceptions and justice in grades", echo=FALSE, out.width='100%'}
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
@@ -927,6 +1097,7 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              prom_percmer_ap,
                              sj_direct_factor,
                              sj_indirect_noln,
+                             sj_indirect_ln,
                              sj_indirect_cat,
                              sj_indirect_qtil,
                              quintiles_ingresos_pc_factor,
@@ -938,11 +1109,12 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              pos_pol_factor_est,
                              genero_factor_est,
                              dependencia_factor_ap,
-                             ingresos_esc,
-                             ingresos_pc_esc,
-                             univ_esc,
+                             # ingresos_esc,
+                             # ingresos_pc_esc,
+                             # univ_esc,
                              univ,
-                             rbd_est
+                             rbd_est,
+                             nse_grupo,univ
                              ) %>% na.omit(basereg)
 
 omit_coef="(Intercept)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
@@ -1008,7 +1180,7 @@ options(knitr.kable.NA = '') # NA en kable = ''
 load(file = "input/data/ap_est.RData")
 
 # Seleccionar variables
-basereg <- ap_est %>% dplyr::select(perc_trabajo_duro_factor_est,
+basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              perc_esfuerzo_factor_est,
                              perc_trabajo_duro_est,
                              perc_esfuerzo_est,
@@ -1026,9 +1198,9 @@ basereg <- ap_est %>% dplyr::select(perc_trabajo_duro_factor_est,
                              prom_percmer_ap,
                              sj_direct_factor,
                              sj_indirect_noln,
+                             sj_indirect_ln,
                              sj_indirect_cat,
                              sj_indirect_qtil,
-                             sj_indirect_ln,
                              quintiles_ingresos_pc_factor,
                              educ_factor_ap,
                              libros_hogar_factor_ap,
@@ -1040,9 +1212,10 @@ basereg <- ap_est %>% dplyr::select(perc_trabajo_duro_factor_est,
                              dependencia_factor_ap,
                              # ingresos_esc,
                              # ingresos_pc_esc,
-                             nse_grupo,
+                             # univ_esc,
                              univ,
-                             rbd_est
+                             rbd_est,
+                             nse_grupo,univ
                              ) %>% na.omit(basereg)
 
 
@@ -1055,6 +1228,7 @@ basereg_est <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              sj_indirect_ln,
                              # sj_indirect_cat,
                              # sj_indirect_qtil,
+                             genero_est, pos_pol_est,                             
                              rbd_est
                              ) %>% na.omit(basereg)
 
@@ -1106,44 +1280,56 @@ coef_names <- c(
   "Quintile 5",
   "Quintile Don't know/No Answer",
   "Parents have universitary degree (ref: does not have)",
-  "Hard work is important x Less than I deserve",
-  "Hard work is important x More than I deserve",
-  "School Socio-economic status"
+  "School Socio-economic status",
+  "Effort is rewarded x Less than I deserve",
+  "Effort is rewarded x More than I deserve"
   ) # Nombre coeficientes
+
+# knitreg(list(effort.or0.1,effort.or0.2,effort.or0.3,
+#              effort.or1,
+#              effort.or6,
+#              # effort.or7,
+#              effort.or8),
+#         omit.coef=omit_coef,
+#         include.thresholds=FALSE
+#         )
 
 # Renderizar
 texreg::knitreg(list(effort.or0.1,effort.or0.2,effort.or0.3,
-                     effort.or1,
+                     # effort.or1,
                      effort.or6,
-                     effort.or7,
+                     # effort.or7,
                      effort.or8),
         caption = paste("(\\#tab:effort)",cap1),
         caption.above=TRUE,
-        scalebox = 0.75,
         omit.coef=omit_coef,
         include.thresholds=FALSE,
-        custom.gof.rows=list(Controls=c("No","No","No","No","Yes","Yes","Yes")),
+        custom.gof.rows=list(Controls=c("No","No","No",
+                                        # "No",
+                                        # "Yes",
+                                        "Yes","Yes")),
         groups=list("Sense of Justice in grades - Direct (ref: The ones I deserve)"=2:3,
                     "Parental Perc. Meritocracy (ref: Effort is not rewarded)"=4,
                     "Household income (ref: Quintile 1)"=5:9,
-                    "Interaction: Parental Perc. Meritocracy x SJ in grades - Direct" = 11:12),
+                    "Interaction: Parental Perc. Meritocracy x SJ in grades - Direct" = 12:13),
+        custom.coef.names=coef_names,
+        # reorder.coef = c(1:10,12,13,11),
+        scalebox = 0.75,
         threeparttable = T,
-        custom.coef.names = coef_names,
         custom.note="\\item *** p < 0.001; ** p < 0.01; * p < 0.05; \\item ¹Note: the perception of parent’s meritocracy was collapsed into dummies, where the category 'Effort is rewarded' (1) includes the categories 'Agree' and 'Strongly Agree' and the reference category 'Is not rewarded' (0) corresponds to the categories 'Disagree' and 'Strongly Disagree'."
 )
 ```
 
-Adicionalmente a la percepción de meritocracia a través de la importancia atribuida al trabajo duro, la Tabla \@ref(tab:effort) ilustra los resultados de la socialización familiar respecto de la afirmación sobre que en Chile las personas que se esfuerzan salen adelante. En el caso de la hipótesis de transmisión intergeneracional de la percepción de meritocracia, la asociación no es significativa en ninguna en las especificaciones de los Modelos 1 a 5, por tanto no se respalda la hipótesis de socialización familiar.
+Adicionalmente a la percepción de meritocracia a través de la importancia atribuida al trabajo duro, la Tabla \@ref(tab:effort) ilustra los resultados de la socialización familiar respecto de la afirmación sobre que en Chile las personas que se esfuerzan salen adelante. En este sentido, respecto a la hipótesis de transmisión intergeneracional de la percepción de meritocracia, los resultados del Modelo 4 muestran que el efecto posee sentido negativo, es decir, contraria a lo establecido en las hipótesis y a los resultados presentados anteriormente respecto a la importancia del trabajo duro para salir adelante. No obstante, el efecto no logra ser estadísticamente significativo (_p_ \> 0.05).
 
-Por un lado, respecto de la hipótesis en torno al sentido de justicia en las notas, podemos observar que la medición indirecta no posee una asociación significativa con la percepción de meritocracia de estudiantes  (Model 5: *logit* = 0.70, p = \> 0.05). Por otro lado, los Modelos 1, 2 y 3, que fueron estimado la muestra con casos válidos de estudiantes (_n_ =  1415), muestran una relación estadísticamente significativa para el Sentido de Justicia en las notas directo, donde aquellos estudiantes que declaran obtener notas menores a las que merecen, perciben una menor meritocracia respecto de aquellos que consideran obtener las notas que merecen (Model 3: *logit* = -0.27, _p_ \< 0.05). No obstante, al emplear la muestra restringida para los casos válidos de estudiantes que poseen información de sus padres, el efecto mantiene su dirección pero deja de ser significativo (Model 5: *logit* = -0.37, _p_ \> 0.05)
+Respecto de la hipótesis en torno al sentido de justicia en las notas, por un lado,  podemos observar que la medición indirecta no posee una asociación significativa con la percepción de meritocracia de estudiantes  (Model 4: *logit* = 0.70, p = \> 0.05). Por otro lado, los Modelos 1, 2 y 3, estimados con la muestra con casos válidos de estudiantes (_n_ =  `r dim(df_completa)[1]`), muestran una relación estadísticamente significativa para el Sentido de Justicia en las notas directo, donde aquellos estudiantes que declaran obtener notas menores a las que merecen, perciben menos meritocracia respecto de aquellos que consideran obtener las notas que merecen (Model 3: *logit* = -0.27, _p_ \< 0.05). Esto quiere decir que estudiantes que sienten que han recibido una calificación que no se condice con sus esfuerzos, tienden a percibir menor meritocracia respecto a quienes que sienten haber sido calificados de manera justa. No obstante, al emplear la muestra restringida para los casos válidos de estudiantes que poseen información de sus padres, el efecto mantiene su dirección pero pierde significancia (Model 4: *logit* = -0.38, _p_ \> 0.05)
 
-Respecto de la hipótesis sobre el nivel socioeconómico, podemos observar que el nivel de ingreso del hogar posee una asociación significativa en el Quintil 4 respecto al Quintil 1 (Model 6: *logit* = -0.77, p \< 0.05), efecto que se mantiene en todas las especificaciones posteriores. Por esto podemos afirmar que existe evidencia parcial de que estudiantes de un mayor nivel socioeconómico perciben mayor meritocracia, consistente con la evidencia previa en población adulta, pero que debe ser interpretado con cautela dada la ausencia de asociación en quintiles superiores e inferiores. Finalmente, podemos observar que el nivel socioeconómico de la escuela no posee una asociación significativa sobre esta medida de percepción de meritocracia (Model 7: *logit* = -0.12, p \> 0.05)
+Respecto de la hipótesis sobre el nivel socioeconómico, los resultados muestran que el ingreso del hogar se asocia de manera negativa y significativa en el Quintil 4 respecto al Quintil 1 (Model 4: *logit* = -0.75, p \< 0.05). Estos resultados deben ser interpretados con cautela, primero debido a que la asociación es negativa y contraria a lo evidenciado respecto a los resultados en torno a la variable que mide la importancia del trabajo duro, como también por la ausencia diferencias significativas en quintiles inferiores y superiores. En una línea similar, se observa que el nivel socioeconómico de la escuela se asocia en sentido negativo y no significativo con la percepción de los estudiantes frente a la afirmación de que en Chile quienes se esfuerzan salen adelante (Model 5: *logit* = -0.12, p \> 0.05). Estos resultados sugieren que estudiantes pertenecientes a familias de quintiles superiores, la percepción de meritocracia sería más baja respecto al quintil inferior en torno a la afirmación de que en Chile quienes se esfuerzan salen adelante.    
 
-La interacción entre sentido de justicia directo y percepción de meritocracia muestra ser significativa pero debe ser interpretada con cautela. Primero, en el Modelo 6, vemos que la percepción de meritocracia de los padres se vuelve negativa y estadísticamente significativa (logit = -0.67, p \< 0.01) al incorporar el término de interacción, lo cual es contraintuitivo respecto de los resultados de la Tabla \@ref(tab:getah) , y va en contra de la hipótesis de socialización.
+Respecto a la hipótesis de interacción, los resultados permiten afirmar que la experiencia de justicia en las notas modera el la relación de la percepción de meritocracia de apoderados con la de estudiantes, no obstante, estos resultados deben ser interpretados con atención dado que el sentido de la asociación contradice los resultados del análisis de la variable sobre la importancia del trabajo duro. Primero, el Modelo 5 muestra que el efecto de la percepción de meritocracia de los padres mantiene el sentido negativo pero se vuelve estadísticamente significativa (*logit* = -0.65, p \< 0.01) al incorporar el término de interacción, esto significa que para padres que consideran estar de acuerdo con que en Chile las personas que se esfuerzan salen adelante, sus hijos tenderán a percibir menor meritocracia respecto a esta afirmación, constituyendo evidencia que contradice lo hipotetizado, como también los resultados en la Tabla \@ref(tab:getah). Segundo, se observa que el término de interacción del sentido de justicia directo muestra ser positivo y significativo para quienes declaran recibir notas menores a las que merecen, como también para aquellos que reciben mayores notas de las que merecen. Al respecto, la Figura \@ref(fig:interac2) muestra que para quienes sienten recibir notas menores a las que merecen, la asociación negativa entre percepción de meritocracia de apoderados y estudiantes tiende a moderarse positivamente, tendencia que se mantiene también para quienes declaran obtener notas mayores a las que merecen. En suma, si bien la relación entre percepción de meritocracia de apoderados y estudiantes es negativa, la experiencia de justicia en las notas de estudiantes modera positivamente dicha relación, lo cual se puede observar en la Figura \@ref(fig:interac2) para aquellos estudiantes que manifestaron estar "Strongly Agree" con la afirmación de que en Chile quienes se esfuerzan salen adelante.     
 
-Segundo, podemos observar que el término de interacción del sentido de justicia directo muestra ser significativo para quienes declaran recibir notas menores a las que merecen, como también para aquellos que reciben mayores notas de las que merecen. Por un lado, la Figura \@ref(fig:interac2) muestra que estudiantes que sienten ser subrecompensados o sobrerecompensados en las notas disminuyen su probabilidad de estar "Muy de acuerdo", "En desacuerdo" o "De acuerdo" con la afirmación de que en Chile quienes se esfuerzan salen adelante, cuando sus padres perciben mayor meritocracia. Por otro lado, para aquellos estudiantes que se sienten subrecompensados o sobrerecompensados, la probabilidad de responder "Muy de acuerdo" frente a al afirmación disminuye cuando sus padres perciben mayor meritocracia. En suma, los resultados son contraintuitivos cuando observamos las primeras tres categorías, pero cobra sentido al observar la categoría superior de la escala de respuesta de estudiantes. Finalmente, se sobserva que para aquellos estudiantes que consideran obtener las notas que merecen, la probabilidad de responder a cada una de las categorías de respuesta aumenta cuando tienen padres que manifiestan estar de acuerdo con que en Chile quienes se esfuerzan salen adelante.
 
-```{r interac2, fig.width=11,fig.cap="Interacción entre percepciones meritocraticas parentales, del estudiante y justicia en las notas", echo=FALSE, out.width='100%'}
+```{r interac2, fig.width=11, fig.height=6,fig.cap="Interaction between parental, student and meritocratic perceptions and justice in grades", echo=FALSE, out.width='100%'}
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
@@ -1182,9 +1368,9 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              prom_percmer_ap,
                              sj_direct_factor,
                              sj_indirect_noln,
+                             sj_indirect_ln,
                              sj_indirect_cat,
                              sj_indirect_qtil,
-                             sj_indirect_ln,
                              quintiles_ingresos_pc_factor,
                              educ_factor_ap,
                              libros_hogar_factor_ap,
@@ -1194,11 +1380,12 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              pos_pol_factor_est,
                              genero_factor_est,
                              dependencia_factor_ap,
-                             ingresos_esc,
-                             ingresos_pc_esc,
-                             univ_esc,
+                             # ingresos_esc,
+                             # ingresos_pc_esc,
+                             # univ_esc,
                              univ,
-                             rbd_est
+                             rbd_est,
+                             nse_grupo,univ
                              ) %>% na.omit(basereg)
 
 omit_coef="(Intercept)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
@@ -1252,7 +1439,7 @@ El segundo punto de relevancia se relaciona a los aportes que esta investigació
 
 El tercer y último punto a discutir tiene que ver con el tipo de socialización estudiada hasta ahora y los aportes que este artículo hace. Los estudios con perspectiva de socialización generalmente se han centrado en cómo los valores y actitudes son aprendidos en función de los contextos. Lo que hemos denominado cómo socialización de la institucionalidad económica asume que son las características de un país las que influyen en las creencias meritocráticas [@smith_two_2012 ; @orkeny_views_2000]. Asimismo, desde la sociología de Bourdieu se afirma que es el paso por la universidad y la socialización de valores dominantes lo que lleva a respaldar la meritocracia [@baer_education_2008]. También, numerosos estudios empíricos trabajan en torno a la idea de que son determinados períodos los que forman estas creencias [@legarrec_distributive_2015; @ignacz_remains_2018; @vanheuvelen_intercohort_2018]. Si bien todos han sido grandes contribuciones, hasta ahora no se había hecho la pregunta de ¿quiénes son los que contribuyen a formar esas creencias y percepciones? Este estudio ha contribuido con evidencia suficiente para sostener que la familia es un agente socializador de la meritocracia y que la escuela puede contribuir a mitigar esa asociación. De todos modos, aún queda por explorar cuáles son las formas en las que estos agentes contribuyen a transmitir la meritocracia ¿es una socialización de tipo activa cómo plantea @calarco_coached_2014? ¿o se da de forma más automática en discusiones de sobremesa y otras instancias?
 
-Pese a los aportes de esta investigación, es necesario señalar algunas limitaciones relevantes. En primer lugar, se puede apreciar un tema de potencia estadística asociado a la cantidad de casos utilizados, pues si bien la muestra cuenta con aproximadamente 1700 estudiantes, solo cerca de 700 padres respondieron la encuesta, los cuales no siempre respondieron todas las preguntas. Por ello, al dejar una muestra que posee padres y estudiantes pareados, el número con el que se trabaja se reduce drásticamente a 537. Esto es perjudicial en tanto la relación hipotetizada entre sentido de justicia en las notas y percepciones meritocráticas de los estudiantes solo es significativa con la muestra de solo estudiantes y no con la muestra restringida según los apoderados que respondieron. En segundo lugar, las preguntas presentes en el cuestionario no permiten medir las distintas dimensiones de las creencias meritocráticas, distinguiendo según percepciones, preferencias e ideas meritocráticas y antimeritocraticas. Más bien, debido a las preguntas del cuestionario sólo fue posible incorporar percepciones meritocráticas lo que puede afectar la validez del constructo dependiente al no controlarlo por las otras dimensiones. En último lugar, el que este sea un estudio de corte transversal y no longitudinal imposibilita estudiar la dirección de las relaciones, por ejemplo, este trabajo supone, basados en los estudios de socialización política que las percepciones meritocráticas son traspasadas de padres a hijos, cuando bien podría ser también de manera opuesta.
+Pese a los aportes de esta investigación, es necesario señalar algunas limitaciones relevantes. En primer lugar, se puede apreciar un tema de potencia estadística asociado a la cantidad de casos utilizados, pues si bien la muestra cuenta con aproximadamente 1700 estudiantes, solo cerca de 700 padres respondieron la encuesta, los cuales no siempre respondieron todas las preguntas. Por ello, al dejar una muestra que posee padres y estudiantes pareados, el número con el que se trabaja se reduce drásticamente a `r dim(df_reducida)[1]`. Esto es perjudicial en tanto la relación hipotetizada entre sentido de justicia en las notas y percepciones meritocráticas de los estudiantes solo es significativa con la muestra de solo estudiantes y no con la muestra restringida según los apoderados que respondieron. En segundo lugar, las preguntas presentes en el cuestionario no permiten medir las distintas dimensiones de las creencias meritocráticas, distinguiendo según percepciones, preferencias e ideas meritocráticas y antimeritocraticas. Más bien, debido a las preguntas del cuestionario sólo fue posible incorporar percepciones meritocráticas lo que puede afectar la validez del constructo dependiente al no controlarlo por las otras dimensiones. En último lugar, el que este sea un estudio de corte transversal y no longitudinal imposibilita estudiar la dirección de las relaciones, por ejemplo, este trabajo supone, basados en los estudios de socialización política que las percepciones meritocráticas son traspasadas de padres a hijos, cuando bien podría ser también de manera opuesta.
 
 
 # Referencias
