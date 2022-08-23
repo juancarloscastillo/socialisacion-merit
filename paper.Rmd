@@ -1,10 +1,10 @@
 ---
-title: "La Socialización de la Meritocracia:   El rol de la Familia y la Escuela"
+title: "The Socialization of Meritocracy: The role of the Family and the School"
 css: "input/css/custom.css" # custom CSS para html
 linestretch: '1.5'          # interlineado
 link-citations: yes         # citas linkeadas
 author:
-- name: Juan Carlos Castillo ^[Autor para correspondencia - juancastillov@uchile.cl - http://jc-castillo.com/]
+- name: Juan Carlos Castillo ^[Corresponding author - juancastillov@uchile.cl - http://jc-castillo.com/]
   number: 1,2
 - name: Julio Iturra
   affiliation: Centro de Estudios de Conflicto y Cohesión Social
@@ -15,7 +15,9 @@ author:
 - name: Martín Venegas
   number: 1
 # Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.
-abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual. Este sistema ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales, dado que llevaría a atribuir el éxito o fracaso personal a factores individuales por sobre determinantes sociales. La presente investigación se enfoca en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1,635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Los resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeneracionalmente a nivel familiar. Sin embargo, encontramos escasa evidencia de que esa relación se vea afectada por la experiencia de justicia distributiva en la escuela.
+# abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual. Este sistema ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales, dado que llevaría a atribuir el éxito o fracaso personal a factores individuales por sobre determinantes sociales. La presente investigación se enfoca en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1,635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Los resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeneracionalmente a nivel familiar. Sin embargo, encontramos escasa evidencia de que esa relación se vea afectada por la experiencia de justicia distributiva en la escuela.
+abstract: Meritocracy is understood as a system of distribution based on individual effort and talent. It has been widely questioned for its role in legitimizing social inequalities, given that it would lead to attributing personal success or failure to individual factors over social determinants. This research focuses on how some notions of meritocracy are learned during the school stage, considering the possible influence of socializing agents such as the family and the school. Using data from students and their families in 3 regions of Chile (N= 1,635 students from 64 schools), we analyze the extent to which parents' meritocratic perceptions are associated with their children, as well as the influence of the school experience of justice on grades. The results partially demonstrate that meritocratic perceptions are transmitted intergenerationally. Nevertheless, we find little evidence that this relationship is affected by the experience of distributive justice at school.
+keywords: meritocracy socialization, sense of justice, Chile
 output:
   bookdown::pdf_document2:
     template: null
@@ -25,18 +27,21 @@ output:
       - --template=input/mytemplate.tex #custom template para usar autores con afiliacion
   bookdown::html_document2:
     number_sections: false
-linkcolor: blue                         # enlaces y citas en color azul
+linkcolor: blue                         # enlaces y citas en color azul   
 bibliography: input/bib/socializacion-merit.bib     # bibliografia en bibtex
 csl: input/bib/apa.csl
 editor_options:
   chunk_output_type: console            # en RStudio, mostrar output en consola
-geometry: "left=2cm,right=2cm,top=3cm,bottom=3cm" # márgenes de página
+geometry: "margin=1in" # márgenes de página
+fontsize: 12pt
 header-includes:
-  - \usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+  # - \usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+  - \usepackage {hyperref}
+  - \hypersetup {colorlinks = true, linkcolor = blue, urlcolor = blue}  
   - \usepackage{times}           # Times New Roman
   - \usepackage{caption}
-  - \captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=period,name={Figura}}
-  - \captionsetup[table]{labelfont={bf},labelformat={default},labelsep=period,name={Tabla}}
+  - \captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=period,name={Figure}}
+  - \captionsetup[table]{labelfont={bf},labelformat={default},labelsep=period,name={Table}}
   - \usepackage{graphicx}
   - \usepackage{float}
   - \usepackage{booktabs}
@@ -50,7 +55,6 @@ header-includes:
   - \usepackage{tabu}
   - \usepackage{threeparttable}
 ---
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache = TRUE)
@@ -114,64 +118,67 @@ width_table = if(is_html_output()) {
 
 ```
 
-# Introducción
+# Introduction
 
-La meritocracia es un ideal que aspira a la distribución de los recursos en una sociedad según esfuerzo y talento personal [@young_rise_2006]. Este ideal se encuentra ampliamente extendido en las sociedades modernas, donde se alza como una forma legítima de progresar individualmente en base a logros personales, y por tanto se contrapone al uso de privilegios familiares y de contactos personales para salir adelante [@hadjar_meritokratie_2008]. Si bien la obtención de recompensas proporcionales a esfuerzo y talento parece una representación fidedigna de la justicia por equidad, la implementación de sistemas meritocráticos no está exenta de problemas. Por un lado, se ha argumentado que la meritocracia permite la legitimación de las desigualdades mediante la atribución del éxito al logro personal, subestimando de esta manera las condiciones de origen o el "punto de partida" [@hadjar_meritokratie_2008; @bay-cheng_agency_2015]. Ello implica una gran presión psíquica y social hacia los jóvenes, quienes independientemente de las desigualdades de sus contextos, crecen rodeados de discursos meritocráticos que contrastan constantemente con la realidad [@allen_top_2016]. Por otro lado, el énfasis en las capacidades individuales llevaría a responsabilizar a las personas de su situación y por lo tanto a un menor apoyo a políticas sociales que compensen desventajas: "¿Por qué las personas que triunfan en la vida iban a deber nada a los miembros menos favorecidos de la sociedad?" [@sandel_tirania_2021 p.292]. De esta manera, la creencia en la meritocracia podría mermar la preocupación por el bien común y la solidaridad.
+Meritocracy is an ideal that aspires to the distribution of resources in a society according to personal effort and talent [@young_rise_2006]. This ideal is widely found in modern societies, where it is raised as a legitimate way to progress individually based on personal achievements, and therefore contrasts with the use of family privileges and personal contacts to get ahead [@hadjar_meritokratie_2008]. While obtaining rewards through effort and talent seems to be a credible representation of justice through equity, the implementation of meritocratic systems is far from being unproblematic. On the one hand, it has been argued that meritocracy allows the legitimization of inequalities by attributing success to personal achievement, thus underestimating the conditions of origin or the "starting point" [@hadjar_meritokratie_2008; @bay-cheng_agency_2015]. This implies great psychological and social pressure on young people, who regardless of the inequalities of their contexts, grow up surrounded by meritocratic discourses that constantly contrast with reality [@allen_top_2016]. On the other hand, the emphasis on individual capacities would lead to making people responsible for their situation and therefore less supportive of social policies that compensate for disadvantages: "For why do the successful owe anything to the less advantaged members of society?" [@sandel_tirania_2021 p.292]. In this way, the belief in meritocracy can diminish concern for the common good and solidarity.
 
-En el último tiempo se ha incrementado el interés por el estudio de la meritocracia en las ciencias sociales. Desde la sociología, se ha desarrollado una agenda de investigación que ha resaltado los aspectos subjetivos de la meritocracia [@mijs_how_2020; @mijs_inequality_2018; @castillo_meritocracia_2019 ], donde una distinción central es entre percepciones meritocráticas (que tan meritocrática es la sociedad) y preferencias meritocráticas (que tan meritocrática debería ser la sociedad)  [@reynolds_perceptions_2014; @castillo_meritocracia_2019]. Hasta ahora la investigación en esta área se ha focalizado en población adulta, desatendiendo el rol que distintos agentes de socialización podrían tener en la formación de percepciones, actitudes y creencias en la etapa escolar [@gidengil_political_2016a; @torney-purta_school_2002]. En el presente trabajo, nuestro objetivo es estudiar en qué medida la socialización parental y escolar se asocia a percepciones meritocráticas de estudiantes secundarios. Basados en los trabajos sobre justicia en la escuela y en la agenda de socialización política familiar, buscamos responder dos preguntas:¿Existe una asociación entre las percepciones meritocráticas de los padres con las de sus hijos/hijas? Y, ¿En qué medida la experiencia escolar en términos de justicia distributiva (en relación a las notas) se vincula a las percepciones meritocráticas de las/los estudiantes?
+Recently, interest in the study of meritocracy in the social sciences has increased. From the field of sociology, a research agenda has been developed that highlights the subjective aspects of meritocracy [@mijs_how_2020; @mijs_inequality_2018; @castillo_meritocracia_2019 ], where a central distinction is the one between meritocratic perceptions (how meritocratic society is) and meritocratic preferences (how meritocratic society should be)  [@reynolds_perceptions_2014; @castillo_meritocracia_2019]. Until now, research in this area has focused on the adult population, neglecting the role that different socialization agents could have in the formation of perceptions, attitudes and beliefs during the school-age period [@gidengil_political_2016; @torney-purta_school_2002]. 
 
-En relación a la primera pregunta, nuestro interés es analizar en qué medida las percepciones meritocráticas de los padres se encuentran asociadas a las de sus hijos. Para ello nos basamos en estudios sobre la reproducción intergeneracional de actitudes políticas [@astill_multilevel_2002; @miranda_desigualdad_2018], donde  se ha estudiado la transmisión de opiniones e intenciones de participación política [@boonen_adolescent_2013; @quintelier_intergenerational_2015a], las creencias políticas sobre la democracia [@greenstein_personality_2016] y orientaciones políticas [@jennings_politics_2009]. No obstante, estas investigaciones por lo general no incorporan aspectos relativos a la justicia distributiva, los cuales pueden ser fundamentales si se considera que las ideas de las personas sobre la desigualdad y la distribución de recursos pueden generar apatía política e incluso deseos de insubordinación [@easterbrook_social_2021], además de estar relacionadas con la tolerancia y las ideas autoritarias [@madeira_primes_2019a; @azevedo_neoliberal_2019]. De esta manera, esta investigación busca contribuir al cuerpo de estudios sobre socialización política incorporando otras ideas transmisibles en el entorno familiar, como son las percepciones meritocráticas.
+In this paper, our objective is to study the extent to which parental and school socialization is associated with meritocratic perceptions of secondary school students.  Based on research about justice preceptions in schools and family political socialization, we seek to answer two main questions: Is there an association between the meritocratic perceptions of parents with those of their offsprings? To what extent is school experience in terms of distributive justice (in relation to grades) linked to the meritocratic perceptions of students?
 
-El segundo tema de interés en este trabajo es el rol de la escuela en las percepciones meritocráticas de los estudiantes. Al respecto, la literatura sobre justicia en la escuela ha logrado evidenciar la importancia que tienen las experiencias distributivas en la configuración de la visión del mundo en los jóvenes. Trabajos como los de Resh y Sabbagh [-@resh_sense_2014; -@resh_sense_2017] han demostrado que el sentido de justicia que tienen los estudiantes con respecto a la distribución de notas tiene un impacto en sus actitudes y comportamientos democráticos, así como también en la confianza institucional y social [@resh_sense_2018]. Esta evidencia llama a profundizar en el efecto del sentido de justicia en otros aspectos de la visión del mundo de los jóvenes, como por ejemplo las percepciones de meritocracia.
+Through our first question, we focus on the extent to which the meritocratic perceptions of parents are associated with those of their children. For this, we rely on studies on the intergenerational reproduction of political attitudes [@astill_multilevel_2002; @miranda_desigualdad_2018], through which the transmission of opinions and intentions of political participation [@boonen_adolescent_2013; @quintelier_intergenerational_2015a], political beliefs about democracy [@greenstein_personality_2016] and political orientations [@jennings_politics_2009] have been approached. However, these investigations generally do not incorporate aspects related to distributive justice, which can be fundamental if we consider that people's ideas about inequality and the distribution of resources can generate political apathy [@easterbrook_social_2021], as well as  to tolerance towards authoritarian ideas [@madeira_primes_2019a; @azevedo_neoliberal_2019].
 
-# Antecedentes conceptuales y empíricos
+The second topic of interest in this work is the role of the school in the meritocratic perceptions of students. In this regard, the literature on justice in schools has succeeded in highlighting the importance of distributive experiences in shaping the world view of young people. Works such as Resh and Sabbagh [-@resh_sense_2014; -@resh_sense_2017] have shown that the sense of justice that students have regarding the distribution of grades has an impact on their democratic attitudes and behaviors, as well as on institutional and social trust [@resh_sense_2018]. This evidence calls for a deeper understanding of the effect of the sense of justice on other aspects of young people's worldview, such as perceptions of meritocracy.
 
-## Percepción de meritocracia
 
-Gran parte de la investigación sobre percepciones meritocráticas se ha abocado al grado en que las condiciones objetivas de desigualdad social afectan la forma en que las personas perciben la distribución de bienes y recompensas. En general, estas investigaciones muestran que los sujetos poseen estimaciones sesgadas tanto de los niveles de desigualdad como del real funcionamiento de la meritocracia [@gimpelson_misperceiving_2018]. Sin embargo, @mccall_exposure_2017 evidencian que exponer a los ciudadanos estadounidenses a los reales niveles de desigualdad fomenta en ellos una menor creencia en las oportunidades para salir adelante en base al esfuerzo propio. En la misma línea, @mijs_how_2020 señalan que al exponer a ciudadanos indonesios, australianos y mexicanos a los niveles reales de desigualdad y movilidad social disminuye su percepción de meritocracia. Estas percepciones distorsionadas sobre la desigualdad y la meritocracia varían consistentemente según nivel socioeconómico, pues las personas aventajadas socioeconómicamente suelen percibir mayores niveles de meritocracia que las personas de escasos recursos [@reynolds_perceptions_2014].
 
-La adhesión a creencias meritocráticas suele ser interpretada desde una perspectiva de interés racional, considerando que quienes detentan mayores recursos económicos y estatus poseen mejores razones para percibir y preferir la meritocracia [@kunovich_systems_2007]. Adicionalmente, se ha evidenciado que dichas diferencias en la percepción según nivel socioeconómico se ven afectadas por el nivel de desigualdad económica de la sociedad, lo cual es abordado desde distintas teorías. Por un lado, la teoría del conflicto supone que mayores niveles de desigualdad generan menor percepción de meritocracia y menor tolerancia a la desigualdad, a la vez que existe mayor disenso en estos temas entre distintos estratos sociales [@newman_false_2015]. Por otro lado, la teoría del poder relativo [@solt_economic_2016] sostiene que mayor desigualdad económica trae consigo una mayor concentración de riqueza y poder, lo cual tiene como consecuencia que las visiones de los grupos más aventajados permeen las visiones de aquellos más desaventajados, por lo cual a mayor desigualdad existe mayor consenso entre grupos sociales sobre la percepción de meritocracia.
+# Conceptual and empirical background
 
-Otra característica del estatus socioeconómico relevante en el estudio de las percepciones y preferencias meritocráticas ha sido la tenencia de credenciales educativas que dan paso a ocupaciones de mayor calificación en el mercado laboral [@goldthorpe_myth_2003a]. Para explicar la relación entre creencias meritocráticas y años de educación se ha recurrido a dos hipótesis. Por un lado está el enfoque *reproduccionista* [@bourdieu_reproduccion_1998; @bernstein_poder_1988], desde donde se sostiene que el rol de la institución escolar contribuye a reforzar los principios meritocráticos de los individuos, por tanto un mayor logro educacional se traduce en mayor adscripción a la meritocracia como principio distributivo [@reynolds_perceptions_2014; @xian_bootstraps_2017; @lampert_meritocratic_2013]. Por otro lado, se encuentra la hipótesis de *instrucción*, la cual sostiene que individuos más educados poseen mayor capacidad crítica respecto del rol que juegan los factores estructurales e individuales en la adquisición de recompensas en la sociedad, lo cual se traduce en un debilitamiento en torno al ideal meritocrático [@duru-bellat_who_2012; @castillo_meritocracia_2019].
+## Perception of meritocracy
 
-## Meritocracia en la etapa escolar
+Much of the research on meritocratic perceptions has focused on the extent to which objective conditions of social inequality affect the way people perceive the distribution of goods and rewards. In general, these investigations show that subjects have biased estimates of both the levels of inequality and the actual functioning of meritocracy [@gimpelson_misperceiving_2018]. However, @mccall_exposure_2017 shows that exposing US citizens to the real levels of inequality encourages them to believe less in opportunities to get ahead based on their own effort. In the same vein, @mijs_how_2020 points out that exposing Indonesian, Australian and Mexican citizens to real levels of inequality and social mobility diminishes their perception of meritocracy. These distorted perceptions of inequality and meritocracy also vary consistently according to socioeconomic level, as socioeconomically advantaged people tend to perceive higher levels of meritocracy than people at the lower end of the socioeconomic scale [@reynolds_perceptions_2014].
 
-La investigación sobre meritocracia en población joven ha sido escasamente abordada, pero si es posible encontrar algunos estudios sobre actitudes hacia la desigualdad y la justicia que se pueden vincular a este tema. En lo que refiere a actitudes hacia la desigualdad, investigaciones muestran que los niños son capaces de formar nociones acerca de justicia y desigualdad a muy temprana edad [@imhoff_nociones_2015]. Si bien los niños más pequeños presentan problemas para comprender los términos de "rico" y "pobre" [@danziger_child_1957a], durante los 3 y 6 años ya logran entenderlos, aunque no son capaces explicar estas diferencias hasta alrededor de los 10 años [@sigelman_age_2013]. En esta edad, los niños tienden a destacar en gran medida las atribuciones individuales de tipo meritocrático como causantes de la desigualdad [@sigelman_rich_2012], a la vez que presentan incipientes explicaciones basadas en la desigualdad de oportunidades, especialmente como consecuencia de la discriminacion [@imhoff_nociones_2015]. No obstante, algunos autores señalan que las atribuciones multifacéticas de la desigualdad pueden encontrarse a edades menores. Por ejemplo, un estudio con niños de 5 a 8 años dio cuenta de que en esta etapa los niños eran capaces de explicar la pobreza a partir de factores como el esfuerzo individual y elementos situacionales, aludiendo a desigualdades salariales y discriminación [@mistry_children_2016]. Según estos autores, los resultados son coherentes con la teoría del desarrollo cognitivo [@leahy_parental_1981] y del construccionismo social [@emler_children_1985], donde un mayor desarrollo cognitivo posibilitará una comprensión más acabada de la desigualdad.
+Adherence to meritocratic beliefs is often interpreted from a rational interest perspective, considering that those with greater economic resources and status have better reasons to perceive and prefer meritocracy [@kunovich_systems_2007]. In addition, it has been shown that these differences in perception according to socioeconomic level are affected by the level of economic inequality in society, which is addressed by different theories. On the one hand, the theory of conflict assumes that higher levels of inequality generate less perception of meritocracy and less tolerance of inequality, while there is greater dissent on these issues between different social strata [@newman_false_2015]. On the other hand, the theory of relative power [@solt_economic_2016] maintains that greater economic inequality brings with it a greater concentration of wealth and power, which has the consequence that the visions of the most advantaged groups permeate the visions of those most disadvantaged, in which case with greater inequality there is also greater consensus among social groups on the perception of meritocracy.
 
-Además de la comprensión y explicación de los niños frente a la desigualdad, algunos estudios han profundizado en el uso de criterios de justicia distributiva por parte de los niños. En esta línea @kanngiesser_young_2012 señalan que pese a su tendencia egoísta, los niños entre 3 y 5 años ya son capaces de utilizar criterios meritocráticos para distribuir recursos, considerando el esfuerzo invertido de otros niños aun cuando esto podría afectar su propio interés. En suma, los niños y niñas a temprana edad son capaces de comprender conceptos relativos a la desigualdad, a la vez que son capaces de utilizar distintos criterios de distribución para explicar dichas diferencias o asignar recursos.
+Another characteristic of the relevant socioeconomic status in the study of meritocratic perceptions and preferences has been the possession of educational credentials that give way to higher-skilled occupations in the labor market [@goldthorpe_myth_2003a]. Two hypotheses have been used to explain the relationship between meritocratic beliefs and years of education. On the one hand, there is the *reproductionist* approach [@bourdieu_reproduccion_1998; @bernstein_poder_1988], from which it is argued that the role of the school contributes to reinforcing the meritocratic principles of individuals; therefore, greater educational achievement translates into greater attachment to meritocracy as a distributive principle [@reynolds_perceptions_2014; @xian_bootstraps_2017; @lampert_meritocratic_2013]. On the other hand, there is the hypothesis of *instruction*, which maintains that more educated individuals have greater critical capacity regarding the role that structural and individual factors play in the acquisition of rewards in society, which translates into a weakening around the meritocratic ideal [@duru-bellat_who_2012; @castillo_meritocracia_2019].
 
-En relación a estudios sobre meritocracia en población adolescente, @hjort_individualized_2014 ha evidenciado una adhesión generalizada a los discursos del individualismo y la meritocracia por parte de los jóvenes en la ciudad de Oslo. No obstante, aunque los jóvenes señalan como central el mérito, esto no impide que reconozcan diferencias de inicio relacionadas a la transmisión de recursos familiares. En esta línea, el trabajo de @irwin_family_2009a ha demostrado la importancia que los jóvenes le dan a los factores individuales para “salir adelante”, aunque también contribuyen con evidencia en torno a la importancia del apoyo emocional que puede brindar la familia. Adicionalmente, una investigación en jóvenes de secundaria en Estados Unidos sugiere que las visiones que tienen los adolescentes respecto a las recompensas provenientes del esfuerzo encuentran mayor apoyo en estudiantes migrantes de segunda generación que detentan mayores expectativas de movilidad social ascendente [@peguero_schools_2015, pág. 33]. Por último, @sun_value_2010 han estudiado si existe una brecha de valores entre generaciones jóvenes y viejas en China, hallando que los más jóvenes tienden a ser más individualistas en sus formas de vida. Estos antecedentes muestran que desde edades tempranas los niños y jóvenes se forman juicios y opiniones acerca de la desigualdad, lo que probablemente también aplica para sus visiones sobre la meritocracia.
+## Meritocracy in the school-age period
 
-## El presente estudio: La socialización de la meritocracia por parte de la familia y la escuela
+Research on meritocracy in younger populations has been scarcely addressed, but it is possible to find some studies on attitudes towards inequality and justice that can be linked to this topic. In terms of attitudes towards inequality, research shows that children are able to form notions about justice and inequality at a very young age [@imhoff_nociones_2015]. Although younger children have trouble understanding the terms "rich" and "poor" [@danziger_child_1957a], between the ages of 3 and 6, this distinction can be grasped. However, it is not until  children are around 10 years of age that they can explain the differences [@sigelman_age_2013]. At this age, children tend to greatly highlight individual meritocratic attributions as causes of inequality [@sigelman_rich_2012], while presenting incipient explanations based on inequality of opportunity, especially as a consequence of discrimination [@imhoff_nociones_2015]. Nonetheless, some authors point out that the multifaceted attributions of inequality can be found at younger ages. For example, a study with children aged 5 to 8 found that at this stage children were able to explain poverty from factors such as individual effort and situational elements, alluding to wage inequalities and discrimination [@mistry_children_2016]. According to these authors, the results are consistent with the theory of cognitive development [@leahy_parental_1981] and social constructionism [@emler_children_1985], which suggest greater cognitive development will allow a more complete understanding of inequality.
 
-La familia es un primer agente de socialización que provee valores, expectativas y reglas [@martinez_escuela_2015a]. Aunque se ha criticado un sesgo adultocéntrico en los estudios de socialización política al centrarse en el estudio de la transferencia de valores [@andersson_situational_2015], existe contundente evidencia para señalar la importancia de la socialización familiar, donde las creencias parentales ejercen influencia en las creencias, actitudes y comportamientos de los niños [@olivos_motivation_2021; @bandura_selfefficacy_2001; @wigfield_development_2006]. Más aún, los padres crían a sus hijos en función de culturas de clase,  transmitiendo creencias y actitudes estratificadas [@calarco_coached_2014]. De modo coherente, se ha evidenciado que los padres transmiten a sus hijos actitudes cívicas, intenciones de participación, posiciones políticas entre otras características [@muddiman_young_2019; @nesbit_influence_2013a]. En esta línea, la evidencia en torno a la socialización de distintas características subjetivas permite suponer que la transmisión intergeneracional también se expresaría en torno a las percepciones meritocráticas, de modo tal que:
+In addition to children's understanding and explanations of inequality, there are some in-depth studies on the use of distributive justice criteria by children. Along these lines, @kanngiesser_young_2012 point out that despite their egotistical tendencies, children between 3 and 5 years of age are already able to use meritocratic criteria to distribute resources, considering the efforts invested by other children even when this could affect their own interest. In sum, children at an early age are able to understand concepts related to inequality and can use different distribution criteria to explain these differences or allocate resources.
 
-  > Hipótesis 1: Existe una asociación positiva entre el nivel de percepción de meritocracia de los padres y de sus hijos.
+In relation to studies on meritocracy in the adolescent population, @hjort_individualized_2014 has found evidence of a widespread adherence to the discourses of individualism and meritocracy by young people in the city of Oslo. However, although young people point to merit as central, this does not prevent them from recognizing differences in starting points related to the transmission of family resources. Along these lines, the work of @irwin_family_2009a has demonstrated the importance that young people place on individual factors to “get ahead,” although they also suggest  the importance of emotional support that can be provided by the family. Additionally, research on high school youth in the United States suggests that adolescents' visions of rewards for effort find greater support in second-generation migrant students who hold higher expectations of upward social mobility [@peguero_schools_2015, p. 33]. Finally, @sun_value_2010 have studied whether there is a value gap between the younger and older generations in China, finding that younger people tend to be more individualistic in their ways of life. These studies show that, from an early age, children and young people form judgments and opinions about inequality, which probably also apply to their views on meritocracy.
 
-Un segundo agente relevante de socialización es la escuela. Más allá de su rol educacional, la escuela contribuye a dar forma a la conducta y las visiones del mundo de los jóvenes estudiantes [@nishiyama_enabling_2019]. En este contexto, la experiencia de justicia de los estudiantes juega un rol fundamental [@resh_sense_2014; @resh_sense_2018] en tanto fomenta la inferencia de ideas respecto a la desigualdad [@mijs_inequality_2018]. Entre los distintos tipos de justicia de la escuela [@resh_justice_2016] se destaca el rol que cumple la sensación de justicia en las notas. Las calificaciones reflejan las experiencias de los estudiantes relativas a lo justo o injusto, afectando tanto la formación de la autoimagen, de creación de jerarquías en el aula y su visión del mundo sobre diversos temas [@jasso_exploring_2002]. Los estudios en este ámbito han demostrado que la sensación de justicia en las notas fomenta orientaciones liberales-democráticas [@resh_sense_2014], genera confianza en las instituciones [@resh_sense_2018], y contribuye que los estudiantes apoyen más la asignación meritocrática de las notas [@resh_justice_2009]. Frente a lo anterior, esta investigación propone que la sensación de justicia en las notas también fomenta una mayor percepción de meritocracia por parte de los estudiantes, lo cual es consistente con la evidencia señalada por @olivos_motivation_2021. Dicho lo anterior, se sostiene que
+## The present study: The socialization of meritocracy by the family and the school
 
-  > Hipótesis 2: Estudiantes con una mayor sensación de justicia en sus notas percibirán mayor meritocracia.
+The family is a first agent of socialization that provides values, expectations and rules [@martinez_escuela_2015a]. Although an adult-centered bias in studies of political socialization studies has been criticized for focusing on the study of value transfer [@andersson_situational_2015], there is strong evidence to suggest the importance of family socialization, in which parental beliefs influence children's beliefs, attitudes, and behaviors [@olivos_motivation_2021; @bandura_selfefficacy_2001; @wigfield_development_2006]. Moreover, parents raise their children based on class cultures,  transmitting stratified beliefs and attitudes [@calarco_coached_2014]. Consistently, it has been shown that parents transmit civic attitudes, intentions of participation, and political positions to their children, among other characteristics [@muddiman_young_2019; @nesbit_influence_2013a]. Along these lines, the evidence around the socialization of different subjective characteristics allows us to assume that intergenerational transmission would also be expressed around meritocratic perceptions, in such a way that
 
-La socialización familiar y escolar de la percepción meritocrática ocurren en conjunto y probablemente se afectan mutuamente. Por ello, proponemos que la asociación de la percepción meritocrática de los padres con  la de sus hijos se verá potenciada si el estudiante siente que sus calificaciones son justas. Inversamente, aunque el estudiante sea socializado en creencias meritocráticas, si él experimenta injusticia en sus notas el efecto de las creencias de sus padres será más débil. Por ello, proponemos como hipótesis que:
+  > Hypothesis 1: There is a positive association between the level of perception of meritocracy of parents and their children.
 
-  > Hipótesis 3: La relación entre percepción meritocrática de los padres y de los hijos (H1) se verá reforzada y por tanto será más positiva para aquellos que experimentan un mayor sentido de justicia en la escuela (H2).
+A second relevant agent of socialization is school. Beyond its educational role, the school contributes to shaping the behavior and worldviews of young students [@nishiyama_enabling_2019]. In this context, the students' experience of justice or fairness plays a fundamental role [@resh_sense_2014; @resh_sense_2018] as it encourages the inference of ideas regarding inequality [@mijs_inequality_2018]. Among the different types of justice in the school experience [@resh_justice_2016], the role that the feeling of fairness plays in student grades stands out. Grades reflect students' experiences of fairness or unfairness, affecting both self-image formation, classroom hierarchy building, and their worldview on various topics [@jasso_exploring_2002]. Studies in this area have shown that the sense of justice in grades promotes liberal-democratic orientations [@resh_sense_2014], builds trust in institutions [@resh_sense_2018], and contributes to stronger student support for the meritocratic assignment of grades [@resh_justice_2009]. In view of the above, this research proposes that the sense of justice in terms of student grading also encourages a greater perception of meritocracy on the part of the students, which is consistent with the evidence indicated by @olivos_motivation_2021. Based on this, our second hypotehsis is the following: 
 
-La evidencia en torno a las creencias meritocráticas destacan el rol que juegan factores asociados a la posición social. @reynolds_perceptions_2014 señalan que las personas de mayor estatus en Estados Unidos poseen una mayor percepción de meritocracia que quienes poseen un menor estatus. En la misma línea, @kunovich_systems_2007 dan cuenta de evidencia  consistente con un enfoque de interés racional, de modo tal que a mayores ingresos y educación los sujetos poseen mayor preferencia por pago meritocrático. Pese a sus diferencias, los resultados de @solt_economic_2016 y @newman_false_2015  proveen respaldo empírico de la relación positiva entre ingresos y creencias meritocráticas. En base a esta evidencia es posible sostener que padres con mayor nivel socioeconómico poseerán mayor nivel de creencias meritocráticas. En la misma línea, proponemos que estudiantes en escuelas  con mayor nivel socioeconómico tenderán a percibir mayor meritocracia.
+  > Hypothesis 2: Students with a greater sense of fairness in their grades will perceive greater meritocracy.
 
-  > Hipótesis 4: El estatus socioeconómico de la familia posee un efecto positivo sobre las percepciones meritocráticas del estudiante.
+Family and school socialization of meritocratic perception occur together and probably affect each other. Therefore, we propose that the association of the meritocratic perception of parents with that of their children will be enhanced if the student feels that their grades are fair. Conversely, even if the student is socialized into meritocratic beliefs, if students experience injustice in their grades the effect of  parental beliefs will be weaker. Therefore, we propose 
 
-  > Hipótesis 5: El estatus socioeconómico de la escuela posee un efecto positivo sobre las percepciones meritocráticas del estudiante
+  > Hypothesis 3: The relationship between meritocratic perception of parents and children (H1) will be more positive for those who experience a greater sense of justice in school (H2).
 
-La Figura \@ref(fig:modelo) muestra un esquema resumen de las hipótesis del estudio:
+Evidence around meritocratic beliefs highlights the role that factors associated with social standing play. @reynolds_perceptions_2014 points out that people with higher social status in the United States have a higher perception of meritocracy than those with lower social status. In the same vein, @kunovich_systems_2007 provide evidence consistent with a rational interest approach such that the higher the income and education of subjects, the greater the preference for meritocratic payment they will have. Despite their differences, the results of @solt_economic_2016 and @newman_false_2015  provide empirical support for the positive relationship between income and meritocratic beliefs. Based on this evidence, it is possible to argue that parents with a higher socioeconomic level will manifest a higher level of meritocratic beliefs. In the same vein, we propose that students from schools with a higher socioeconomic level will tend to perceive greater meritocracy.
 
+  > Hypothesis 4: The socioeconomic status of the family has a positive effect on  student meritocratic perceptions.
+
+  > Hypothesis 5: The socioeconomic status of the school has a positive effect on  student meritocratic perceptions.
+
+Figure \@ref(fig:modelo) summarizes the study hypotheses:
 
 ```{r modelo, echo=FALSE, fig.cap='Hypothesis summary model'}
 knitr::include_graphics(path = "input/images/model-hip-eng.PNG")
 ```
 
-# Metodología
+# Methodology
 
-## Datos
+## Data 
 
 ```{r n-datos, include=FALSE}
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
@@ -234,13 +241,13 @@ df_completa <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              ) %>% na.omit(df_completa)
 ```
 
-Los datos provienen de la encuesta Panel de Ciudadanía Escolar (PACES), un estudio sobre socialización política familiar que fue realizado aplicando una encuesta a escolares de segundo ciclo (app. 16 años en primera aplicación), sus apoderados y sus profesores durante 2019-2021. Este estudio fue desarrollado en el marco del  proyecto FONDECYT N°1181239 "Socialización política y experiencia escolar: el rol de la familia y la escuela" financiado por la Agencia Nacional de Investigación (ANID) del Ministerio de Ciencia y Tecnología chileno. En este artículo utilizamos la primera ola del panel disponible al momento de realizar esta investigación, por lo que este es un estudio transversal. La muestra es representativa de los estudiantes de segundo medio (décimo grado) que asisten a escuelas de Chile en la Región Metropolitana y las comunas de Antofagasta, Calama, Talca, Curicó y Linares. En total se seleccionaron aleatoriamente 64 escuelas, y en cada establecimiento educacional seleccionado se consideró encuestar a un curso completo del nivel 2do Medio, sus apoderados y sus docentes de historia, ciencias sociales y/o formación ciudadana. En concreto, se cuenta con los datos de 1635 estudiantes, 744 apoderados y 103 profesores. Los datos de esta primera ola del panel fueron producidos entre agosto y diciembre del año 2019.
+The data come from the School Citizenship Panel Survey (PACES), a study on family political socialization that was carried out by applying a survey to second-year high school students (approximately 16 years of age at first application), their parents or guardians, and their teachers during 2019-2021. In this article we use the first segment of the panel available at the time of this research, so this can be considered a cross-sectional study The sample is representative of high school students (grade 10) who attend schools in Chile in the Santiago Metropolitan area and in Antofagasta, Calama, Talca, Curicó and Linares. In total, 64 schools were randomly selected, and in each educational establishment, a complete course of second year high school students, their parents or guardians, and their  history, social sciences and/or citizen training teachers were surveyed. Specifically, we collected data from 1635 students, 744 parents or guardians and 103 teachers. The data of this first segment of the panel were collected between August and December 2019.
 
-El marco muestral utilizado para la selección de los establecimientos fue construido para la definición del universo, desde el Directorio de Establecimientos del Ministerio de Educación del año 2019, considerando todos los colegios de los sectores señalados. La selección fue aleatoria y sistemática, considerando localidad, dependencia administrativa (municipal, subvencionado o particular) y tipo de educación (Humanista científica, técnico profesional o mixto). La aplicación fue presencial y autoadministrada  en el establecimiento para docentes y alumnos, siendo llevada a cabo por una empresa encuestadora  con personal especialmente entrenado para esta tarea. En el caso de los apoderados fue autoaplicada en sus hogares.
+The sampling framework used for the selection of the schools was built from the 2019 Directory of Schools of the Ministry of Education, considering all the schools in the sectors indicated above. The selection was random and systematic, considering locality, type of administrative unit (public, subsidized or private) and type of education (scientific humanist, professional technicial or mixed). The survey for students and teaches was conducted at schools,  whereas for the parents or guardians it was self-administered in their homes.
 
-## Variables
+## Variables:
 
-En la Tabla \@ref(tab:desc01) se presentan las variables de nivel individual de este estudio. Percepción meritocrática se operacionaliza con preguntas que han sido utilizadas en otras investigaciones, en particular aquellas que analizan datos del módulo de desigualdad social del _International Social Survey Programme_ (ISSP) [@reynolds_perceptions_2014]. En este artículo, se midió la percepción meritocrática de los estudiantes a partir de dos indicadores relativos al rol del esfuerzo y el trabajo duro para surgir en la vida. Ambos indicadores corresponden a escalas Likert de cuatro categorías, midiendo grado de importancia y grado de acuerdo, respectivamente.
+The individual level variables of this study are presented in Table \@ref(tab:desc01). Meritocratic perception is operationalized with questions that have been used in other research, in particular those that analyze data from the module of social inequality of the _International Social Survey Program_ (ISSP) [@reynolds_perceptions_2014]. In this article, the meritocratic perception of students was measured based on two indicators related to the role of effort and hard work to succeed in life. Both indicators correspond to Likert scales of four categories, measuring degree of importance and degree of agreement, respectively.
 
 ```{r include=FALSE, results='asis'}
 # Funciones para renderizar tablas tanto en HTML como en pdf
@@ -450,16 +457,15 @@ knitr::kable(data.frame(image='![](output/tables/desc01.png){height=80%}'),    #
              format = "pandoc") %>%  kable_styling(latex_options = c("HOLD_position"),full_width = fwidth)
 ```
 
-Las variables independientes de nivel individual se dividieron de acuerdo a si corresponden a padres o estudiantes. En el caso de los padres, existen dos variables relevantes: percepción de meritocracia y estatus socioeconómico. Para la percepción de meritocracia se les preguntó lo mismo que a los estudiantes, pero para simplificar el modelamiento en la variable de apoderados  se procedió a agrupar las categorías ''Muy importante',  'Importante' y 'Algo importante' para la variable de Importancia del trabajo duro. Igualmente, para la afirmación respecto a que en Chile quienes se esfuerzan salen adelante, se agruparon las categorías 'De acuerdo' con 'Muy de acuerdo' y 'Desacuerdo' con 'Muy en desacuerdo', respectivamente.
+Individual-level independent variables were divided according to whether they corresponded to parents or students. In the case of parents, there are two relevant variables: perception of meritocracy and socioeconomic status. For the perception of meritocracy, parents or guardians were asked the same question as the students. To simplify the modeling in the parent/guardian variable, we proceeded to group the categories' 'Very important',  'Important' and 'Somewhat important' for the variable of Importance of hard work. Likewise, for the statement that in Chile those who make more effort get ahead, we grouped category "Agree" with the category  "Strongly Agree," and "Disagree" with "Strongly disagree."
 
-En el caso del estatus socioeconómico, se utilizaron los ingresos del hogar y el nivel educacional de los apoderados como indicadores. Se construyeron quintiles a partir del indicador original de 11 tramos de ingresos declarados por los padres. En el caso del nivel educacional de los apoderados original, se creó una variable dummy donde 1 es "Padres tienen título universitario" y 0 es "Padres no tienen título universitario".
+In the case of socio-economic status, household income and the educational level of the parents or guardians were used as indicators. Quintiles were constructed from the original indicator of 11 income levels declared by the parents. In the case of the educational level of the parents or guardians, a dummy variable was created where 1 is "Parents have a university degree" and 0 the rest of the lower educational levels.
 
-La variable de justicia en las notas es clave para nuestro estudio, ya que representa la experiencia escolar de justicia distributiva. Se emplearon dos formas de medir el sentido de justicia en las notas: directa e indirecta. La forma directa se corresponde a una pregunta sobre si las notas que se obtienen son merecidas, mientras la indirecta es un indicador numérico construido partir de la fórmula de evaluacón de justicia propuesta por @jasso_new_1980, y que en este caso utiliza preguntas sobre notas obtenidas y notas justas [@resh_sense_2014; @resh_sense_2017; @resh_sense_2018]. Esta fórmula corresponde la proporción entre la recompensa obtenida y la recompensa justa, a la cual se le aplica un término logarítmico, bajo el principio de que la subrecompensa se siente más intensamente que la sobrerecompensa. Por lo tanto en el caso de justicia absoluta (nota obtenida=nota merecida) el valor del término será cero (Log 1=0), menor a cero en caso de justicia por sub-recompensa, y mayor a cero en caso de justicia por sobre recompensa. Siguiendo las aplicaciones hechas al ámbito educativo por parte de , se utilizaron las notas reportadas por los estudiantes como la recompensa que se distribuye en la escuela. La fórmula aplicada a los datos del artículo se pueden ver en la Ecuación \@ref(eq:jef).
+The variable of justice in grading is key to our study since it represents distributive justice within the school experience. Two ways of measuring the sense of justice or fairness in grading were used: direct and indirect. The direct form corresponds to a question about whether the grades obtained were deserved, while the indirect is a numerical indicator based on the justice evaluation formula proposed by @jasso_new_1980, and which in this case uses questions about grades [@resh_sense_2014; @resh_sense_2017; @resh_sense_2018]. This formula corresponds to the ratio between the reward obtained and the fair reward, to which a logarithmic term is applied under the principle that under-rewarding is felt more intensely than over-rewarding. Therefore, in the case of absolute justice (grade obtained=grade deserved) the value of the term will be zero (Log 1=0), less than zero in the case of justice for under-reward, and greater than zero in the case of justice for over-reward. Following the applications made to the educational field by @resh_sense_2014, the grades reported by the students were used as the reward that is distributed in the school.  The formula applied to the data can be seen in Equation \@ref(eq:jef).
 
 \begin{equation}
    \text{Sentido de justicia en notas}= ln(\frac{\text{nota obtenida}}{\text{nota justa}}) (\#eq:jef)
 \end{equation}
-
 
 ```{r desc01-esc, echo=FALSE, results='asis'}
 knitr::kable(data.frame(image='![](output/tables/desc01_esc.png){height=20%}'), # generar tabla
@@ -471,21 +477,19 @@ knitr::kable(data.frame(image='![](output/tables/desc01_esc.png){height=20%}'), 
                 full_width = fwidth)
 ```
 
-En la Tabla \@ref(tab:desc01-esc) se muestra el nivel socioeconómico de la escuela, la principal variable independiente a nivel contextual. Esta variable proviene de datos administrativos del Ministerio de Educación y corresponde a una clasificación en cinco grupos socioeconómicos. Para su elaboración, se consideran cuatro variables: 1) Nivel educacional de la Madre, 2) Nivel Educacional del Padre, 3) Ingreso económico total mensual en el hogar y 4) el Índice de Vulnerabilidad. Las tres primeras variables provienen del cuestionario de apoderados del Sistema Nacional de Evaluación de Resultados de Aprendizaje (SIMCE); y la cuarta es aportada por la Junta Nacional de Auxilio Escolar y Becas (JUNAEB) [@mineduc_metodologia_2013]
+Table \@ref(tab:desc01-esc) shows the socio-economic level of the school, the main independent variable at the contextual level. This variable comes from administrative data of the Ministry of Education and corresponds to a classification in five socio-economic groups. Four variables are considered: 1) Mother's educational level, 2) Father's educational level, 3) Total household monthly income and 4) Vulnerability Index. The first three variables come from the questionnaire administered by the National System of Evaluation of Learning Results (SIMCE) to parents or guardians; and the fourth is provided by the National Board of School Aid and Scholarships (JUNAEB) [@mineduc_metodologia_2013].
 
-Las variables control incluyeron sexo del estudiante, posición política de padres y estudiantes, ciudad, dependencia administrativa de la escuela y cantidad de libros en el hogar.
+Control variables included student gender, political views of parents and students, city, type of school (public, private, subsidized), and number of books in the home.
 
-## Métodos
+## Methods 
 
-Debido a que la muestra posee una estructura jerárquica (estudiantes anidados en escuelas), se estimaron regresiones multinivel para contrastar las hipótesis siguiendo los pasos recomendados para estimar y reportar este tipo de modelos [@aguinis_bestpractice_2013a]. Dado que los dos indicadores de percepción de meritocracia de estudiantes son variables ordinales, se trabajó con modelos multinivel para variables de este tipo [@arfan_ordinal_2017a][^2]. El análisis se llevó a cabo con el software estadístico `R` versión 4.0.3 "Bunny-Wunnies Freak Out".
+Because the sample has a hierarchical structure (students nested in schools), multilevel regressions were estimated to contrast the hypotheses following the  steps recommended to estimate and report using this type of models [@aguinis_bestpractice_2013a]. Since the two indicators of student perception of meritocracy are ordinal variables, we consideded estimations according to this type of measurement [@arfan_ordinal_2017a] [^2]. The analysis was carried out with statistical software `R` version 4.0.3 "Bunny-Wunnies Freak Out."
 
-[^2]: En modelos ordinales multinivel la variable dependiente representa el cálculo de la probabilidad acumulada de que un estudiante responda hasta $C$ en los indicadores de percepción de meritocracia, siendo $Y_{cij}$ una respuesta categórica ordenada de un estudiante $i^{th}$ en una escuela (cluster) $j^{th}$ con $C$ categorías ordenadas, codificadas como $C = 1,2,3,4$. Esta probabilidad se calcula en función de: el intercepto por cada categoría $a_c$, los coeficientes $\gamma_1$ y $\gamma_2$ para la percepción de meritocracia de los padres y el sentido de justicia en las notas respectivamente, $\gamma_n$ para las variables de control, $u_{0j}$ como término de error para una escuela $j$ y $e_{ij}$ como error de la estimación para el individuo $i$ en una escuela $j$. Para la estimación se utilizará la librería `clmm2` de R.
+[^2]: In multilevel ordinal models, the dependent variable represents the calculation of the cumulative probability that a student will respond up to $C$ in the meritocracy perception indicators,  $Y_{cij}$ being an ordered categorical response of a student $i^{th}$ in a school (cluster) $j^{th}$ with $C$ ordered categories, coded as $C = 1,2,3,4$. This probability is calculated based on the intercept for each category $a_c$, the coefficients $\gamma_1$ and $\gamma_2$for the perception of meritocracy of the parents and the sense of justice in grading respectively, $\gamma_n$for the control variables, $u_{0j}$as the error term for a school $j$and $e_{ij}$as the estimation error for the individual $i$in a school $j$. The library `clmm2` of R. was used for the estimation.
 
-Los análisis se basarán en las hipótesis que han sido pre-registradas y se pueden acceder en <https://osf.io/fazdx>.
+The analyses are based on hypotheses that have been pre-registered and can be accessed at <https://osf.io/fazdx>.
 
-
-# Resultados
-
+# Results
 
 <!-- [AQUI likertplot meritocracia padre hijos] -->
 
@@ -599,7 +603,7 @@ base_lik <- ap_est %>% select(perc_trabajo_duro_factor_est,
   sjPlot::plot_grid(list(p1,p2),tags = c("",""))
 ```
 
-Como antecedente a las estimaciones con modelos multinivel que se detallan posteriormente, en la Figura \@ref(fig:likert) se compara la distribución de las variables de percepción de meritocracia de estudiantes y apoderados. Los resultados dan cuenta de que en general existe una alta percepción de meritocracia, tanto en estudiantes como en apoderados en ambas mediciones. Por un lado, más del 80% de las respuestas respecto a la importancia del trabajo duro se concentran en las categorías de "Importante" y "Muy importante", tanto en estudiantes como en apoderados. Adicionalmente, el panel inferior muestra el porcentaje de respuestas frente a la afirmación de que en Chile las personas que se esfuerzan salen adelante. Se puede observar una distribución similar en las respuestas de la variable del panel superior, concentrando un 81% de respuestas de estudiantes en las categorías "De acuerdo" y "Muy deacuerdo" y un 82% en el caso de las respuestas de sus apoderados.
+As an antecedent to the estimates with multilevel models that are detailed below, Figure \@ref(fig:likert) compares the distribution of the variables of meritocracy perception of students and parents or guardians. The results show that in general there is a high perception of meritocracy, both for students and their parents or guardians in both measurements. At the same time, more than 80% of the answers regarding the importance of hard work are concentrated in the categories of "Important" and "Very important,” both on the part of the students and their parents or guardians. In addition, the lower panel shows the percentage of responses to the claim that in Chile people who work hard get ahead. A similar distribution can be observed in the responses of the top panel variable, concentrating 81% of student responses in the "Agree" and "Strongly Agree" categories and 82% in the case of the responses of their parents or guardians.
 
 <!-- [AQUI densidad de SJ indirecto] -->
 
@@ -622,7 +626,6 @@ options(knitr.kable.NA = '') # NA en kable = ''
 
 # Cargar base de datos procesada
 load(file = "input/data/ap_est.RData")
-
 
 # Seleccionar variables para el análisis
 base_sj <- ap_est %>% select(perc_trabajo_duro_factor_est,
@@ -697,9 +700,9 @@ df_notas<- rbind(b,a)
            paste0("Authors calculations based on PACES Study"," (n=",dim(na.omit(base_sj))[1],")"))
 ```
 
-En relación a la justicia en las notas en la escuela, la Figura \@ref(fig:dens-sjust) muestra la distribución de las variables correspondientes al promedio notas obtenido y merecido que los estudiantes declararon (en un rango de 1 a 7, siendo 7 la mejor nota). Por un lado, de manera esperable, se observa que la media de la nota merecida (_M_ = 6.01) es mayor que la obtenida (_M_ = 5.82), aún cuando su diferencia es muy pequeña. Por otro lado, al comparar las distribuciones, se puede observar que la nota obtenida se encuentra menos dispersa (_DS_ = 0.58) que la nota merecida (_DS_ = 0.64).
+Regarding the fairness in school grading, Figure \@ref(fig:dens-sjust) shows the distribution of the variables corresponding to the average grades obtained and deserved that the students declared (in a range of 1 to 7, with 7 being the best grade). As expected, the average of the deserved grade (_M_ = 6.01) is greater than that obtained (_M_ = 5.82), although the difference is small. On the other hand, when comparing the distributions, it can be seen that the grade obtained is less dispersed (_DS_ = 0.58) than the grade deserved (_DS_ = 0.64).
 
-En la Figura \@ref(fig:correl) se presentan las correlaciones entre las variables principales del estudio. Para el caso de las correlaciones entre percepción de meritocracia de estudiantes y sentido de justicia en las notas, se ha empleado una muestra que considera únicamente las respuestas válidas de estudiantes (_n_ = `r dim(df_completa)[1]`), mientras que las correlaciones con la percepción de meritocracia de apoderados se emplea una muestra acotada a los casos válidos de estudiantes que poseen información de sus apoderados (_n_ = `r dim(df_reducida)[1]`)
+The correlations between the main variables of the study are presented in Figure \@ref(fig:correl). To observe the correlations between the perception of meritocracy of students and sense of justice in grading, a sample was used that considered only the valid answers of students (_n_ = `r dim(df_completa)[1]`), while for the correlations with the perception of meritocracy of the parents or guardians, this sample considered only the cases of those students who had information about their parents’ or guardians’ opinions (_n_ = `r dim(df_reducida)[1]`).
 
 ```{r correl, echo=FALSE, fig.cap="Pearson's correlation matrix for perception of meritocracy and sense of justice in grades"}
 # Funciones para renderizar tablas tanto en HTML como en pdf
@@ -817,7 +820,6 @@ df_reducida <- ap_est %>% select(perc_trabajo_duro_factor_est,
          sj_indirect_ln)
 
 
-
 df_reducida<- data.frame(lapply(df_reducida[,c("perc_trabajo_duro_factor_est",
                                        "perc_esfuerzo_factor_est",
                                        "perc_trabajo_duro_factor_ap",
@@ -869,17 +871,15 @@ cor_3 <- as.matrix(cor_3)
     na.label = "-")
 ```
 
+In the matrix we observe correlations with a small effect size although several reach the significance level of _p_ < 0.05 (given the statistical power of the sample size). The highest correlations refer to the meritocracy indicators between students and parents or guardians, while the item  "importance of hard work" from the parent/guardian responses is that which shows the highest association with the items of meritocracy perception of students. For those items of justice in grading, there is some degree of correlation between them, but between the items about justice and the items regarding meritocracy correlations are rather low.
 
-En general en la matriz observamos correlaciones con un tamaño de efecto pequeño aunque varias alcanzan el nivel de significación de _p_ < 0.05 (dada la potencia estadística del tamaño muestral). Las correlaciones más altas se refieren a los indicadores de meritocracia entre estudiantes y apoderados, mientras que el item de "importancia del trabajo duro" de los padres es el que muestra una asociación más alta con los items de percepción meritocrática de los estudiantes. Sobre los items de justicia en las notas, entre ambos se presenta algún grado de correlación, pero entre ellos y los items de meritocracia las correlaciones son bajas.
+<!-- The sense of direct justice is positively but not significantly related to the importance of hard work according to the students (_r_ = 0.03; _p_ > 0.05; _n_ = 1415). It also shows a relationship in the same sense and not significant with the statement that in Chile those who strive (what word to use here?) get ahead (_r_ = 0.04; _p_ > 0.05; _n_ = 1415).  -->
 
-<!-- El sentido de justicia directo se relaciona de manera positiva y no significativa con la importancia del trabajo duro de estudiantes (_r_ = 0.03; _p_ > 0.05; _n_ = 1415), así también muestra una relación en el mismo sentido y no significativa con la afirmación de que en Chile quienes se esfuerzan salen adelante (_r_ = 0.04; _p_ > 0.05; _n_ = 1415).  -->
+<!-- Along the same lines, the sense of indirect justice is positively but not significantly related to the importance of hard work according to the students (_r_ = 0.05; _p_ > 0.05; _n_ = 1415). It also shows a relationship in the same sense and not significant with the statement that in Chile those who work hard get ahead (_r_ = 0.01; _p_ > 0.05; _n_ = 1415).  -->
 
-<!-- En la misma línea, el sentido de justicia indirecto muestra una relación positiva y no significativa con la importancia del trabajo duro de estudiantes (_r_ = 0.05; _p_ > 0.05; _n_ = 1415), mientras que con el apoyo a la afirmación de que en Chile quienes se esfuerzan salen adelante tiene una relación negativa y no significativa (_r_ = -0.01; _p_ > 0.05; _n_ = 1415).  -->
+Multivariate Analysis
 
-## Análisis multivariado
-
-En esta sección se presentan los resultados de la estimación multinivel para las dos variables de percepción de meritocracia de los estudiantes por separado.
-La Tabla \@ref(tab:getah) presenta los resultados de la estimación del modelo de regresión ordinal multinivel para la variable de “importancia atribuida al trabajo duro para salir adelante”. Las estimaciones de los modelos siguen un orden de complejidad creciente con tal de poder analizar el comportamiento de los coeficientes en la medida que son controlados por otros predictores. Bajo esta lógica, primero se estiman modelos simples para las variables principales, luego modelos multivariados, y finalmente se introducen controles e interacciones.
+This section presents the results of the multilevel estimation for the two variables of students' perception of meritocracy separately.  Table \@ref(tab:getah) presents the results of the estimation of the multilevel ordinal regression model for the variable of "importance attributed to hard work to get ahead". The estimates of the models follow an order of increasing complexity in order to analyze the behavior of the coefficients as they are controlled by additional predictors. Under this logic, simple models for the main variables are first estimated, then multivariate models, and finally controls and interactions are introduced.
 
 ```{r getah, echo=FALSE, cache=TRUE, results='asis'}
 # Funciones para renderizar tablas tanto en HTML como en pdf
@@ -953,7 +953,6 @@ basereg_est <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              rbd_est
                              ) %>% na.omit(basereg)
 # dim(basereg_est)
-
 
 omit_coef="(Intercept)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
 con <-c(
@@ -1041,9 +1040,9 @@ knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
 
 <!-- - PROBAR LA RESTA EN SJ INDIRECTO -->
 
-Los Modelos del 1 al 3 de la Tabla \@ref(tab:getah) introducen los predictores de justicia en las notas (directa e indirecta), primero por separado y luego de manera conjunta, sin evidencia de efectos significativos. En el Modelo 4 el predictor de percepción de meritocracia de los padres (importancia del trabajo duro) si muestra un efecto significativo en la percepción de los estudiantes. Este resultado muestra que, cuando los padres perciben mayor importancia del trabajo duro, es más probable que sus hijos también asignen mayor importancia a esta forma de medición de meritocracia. En relación a las otras variables, es posible evidenciar un efecto del nivel socioeconómico en las percepciones meritocráticas de los estudiantes. En comparación con el primer quintil, los estudiantes de los tres quintiles superiores poseen más probabilidades de indicar que el trabajo duro es importante para surgir en la vida, aunque solo el efecto del tercer quintil se sostiene en modelos posteriores. Esta evidencia es consistente con los antecedentes que señalan la importancia del nivel socioeconómico al explicar las percepciones meritocráticas, a la vez que aporta evidencia para señalar que dicha asociación, evaluada comúnmente en adultos, es aplicable a los jóvenes. Adicionalmente, se encuentra un efecto significativo del nivel socioeconómico (Modelo 5: *logit* = 0.27, *p* \< 0.05) de la escuela a nivel contextual. Ya que esta asociación se encuentra controlada por el estatus familiar, se presenta evidencia del rol de la escuela en la socialización de la percepción de meritocracia.  En suma, los hallazgos entregan evidencia sobre una relación positiva del nivel socioeconómico con la percepción meritocrática tanto a nivel individual como escolar, aún cuando a nivel individual no es una asociación de carácter lineal.
+Models 1 to 3 of Table \@ref(tab:getah) introduce the predictors of justice in grading (direct and indirect), first separately and then jointly, without evidence of significant effects. In Model 4 the predictor of parents' perception of meritocracy (importance of hard work) does show a significant effect on students' perception. This result shows that, when parents perceive greater importance of hard work and effort, their children are also more likely to attribute greater importance to this form of meritocracy measurement. In relation to the other variables, it is possible to show an effect of socioeconomic level on students' meritocratic perceptions. Compared to the first quintile, students in the upper three quintiles are more likely to indicate that hard work is important to get ahead in life, although only the effect of the third quintile is sustained in later models. This evidence is consistent with previous research that pointed to the importance of socioeconomic level in explaining meritocratic perceptions, while providing evidence to sustain that this association, often evaluated in adults, is applicable to young people. Additionally, there is a significant effect of the socioeconomic level (Model 5: *logit* = 0.27, *p* \< 0.05) of the school at the contextual level. Since this association is controlled by family status, evidence of the school’s role in the socialization of the perception of meritocracy is presented.  In sum, the findings provide evidence of a positive relationship of socioeconomic level with meritocratic perception both at the individual and school level, though at the individual level the association is not linear.
 
-Respecto a las interacciones, en el Modelo 5 de la Tabla \@ref(tab:getah) se observa que la relación entre la importancia del trabajo reportada por los padres con la de sus hijos cambia de manera estadísticamente significativa para aquellos estudiantes que consideran que sus notas son menores a las que merecen.  Esto se puede interpretar como que la asociación positiva que existe entre la percepción meritocratica de padres e hijos se ve disminuída para quienes manifiestan una sensación de injusticia en las notas, en línea con lo hipotetizado. Como se observa en la figura 5, que representa las probabilidades predichas por el modelo para los jóvenes, la percepción de meritorcracia entre padres e hijos mantiene una asociación positiva para aquellos que consideran que obtienen las notas que merecen. Sin embargo, está relación entre percepciones de padres e hijos se invierte para aquellos estudiantes que consideran obtener menos nota de lo que merecen. Por ejemplo, en la categoría de repuesta "muy importante", estudiantes que consideran que tienen las notas que merecen o más de lo que merecen se mantiene la relación positiva entre padres e hijos acerca de la percepción de meritocracia (esto es, es más probable que hijos respondan "muy importante" cuando sus padres consideran que el trabajo duro es importante, respecto de aquellos que no lo consideran así). Sin embargo, para estudiantes que consideran que obtienen menos de las notas que merecen, la percepción de meritocracia entre padres e hijos se desalinea. En esta condición, los estudiantes tienden a valorar mucho más el trabajo duro, cuando sus padres no lo hacen. Por lo tanto, la justicia en la asignación de notas en la escuela parece jugar un rol relevante como agente socializador, pudiendo incluso modificar aspectos relacionados con la socialización familiar en lo que respecta al valor dado al trabajo duro.
+Regarding interactions, in Model 5 of Table \@ref(tab:getah), it is observed that the relationship between the importance of work reported by parents and by their children changes in a statistically significant manner for those students who consider that their grades are lower than they deserve.  This can be interpreted to indicate that the positive association that exists between the meritocratic perception of parents and children is diminished for those who manifest a sense of injustice in their grades, as hypothesized. As seen in Figure 5, which represents the probabilities predicted by the model for young people, the perception of meritocracy between parents and students maintains a positive association for those who consider that they get the grades they deserve. However, this relationship between parent and child perceptions is reversed for those students who consider they received a poorer grade than they deserved. For example, in the “very important” response category, students who feel they have the grades they deserve or more than they deserve maintain the positive relationship between parents and children about the perception of meritocracy (i.e., children whose parents feel hard work is important are more likely to respond “very important” than those children whose parents do not hold this belief).  However, for students who feel they get worse grades than  they deserve, the perception of meritocracy between parents and children is misaligned. In this condition, students tend to value hard work much more, when their parents do not. Therefore, fairness in the assignment of grades in school seems to play a relevant role as a socializing agent and can even modify aspects related to family socialization in terms of the value given to hard work.
 
 ```{r interac, fig.width=11, fig.height=6, fig.cap="Interaction between parental, student and meritocratic perceptions and justice in grades", echo=FALSE, out.width='100%'}
 # Funciones para renderizar tablas tanto en HTML como en pdf
@@ -1116,7 +1115,6 @@ con <-c(
   ) # Omitir coeficientes dela visualización
 ref <- "(1|rbd_est)"
 
-
 # Elaborar modelo de interacción
 getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
 
@@ -1144,7 +1142,6 @@ graph_interact <- ggplot2::ggplot(data=pred_or7, aes(x=perc_tduro_bi_ap, y=yhat,
 
 graph_interact
 ```
-
 
 ```{r effort, echo=FALSE, results='asis', cache = T}
 # Funciones para renderizar tablas tanto en HTML como en pdf
@@ -1205,7 +1202,6 @@ basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              nse_grupo,univ
                              ) %>% na.omit(basereg)
 
-
 basereg_est <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              perc_esfuerzo_factor_est,
                              perc_trabajo_duro_est,
@@ -1218,7 +1214,6 @@ basereg_est <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              genero_est, pos_pol_est,
                              rbd_est
                              ) %>% na.omit(basereg)
-
 
 omit_coef="(Intercept)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
 con <-c(
@@ -1307,10 +1302,9 @@ texreg::knitreg(list(effort.or0.1,effort.or0.2,effort.or0.3,
 )
 ```
 
-La Tabla \@ref(tab:effort) muestra los resultados de estimación multinivel para el segundo indicador de percepción de meritocracia de estudiantes: "en Chile los que se esfuerzan salen adelante". Al igual que en la tabla anterior, los Modelos 1 al 3 introducen las variables de justicia en las notas, mostrando en este caso un efecto negativo  significativo para aquellos que se sienten injustamente recompensados por sus notas. En otras palabras, aquellos que se sienten injustamente recompensados por sus notas, en referencia de aquellos que consideran obtienen las que merecen, tienen una menor probabilidad de considerar que el esfuerzo es recompensado. En relación a las otras variables aparecen efectos menos consistentes con las hipótesis y con los modelos de la Tabla \@ref(tab:getah). Por ejemplo en este caso el ingreso no muestra un efecto muy claro y es en algunos modelos incluso negativo para uno de los quintiles. Además, la percepción de meritocracia de los padres no muestra un efecto significativo en los modelos 3 y 4.
+Table \@ref(tab:effort) shows the results of multilevel estimation for the second indicator of students' meritocracy perception: "in Chile those who work hard get ahead." As in the table above, Models 1 to 3 introduce the justice variables in grading, showing in this case a significant negative effect for those who feel unjustly rewarded for their grades. In other words, those who feel unjustly rewarded for their grades, in reference to those who consider they get what they deserve, are less likely to consider effort to be rewarded. In relation to the other variables, effects appear less consistent with the hypotheses and with the models in Table \@ref(tab:getah). For example, in this case family income does not show a very clear effect and is in some models even negative for one of the quintiles. In addition, the parents' perception of meritocracy does not show a significant effect in models 3 and 4.
 
-En el Modelo 5 se introduce el término de interacción entre la percepción meritocratica de los padres ("en Chile, los que se esfuerzan salen adelante") y la justicia en las notas. Esta interacción, a diferencia de los modelos de la tabla anterior, es positiva tanto para quienes manifiestan que sus notas son menos que las que merecen como así también para aquellos que señalan que son más que las que merecen. Como se observa en la Figura \ref(fig:interac2), aquellos estudiantes que consideran obtener las notas que merecen tienden a discrepar de la opinión de sus padres en cuanto a la percepción de recompensa por lo esfuerzos. Esto puede interpretarse como que la escuela tiene la capacidad de reforzar la percepción de recompensa meritocratica para quienes se sienten recompensados justamente por las notas, contrarrestando las percepciones negativas sobre la recompensa meritocratica de sus padres. Por otro, aquellos estudiantes que se sienten injustamente recompensados, sea de manera positiva (por sobrerecompensa) o negativa (por subrecompensa), tienen un mayor grado de congruencia con lo que sus padres perciben al respecto, es decir, cuando se percibe injusticia en las evaluaciones de la escuela tiende a primar la opinión de la familia respecto de la recompensa por los esfuerzos..
-
+Model 5 introduces interaction term between the meritocratic perception of parents ("in Chile, those who work hard get ahead") and justice in grading. This interaction, unlike the models in the previous table, is positive both for those who say that their grades are worse than they deserve and for those who point out that they are better than they deserve. As seen in Figure \@ref(fig:interac2), those students who consider getting the grades they deserve tend to disagree with their parents'  opinion of perceived reward for efforts. This can be interpreted as the school having the ability to reinforce the perception of meritocratic reward for those who feel rewarded fairly by their grades, counteracting their parents’ negative perceptions of meritocratic reward. On the other hand, those students who feel unjustly rewarded, either positively (for over-rewarded) or negatively (for under-rewarded), have a greater degree of congruence with what their parents perceive, i.e., when injustice is perceived in school evaluations, the opinion of the family tends to prevail regarding the reward for the efforts.
 
 ```{r interac2, fig.width=11, fig.height=6,fig.cap="Interaction between parental, student and meritocratic perceptions and justice in grades", echo=FALSE, out.width='100%'}
 # Funciones para renderizar tablas tanto en HTML como en pdf
@@ -1383,7 +1377,6 @@ con <-c(
   ) # Omitir coeficientes dela visualización
 ref <- "(1|rbd_est)"
 
-
 # Elaborar modelo de interacción
 effort.or7 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
 
@@ -1412,26 +1405,23 @@ graph_interact <- ggplot2::ggplot(data=pred_or7, aes(x=perc_esfuerzo_bi_ap, y=yh
 graph_interact
 ```
 
-# Conclusiones
+# Conclusions
 
-En este artículo se aborda la socialización de percepciones meritocráticas en estudiantes de segundo ciclo de educación escolar. Las hipótesis centrales giraron en torno a dos agentes de socialización: la familia y la escuela. Además, indagamos si la relación entre nivel socioeconómico y percepciones meritocráticas se replicaba en población joven, para lo cual utilizamos dos indicadores de percepción de meritocrática: la importancia del esfuerzo para salir adelante, y el grado de acuerdo con que quienes se esfuerzan salen adelante. A pesar del parecido entre ambos indicadores, para lo que sigue es importante recordar que la correlación entre ambos es moderada y por lo tanto no estarían midiendo exactamente el mismo aspecto de la percepción de meritocracia. De este modo, sería distinto percibir que la meritocracia es importante a constatar que ella realmente  ocurre en terminos de recompensar los esfuerzos. Este punto es relevante para poder desarrollar posteriormente algunas de las diferencias que observamos en el análisis de los resultados.
+This article addresses the socialization of meritocratic perceptions in students in the second year of high school. The central hypothesis revolved around two agents of socialization: the family and the school. In addition, we investigated whether the relationship between socioeconomic level and meritocratic perceptions was replicated in the young population, for which we used two indicators of meritocratic perception: the importance of effort to get ahead, and the the perception of whether those of working hard can get ahead. Despite the similarity between the two indicators, for what follows it is important to remember that the correlation between the two is moderate; therefore, they are not apparently measuring exactly the same aspect of the perception of meritocracy. In this way, it would be different to believe that meritocracy is important than to note that it actually  occurs in terms of rewarding efforts. This point is relevant to be able to later develop some of the differences that we observed in the analysis of the results.
 
-Según nuestros análisis, existe evidencia parcial para sostener que las percepciones meritocraticas de los padres logran traspasarse a sus hijos. Esta asociación aparece cuando la percepción meritocrática se refiere a la importacia del esfuerzo para salir adelante, pero no cuando se pregunta si quienes se esfuerzan efectivamente salen adelante. En relación al rol de la escuela vemos una situación inversa: las experiencia de justicia en las notas no se asocia a la importancia del esfuerzo, sino al segundo indicador sobre si los esfuerzos son recompensados. Esta asociación hace bastante sentido cuando se piensa que la escuela es un espacio concreto donde se manifiesta la recompensa a través de las notas, y nuestros resultados muestran que quienes se sienten injustamente recompensados en la escuela efectivamente perciben menos meritocracia.
+According to our analysis, there is partial evidence supporting the assumption that the meritocratic perceptions of parents manage to be passed on to their children. This association appears when meritocratic perception refers to the importance of effort to get ahead, but not when it is asked if those who work hard do indeed get ahead. In relation to the role of the school, we see an inverse situation: the experience of justice in grading is not associated with the importance of effort, but rather with the second indicator of whether efforts are rewarded. This association makes sense when considering school as a concrete space where rewards are expressed through grades, and our results show that those who feel unjustly rewarded in school actually perceive less meritocracy.
 
-El carácter disímil de los indicadores utilizados para operacionalizar percepción de meritocracia también tiene implicancias a la hora de analizar las interacciones entre elementos familiares y escolares. Para el caso de la importancia del trabajo duro, observamos que el vínculo positivo entre padres e hijos en percepción de meritocracia puede disminuir en caso de sentirse injustamente recompensado con las notas de la escuela. En cambio, cuando se pregunta sobre el acuerdo con que el esfuerzo es recompensado, aquellos que se sienten justamente recompensados en la escuela son capaces de contrarrestar percepciones meritocraticas negativas de sus padres. Por lo tanto, con los antecedentes que tenemos hasta ahora no vemos necesariamente que la escuela o los padres son el agente socializador principal de percepciones de meritocracia, pero si podemos decir que hay asociaciones distintas dependiendo del aspecto especifico que se trate sobre percepción de meritocracia: la familia sería más relevante en relación a la importancia del esfuerzo, mientras la escuela en relación a la percepción de que los esfuerzos son justamente recompensados.
+The dissimilar nature of the indicators used to operationalize the perception of meritocracy also has implications when analyzing the interactions between family and school. In the case of the importance of effort, we note that the positive bond between parents and children in perception of meritocracy may diminish in case of feeling unjustly rewarded with school grades. Instead, when asked about the agreement that effort is rewarded, those who feel justly rewarded in school are able to counteract negative meritocratic perceptions of their parents. Therefore, with the information we have so far, we do not necessarily see that the school or the parents are the main socializing agent of perceptions of meritocracy. Nevertheless, we have evidence to suggest that there are different associations depending on the specific aspect of the perception of meritocracy observed: the family would be more relevant in relation to the importance of effort, while the school in relation to the perception that efforts are justly rewarded.
 
-Los resultados de esta investigación nos permiten plantear algunos posibles desarrollos futuros en esta temática. El estudio de las desigualdades desde una perspectiva actitudinal ha mostrado consistentemente cómo las desigualdades pueden ser legitimadas por parte de los individuos [@castillo_legitimacy_2011]. Los individuos que perciben que la sociedad funciona acorde a los criterios meritocráticos tienden a prestar menos apoyo a políticas sociales [@sandel_tirania_2021] y, en última instancia, a preocuparse menos del bien común y la solidaridad. Si se lleva esta problemática al plano de la transmisión intergeneracional, entonces se podría plantear que la legitimación de la desigualdad se comienza a formar tempranamente en la adolescencia: si los jóvenes forman sus percepciones meritocráticas desde la esfera familiar y escolar, entonces se puede asumir que la legitimación de la desigualdad un proceso de reproducción continuo y temprano. Desde esta perspectiva, poner el foco en cómo los escolares experimentan justicia en la escuela podría entregar elementos respecto a la formación de ciudadanos con un mayor interés por el bien común.
+The results of this research allow us to propose some possible future developments in this topic. The study of inequalities from an attitudinal perspective has consistently shown how inequalities can be legitimized by individuals [@castillo_legitimacy_2011]. Individuals who perceive that society functions according to meritocratic criteria tend to give less support to social policies [@sandel_tirania_2021] and, ultimately, to care less about the common good and solidarity. If this problem is taken to the level of intergenerational transmission, then it could be argued that the legitimization of inequality begins to form early in adolescence: if young people form their meritocratic perceptions from the family and school sphere, then it can be assumed that the legitimization of inequality is a continuous and early reproduction process. From this perspective, focusing on how school-age children experience justice in school could shape the formation of citizens with a greater interest in the common good.
 
-Si bien hay evidencia en esta investigación sobre la relevancia de elementos familiares y escolares en la socialización de la percepción meritocrática, existen una serie de limitaciones a tomar en cuenta en futuras investigaciones. En primer lugar, la percepión de meritocracia es solo un aspecto de la investicación en meritocracia, la que a su vez es un elemento específico de la familia mayor de estudios de desigualdad subjetiva. Futuras investigaciones deberían incluir instrumental que permita abarcar de mejor manera la meritocracia, considerando no solo percepciones sino que también preferencias y aspectos considerados no meritocraticos, como el uso de contactos y privilegios familiares. En segundo lugar, esta agenda se debería vincular en el futuro con otros aspectos de la desigualdad subjetiva, como son las preferencias redistributivas, así como también con la agenda más tradicional de formación ciudadana que abarca temas de participación, convivencia y actitudes democráticas. Finalmente, el caracter transversal de los datos utilizados plantea limitaciones para afirmar la direccionalidad de las relaciones, por lo que  futuros estudios podrían considerar datos longitudinales así como también experimentos de encuestas que permitan avanzar en los argumentos de causalidad.
+Although there is evidence in this research on the relevance of family and school elements in the socialization of meritocratic perception, there are a number of limitations to be taken into account in future research. First, the perception of meritocracy is only one aspect of research on meritocracy, which in turn is a specific element of the larger family of studies of subjective inequality. Future research should include tools to better cover the concept of meritocracy, considering not only perceptions but also preferences as well as aspects considered non-meritocratic, such as the use of family contacts and privileges. Secondly, this agenda should be linked in the future with other aspects of subjective inequality, such as redistributive preferences, as well as with the more traditional agenda of citizen formation that covers issues of participation, coexistence and democratic attitudes. Finally, the transversal nature of the data used has limitations to affirm the directionality of the relationships, therefore  future studies could consider longitudinal data as well as survey experiments that can advance arguments of causality.
 
-
-
-# Referencias
+# References
 
 <div id="refs"></div>
 
 <!-- # (APPENDIX) Apéndice {-} -->
-
 
 ```{r meds, eval=FALSE, include=FALSE}
 
@@ -1460,18 +1450,14 @@ options(knitr.kable.NA = '') # NA en kable = ''
 # Cargar base de datos procesada
 load(file = "input/data/ap_est.RData")
 
-
 #centrar variables
 #ap_est <-  ap_est %>% group_by(rbd_est) %>% mutate(perc_esfuerzo_est_mdg = mean(perc_esfuerzo_est,na.rm =T))
 #ap_est <- ap_est %>%  mutate(perc_esfuerzo_est_cmg = perc_esfuerzo_est - mean(perc_esfuerzo_est_mdg,na.rm =T))
 
-
 #ap_est <-  ap_est %>% group_by(rbd_est) %>% mutate(ingresos_pc_mdg = mean(ingresos_pc,na.rm =T))
 #ap_est <- ap_est %>%  mutate(ingresos_pc_cmg = ingresos_pc - mean(ingresos_pc_mdg,na.rm =T))
 
-
 #ap_est$perc_esfuerzo_ap_mdg %>% head()
-
 
 ap_est$perc_trabajo_duro_ap_numeric= as.numeric(ap_est$perc_trabajo_duro_factor_ap) #Convertir variable a númerica
 
@@ -1502,7 +1488,6 @@ basereg <- ap_est %>% dplyr::select(perc_trabajo_duro_est_num,
                              # rbd_est
                              ) %>% na.omit(basereg) %>% dplyr::select(-recompensa_factor_est,-resp_prof_factor)
 
-
 basereg$perc_trabajo_duro_ap_cmg=as.numeric(basereg$perc_trabajo_duro_ap_cmg) # Pasar a númerico
 basereg <- dummy_cols(basereg, select_columns = "quintiles_ingresos_pc_factor") # Dummificar
 basereg <- basereg %>% rename(quintil_1= `quintiles_ingresos_pc_factor_Quintil 1`, # Renombrar
@@ -1512,14 +1497,12 @@ basereg <- basereg %>% rename(quintil_1= `quintiles_ingresos_pc_factor_Quintil 1
                       quintil_5=`quintiles_ingresos_pc_factor_Quintil 5`,
                       quintil_ns=`quintiles_ingresos_pc_factor_No sabe/No responde`)
 
-
 # Modelos multinivel
 med.fit <- lme4::lmer(perc_trabajo_duro_ap_cmg ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns  + sj_direct_cwc + pos_pol_factor_ap +
                       pos_pol_factor_est +
                       genero_factor_est +
                       libros_hogar_factor_ap +
                       dependencia_factor_ap + (1|rbd_est), data = basereg)
-
 
 out.fit <- lme4::lmer(perc_trabajo_duro_est_num ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns  + perc_trabajo_duro_ap_cmg +  sj_direct_cwc  +
                       pos_pol_factor_ap +
@@ -1542,9 +1525,7 @@ med.outq4su=summary(med.outq4)
 med.outq5su=summary(med.outq5)
 med.outqnssu=summary(med.outqns)
 
-
 omit_coef="(Intercept)|(sj_direct_cwc)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)" # Omitir coeficientes de la visualización
-
 
 
 
@@ -1557,8 +1538,6 @@ omit_coef="(Intercept)|(sj_direct_cwc)|(libros_hogar_factor_ap)|(pos_pol_factor_
 
 
 
-
-
 # Modelos multinivel
 med.fitn <- lmer(sj_direct_cwc ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns + perc_trabajo_duro_ap_cmg+
                       pos_pol_factor_ap +
@@ -1567,13 +1546,11 @@ med.fitn <- lmer(sj_direct_cwc ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil
                       libros_hogar_factor_ap +
                       dependencia_factor_ap + (1|rbd_est), data = basereg)
 
-
 out.fitn <- lmer(perc_trabajo_duro_est_num ~ 1 + quintil_2 + quintil_3 + quintil_4 + quintil_5  + quintil_ns + sj_direct_cwc + perc_trabajo_duro_ap_cmg +   pos_pol_factor_ap +
                       pos_pol_factor_est +
                       genero_factor_est +
                       libros_hogar_factor_ap +
                       dependencia_factor_ap +(1|rbd_est), data = basereg)
-
 
 # Modelos mediación
 med.outq2sj <- mediation::mediate(med.fit, out.fit, treat = "quintil_2", mediator = "sj_direct_cwc",sims = 100)
@@ -1589,9 +1566,7 @@ med.outq4susj=summary(med.outq4sj)
 med.outq5susj=summary(med.outq5sj)
 med.outqnssusj=summary(med.outqnssj)
 
-
 omit_coef="(Intercept)|(perc_trabajo_duro_ap_cmg)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)" # Omitir coeficientes en la visualización
-
 
 # texreg::knitreg(list(med.fitn,out.fitn),caption = "Mediación Sensación de Justicia ", custom.model.names = c("SJ Notas","PM Estudiante"),
 #         omit.coef = omit_coef,
@@ -1601,7 +1576,6 @@ omit_coef="(Intercept)|(perc_trabajo_duro_ap_cmg)|(libros_hogar_factor_ap)|(pos_
 #         custom.note = "$***p <$ 0.001, $**p <$ 0.01, $*p <$ 0.05 <br> Controles aplicados en todos los modelos")
 #summary(med.outn)
 
-
 # Preparar tabla resumen
 collapse_rows_dt <- data.frame( Independiente = c(rep("Percepción Meritocratica Padres",5),rep("Sensación Justicia Notas",5)), Mediador = c("Quintil 2","Quintil 3","Quintil 4","Quintil 5","Quintil Ns/Nr"),
 
@@ -1610,14 +1584,11 @@ collapse_rows_dt <- data.frame( Independiente = c(rep("Percepción Meritocratica
                 'Efectos Indirectos' = c(paste0(round(c(med.outq2su$d0,med.outq3su$d0,med.outq4su$d0,med.outq5su$d0,med.outqnssu$d0),4),gtools::stars.pval(c(med.outq2su$d0.p,med.outq3su$d0.p,med.outq4su$d0.p,med.outq5su$d0.p,med.outqnssu$d0.p))),paste0(round(out.fitn@beta[18:22],4),gtools::stars.pval(c(med.outq2susj$d0.p,med.outq3susj$d0.p,med.outq4susj$d0.p,med.outq5susj$d0.p,med.outqnssusj$d0.p)))),
 
 
-
                  'Efectos Totales' =  c(
                    paste0(round(c(med.outq2su$tau.coef,med.outq3su$tau.coef,med.outq4su$tau.coef,med.outq5su$tau.coef,med.outqnssu$tau.coef),4),gtools::stars.pval(c(med.outq2su$tau.p,med.outq3su$tau.p,med.outq4su$tau.p,med.outq5su$tau.p,med.outqnssu$tau.p))),
 paste0(round(c(med.outq2susj$tau.coef,med.outq3susj$tau.coef,med.outq4susj$tau.coef,med.outq5susj$tau.coef,med.outqnssusj$tau.coef),4),gtools::stars.pval(c(med.outq2susj$tau.p,med.outq3susj$tau.p,med.outq4susj$tau.p,med.outq5susj$tau.p,med.outqnssusj$tau.p)))),
 
-
                  'Porcentaje Indirecto' = c(paste0(round(c(med.outq2su$n1*100,med.outq3su$n1*100,med.outq4su$n1*100,med.outq5su$n1*100,med.outqnssu$n1*100),1),"%"),paste0(round(c(med.outq2susj$n1*100,med.outq3susj$n1*100,med.outq4susj$n1*100,med.outq5susj$n1*100,med.outqnssusj$n1*100),1), '%' )))
-
 
 
 # Renderizar tabla
@@ -1630,5 +1601,5 @@ kable(collapse_rows_dt, format =table_format, booktabs = T, caption = "Resumen M
 
 
 
-
 ```
+
