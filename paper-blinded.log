@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.23)  24 AUG 2022 22:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.23)  24 AUG 2022 22:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**paper.tex
-(./paper.tex
+**paper-blinded.tex
+(./paper-blinded.tex
 LaTeX2e <2022-06-01> patch level 5
 L3 programming layer <2022-08-05> (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
@@ -497,12 +497,12 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 File: l3backend-pdftex.def 2022-08-05 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count313
 \l__pdf_internal_box=\box73
-) (./paper.aux
+) (./paper-blinded.aux
 
 LaTeX Warning: Label `table:coefficients' multiply defined.
 
 )
-\openout1 = `paper.aux'.
+\openout1 = `paper-blinded.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 146.
 LaTeX Font Info:    ... okay on input line 146.
@@ -529,9 +529,9 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 Package hyperref Info: Link coloring ON on input line 146.
-(./paper.out) (./paper.out)
+(./paper-blinded.out) (./paper-blinded.out)
 \@outlinefile=\write3
-\openout3 = `paper.out'.
+\openout3 = `paper-blinded.out'.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -632,23 +632,23 @@ LaTeX Font Info:    Trying to load font information for T1+pcr on input line 287
 (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 ) [11 <./output/tables/desc01_esc.png>]
-<paper_files/figure-latex/likert-1.pdf, id=293, 722.7pt x 505.89pt>
-File: paper_files/figure-latex/likert-1.pdf Graphic file (type pdf)
-<use paper_files/figure-latex/likert-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/likert-1.pdf  used on input line 296.
+<paper-blinded_files/figure-latex/likert-1.pdf, id=293, 722.7pt x 505.89pt>
+File: paper-blinded_files/figure-latex/likert-1.pdf Graphic file (type pdf)
+<use paper-blinded_files/figure-latex/likert-1.pdf>
+Package pdftex.def Info: paper-blinded_files/figure-latex/likert-1.pdf  used on input line 296.
 (pdftex.def)             Requested size: 399.29474pt x 279.5063pt.
-<paper_files/figure-latex/dens-sjust-1.pdf, id=295, 722.7pt x 505.89pt>
-File: paper_files/figure-latex/dens-sjust-1.pdf Graphic file (type pdf)
-<use paper_files/figure-latex/dens-sjust-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/dens-sjust-1.pdf  used on input line 307.
+<paper-blinded_files/figure-latex/dens-sjust-1.pdf, id=295, 722.7pt x 505.89pt>
+File: paper-blinded_files/figure-latex/dens-sjust-1.pdf Graphic file (type pdf)
+<use paper-blinded_files/figure-latex/dens-sjust-1.pdf>
+Package pdftex.def Info: paper-blinded_files/figure-latex/dens-sjust-1.pdf  used on input line 307.
 (pdftex.def)             Requested size: 399.29474pt x 279.5063pt.
-[12 <./paper_files/figure-latex/likert-1.pdf>]
-<paper_files/figure-latex/correl-1.pdf, id=310, 722.7pt x 505.89pt>
-File: paper_files/figure-latex/correl-1.pdf Graphic file (type pdf)
-<use paper_files/figure-latex/correl-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/correl-1.pdf  used on input line 320.
+[12 <./paper-blinded_files/figure-latex/likert-1.pdf>]
+<paper-blinded_files/figure-latex/correl-1.pdf, id=310, 722.7pt x 505.89pt>
+File: paper-blinded_files/figure-latex/correl-1.pdf Graphic file (type pdf)
+<use paper-blinded_files/figure-latex/correl-1.pdf>
+Package pdftex.def Info: paper-blinded_files/figure-latex/correl-1.pdf  used on input line 320.
 (pdftex.def)             Requested size: 399.29474pt x 279.5063pt.
-[13 <./paper_files/figure-latex/dens-sjust-1.pdf>]
+[13 <./paper-blinded_files/figure-latex/dens-sjust-1.pdf>]
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <12> on input line 391.
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 391.
@@ -657,19 +657,19 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 391.
-[14 <./paper_files/figure-latex/correl-1.pdf>] [15]
-<paper_files/figure-latex/interac-1.pdf, id=352, 794.97pt x 433.62pt>
-File: paper_files/figure-latex/interac-1.pdf Graphic file (type pdf)
-<use paper_files/figure-latex/interac-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/interac-1.pdf  used on input line 402.
+[14 <./paper-blinded_files/figure-latex/correl-1.pdf>] [15]
+<paper-blinded_files/figure-latex/interac-1.pdf, id=352, 794.97pt x 433.62pt>
+File: paper-blinded_files/figure-latex/interac-1.pdf Graphic file (type pdf)
+<use paper-blinded_files/figure-latex/interac-1.pdf>
+Package pdftex.def Info: paper-blinded_files/figure-latex/interac-1.pdf  used on input line 402.
 (pdftex.def)             Requested size: 469.76819pt x 256.23718pt.
-[16] [17 <./paper_files/figure-latex/interac-1.pdf>] [18]
-<paper_files/figure-latex/interac2-1.pdf, id=378, 794.97pt x 433.62pt>
-File: paper_files/figure-latex/interac2-1.pdf Graphic file (type pdf)
-<use paper_files/figure-latex/interac2-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/interac2-1.pdf  used on input line 477.
+[16] [17 <./paper-blinded_files/figure-latex/interac-1.pdf>] [18]
+<paper-blinded_files/figure-latex/interac2-1.pdf, id=378, 794.97pt x 433.62pt>
+File: paper-blinded_files/figure-latex/interac2-1.pdf Graphic file (type pdf)
+<use paper-blinded_files/figure-latex/interac2-1.pdf>
+Package pdftex.def Info: paper-blinded_files/figure-latex/interac2-1.pdf  used on input line 477.
 (pdftex.def)             Requested size: 469.76819pt x 256.23718pt.
-[19 <./paper_files/figure-latex/interac2-1.pdf>] [20] [21] [22] [23] [24] [25]
+[19 <./paper-blinded_files/figure-latex/interac2-1.pdf>] [20] [21] [22] [23] [24] [25]
 Underfull \hbox (badness 1803) in paragraph at lines 685--687
 []\T1/ptm/m/n/10.95 Torney-Purta, J. (2002). The school's role in de-vel-op-ing civic en-gage-ment: A study of ado-
  []
@@ -679,23 +679,23 @@ Underfull \hbox (badness 2158) in paragraph at lines 685--687
 \T1/ptm/m/n/10.95 les-cents in twenty-eight coun-tries. \T1/ptm/m/it/10.95 Ap-plied De-vel-op-men-tal Sci-ence\T1/ptm/m/n/10.95 , \T1/ptm/m/it/10.95 6\T1/ptm/m/n/10.95 (4), 203--212. [][]$https :
  []
 
-[26] (./paper.aux)
+[26] (./paper-blinded.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `paper.out' has not changed.
+Package rerunfilecheck Info: File `paper-blinded.out' has not changed.
 (rerunfilecheck)             Checksum: 50526F56E18A5531FC3FB1B96ED44E25;2067.
  ) 
 Here is how much of TeX's memory you used:
  14532 strings out of 479620
- 238895 string characters out of 5876257
- 572184 words of memory out of 5000000
+ 239359 string characters out of 5876257
+ 572216 words of memory out of 5000000
  32653 multiletter control sequences out of 15000+600000
  536112 words of font info for 97 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,14n,67p,1944b,569s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 60i,14n,67p,1952b,569s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}<c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (26 pages, 502890 bytes).
+Output written on paper-blinded.pdf (26 pages, 502929 bytes).
 PDF statistics:
  597 PDF objects out of 1000 (max. 8388607)
  521 compressed objects within 6 object streams
