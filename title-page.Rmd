@@ -1,0 +1,69 @@
+---
+title: "The Socialization of Meritocracy: The role of the Family and the School"
+css: "input/css/custom.css" # custom CSS para html
+linestretch: '1.5'          # interlineado
+link-citations: yes         # citas linkeadas
+# author:
+# - name: Juan Carlos Castillo ^[Corresponding author - juancastillov@uchile.cl - http://jc-castillo.com/]
+#   number: 1,2
+# - name: Julio Iturra
+#   affiliation: Centro de Estudios de Conflicto y Cohesión Social
+#   number: 2
+# - name: Francisco Meneses
+#   affiliation: Departamento de Sociología, Universidad de Chile
+#   number: 1
+# - name: Martín Venegas
+#   number: 1
+# Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.
+# abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual. Este sistema ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales, dado que llevaría a atribuir el éxito o fracaso personal a factores individuales por sobre determinantes sociales. La presente investigación se enfoca en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1,635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Los resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeneracionalmente a nivel familiar. Sin embargo, encontramos escasa evidencia de que esa relación se vea afectada por la experiencia de justicia distributiva en la escuela.
+# abstract: Meritocracy is understood as a system of distribution based on individual effort and talent. It has been widely questioned for its role in legitimizing social inequalities, given that it would lead to attributing personal success or failure to individual factors over social determinants. This research focuses on how some notions of meritocracy are learned during the school stage, considering the possible influence of socializing agents such as the family and the school. Using data from students and their families in 3 regions of Chile (N= 1,635 students from 64 schools), we analyze the extent to which parents' meritocratic perceptions are associated with their children, as well as the influence of the school experience of justice on grades. The results partially demonstrate that meritocratic perceptions are transmitted intergenerationally. Nevertheless, we find little evidence that this relationship is affected by the experience of distributive justice at school.
+# keywords: meritocracy socialization, sense of justice, Chile
+output:
+  bookdown::word_document2:
+    reference_docx: input/template.docx    
+  bookdown::html_document2:
+    number_sections: false
+  bookdown::pdf_document2:
+    template: null
+    toc: false
+    keep_tex: false
+    pandoc_args:
+      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion
+linkcolor: blue                         # enlaces y citas en color azul   
+bibliography: input/bib/socializacion-merit.bib     # bibliografia en bibtex
+csl: input/bib/apa.csl
+editor_options:
+  chunk_output_type: console            # en RStudio, mostrar output en consola
+geometry: "margin=1in" # márgenes de página
+fontsize: 12pt
+header-includes:
+  # - \usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+  - \usepackage {hyperref}
+  - \hypersetup {colorlinks = true, linkcolor = blue, urlcolor = blue}  
+  - \usepackage{times}           # Times New Roman
+  - \usepackage{caption}
+  - \captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=period,name={Figure}}
+  - \captionsetup[table]{labelfont={bf},labelformat={default},labelsep=period,name={Table}}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+---
+
+
+Juan Carlos Castillo, Department of Sociology, Universidad de Chile (
+juancastillov@uchile.cl - [jc-castillo.com](https://juancarloscastillo.github.io/jc-castillo/) -  Ignacio Carrera Pinto 1045 Ñuñoa, Santiago de Chile )
+
+Julio Iturra, Bremen International Graduate School of Social Sciences, University of Bremen
+
+Francisco Meneses, Department of Sociology, Universidad de Chile
+
+Martín Venegas, Department of Sociology, Universidad de Chile
