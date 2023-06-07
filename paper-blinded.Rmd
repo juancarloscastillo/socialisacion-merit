@@ -19,17 +19,17 @@ link-citations: yes         # citas linkeadas
 abstract: Meritocracy is understood as a system of distribution based on individual effort and talent. It has been widely questioned for its role in legitimizing social inequalities, given that it would lead to attributing personal success or failure to individual factors over social determinants. This research focuses on how some notions of meritocracy are learned during the school stage, considering the possible influence of socializing agents such as the family and the school. Using data from students and their families in 3 regions of Chile (N= 1,635 students from 64 schools), we analyze the extent to which parents' meritocratic perceptions are associated with their children, as well as the influence of the school experience of justice on grades. The results partially demonstrate that meritocratic perceptions are transmitted intergenerationally. Nevertheless, we find little evidence that this relationship is affected by the experience of distributive justice at school.
 keywords: meritocracy perception, sense of justice, socialisation
 output:
-  bookdown::html_document2:
-    number_sections: false
-  bookdown::word_document2:
-    reference_docx: input/template.docx
-    number_sections: false    
   bookdown::pdf_document2:
     template: null
     toc: false
     keep_tex: false
     pandoc_args:
       - --template=input/mytemplate.tex #custom template para usar autores con afiliacion
+  bookdown::word_document2:
+    reference_docx: input/template.docx
+    number_sections: false    
+  bookdown::html_document2:
+    number_sections: false
 linkcolor: blue                         # enlaces y citas en color azul   
 bibliography: input/bib/socializacion-merit.bib     # bibliografia en bibtex
 csl: input/bib/apa.csl
@@ -132,8 +132,6 @@ In this paper, our objective is to study the extent to which parental and school
 Through our first question, we focus on the extent to which the meritocratic perceptions of parents are associated with those of their children. For this, we rely on studies on the intergenerational reproduction of political attitudes [@astill_multilevel_2002; @miranda_desigualdad_2018], through which the transmission of opinions and intentions of political participation [@boonen_adolescent_2013; @quintelier_intergenerational_2015a], political beliefs about democracy [@greenstein_personality_2016] and political orientations [@jennings_politics_2009] have been approached. However, these investigations generally do not incorporate aspects related to distributive justice, which can be fundamental if we consider that people's ideas about inequality and the distribution of resources can generate political apathy [@easterbrook_social_2021], as well as  to tolerance towards authoritarian ideas [@madeira_primes_2019a; @azevedo_neoliberal_2019].
 
 The second topic of interest in this work is the role of the school in the meritocratic perceptions of students. In this regard, the literature on justice in schools has succeeded in highlighting the importance of distributive experiences in shaping the world view of young people. Works such as Resh and Sabbagh [-@resh_sense_2014; -@resh_sense_2017] have shown that the sense of justice that students have regarding the distribution of grades has an impact on their democratic attitudes and behaviors, as well as on institutional and social trust [@resh_sense_2018]. This evidence calls for a deeper understanding of the effect of the sense of justice on other aspects of young people's worldview, such as perceptions of meritocracy.
-
-
 
 # Conceptual and empirical background
 
@@ -992,17 +990,24 @@ getah.or6 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c
 # getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
 getah.or8 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","nse_grupo",ref),collapse="+"))), basereg)
 
+ # Nombre coeficientes
+
 coef_names <- c(
   "Sense of Justice in grades - Indirect (ln)",
   "Less than I deserve",
   "More than I deserve ",
   "Hard work is important¹",
-  "Quintile 2","Quintile 3","Quintile 4","Quintile 5","Quintile Don't know/No Answer",
+  "Quintile 2",
+  "Quintile 3",
+  "Quintile 4",
+  "Quintile 5",
+  "Quintile Don't know/No Answer",
   "Parents have universitary degree (ref: does not have)",
   "School Socio-economic status",
   "Hard work is important x Less than I deserve",
   "Hard work is important x More than I deserve"
   ) # Nombre coeficientes
+
 
 # knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
 #              # getah.or1,
@@ -1014,7 +1019,7 @@ coef_names <- c(
 #         )
 
 # Renderizar tabla
-knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
+htmlreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
              # getah.or1,
              getah.or6,
              # getah.or7,
@@ -1034,10 +1039,190 @@ knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
         custom.coef.names=coef_names,
         scalebox = 0.75,
         threeparttable = T,
-        custom.note="\\item *** p < 0.001; ** p < 0.01; * p < 0.05; \\item ¹Note: the perception of parent’s meritocracy was collapsed into dummies, where the category 'It is important' (1) includes the categories 'Very important', 'Important' and 'Somewhat important' and the reference category 'Not important' (0) corresponds to the category 'Not at all important'."
-        #file = "output/tables/trabajoduro_ppt.html"
+        custom.note="\\item *** p < 0.001; ** p < 0.01; * p < 0.05; \\item ¹Note: the perception of parent’s meritocracy was collapsed into dummies, where the category 'It is important' (1) includes the categories 'Very important', 'Important' and 'Somewhat important' and the reference category 'Not important' (0) corresponds to the category 'Not at all important'.",
+        file = "output/tables/trabajoduro_ppt.xls"
         )
 #webshot::webshot("output/tables/trabajoduro_ppt.html","output/tables/trabajoduro_ppt.png")
+
+```
+
+```{r plotgetah, eval=FALSE, include=FALSE}
+# Funciones para renderizar tablas tanto en HTML como en pdf
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, lme4, ordinal, webshot) # librerias
+knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
+                      message = FALSE,  # mensajes/avisos de librerias
+                      cache = FALSE,    # cache de los chunks,usar analisis pesados
+                      out.width = '85%',# largo de imagen en %
+                      fig.pos= "H",     # posicion figuras H = HERE
+                      echo = FALSE      # incluir chunk en output
+                      )
+
+# Otras configuraciones
+options(scipen=999) # notacion cientifica
+options(knitr.kable.NA = '') # NA en kable = ''
+
+# Cargar base de datos procesada
+load(file = "input/data/ap_est.RData")
+
+# Seleccionar variables para el análisis
+basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             perc_tduro_bi_est,
+                             perc_tduro_bi2_est,
+                             perc_tduro_bi3_est,
+                             perc_esfuerzo_bi_est,
+                             perc_tduro_bi_ap,
+                             perc_tduro_bi2_ap,
+                             perc_tduro_bi3_ap,
+                             perc_esfuerzo_bi_ap,
+                             prom_percmer_est,
+                             prom_percmer_ap,
+                             sj_direct_factor,
+                             sj_indirect_noln,
+                             sj_indirect_ln,
+                             sj_indirect_cat,
+                             sj_indirect_qtil,
+                             quintiles_ingresos_pc_factor,
+                             educ_factor_ap,
+                             libros_hogar_factor_ap,
+                             recompensa_est,  # recompensa en escuela
+                             resp_prof,# justicia trato profesor
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             # ingresos_esc,
+                             # ingresos_pc_esc,
+                             # univ_esc,
+                             univ,
+                             rbd_est,
+                             nse_grupo,univ
+                             ) %>% na.omit(basereg)
+
+basereg_est <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             sj_direct_factor,
+                             sj_indirect_ln_cwc,
+                             sj_indirect_ln,
+                             # sj_indirect_cat,
+                             # sj_indirect_qtil,
+                             genero_est, pos_pol_est,
+                             rbd_est
+                             ) %>% na.omit(basereg)
+
+getah.or6 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor",con,ref),collapse="+"))), basereg, nAGQ = 10)
+
+getah.or8 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","nse_grupo",ref),collapse="+"))), basereg)
+
+rm_plot <- c(
+  "Not important|Somewhat important",
+  "Somewhat important|Important",
+  "Important|Very important",
+  "quintiles_ingresos_pc_factorDon't know/No response",
+  "libros_hogar_factor_apBetween 11 and 25 books",
+  "libros_hogar_factor_apBetween 26 and 100 book",
+  "libros_hogar_factor_apBetween 101 and 200 books",
+  "libros_hogar_factor_apBetween 201 and 500 books",
+  "libros_hogar_factor_apMore than 500 books",
+  # "univ",
+  "pos_pol_factor_apCenter Right",
+  "pos_pol_factor_apCenter",
+  "pos_pol_factor_apCenter Left",
+  "pos_pol_factor_apLeft",
+  "pos_pol_factor_apIndependent",
+  "pos_pol_factor_apNone",
+  "pos_pol_factor_apNa/Nr",
+  "pos_pol_factor_estCenter Right",
+  "pos_pol_factor_estCenter",
+  "pos_pol_factor_estCenter Left",
+  "pos_pol_factor_estLeft",
+  "pos_pol_factor_estIndependent",
+  "pos_pol_factor_estNone",
+  "pos_pol_factor_estNa/Nr",
+  "genero_factor_estMujer",
+  "genero_factor_estOtro",
+  "dependencia_factor_apPart. Subvencionado",
+  "dependencia_factor_apPart. Privado")
+
+
+coef_names <- c(
+    "Hard work is important (ref: Not important)",
+  "Sense of Justice in grades - Indirect (ln)",
+  "Less than I deserve (ref: The ones I deserve)",
+  "More than I deserve ",
+  "Quintile 2 (ref: Quintile 1)",
+  "Quintile 3",
+  "Quintile 4",
+  "Quintile 5",
+  # "Quintile Don't know/No Answer",
+  "Parents have universitary degree (ref: does not have)",
+  "School Socio-economic status",
+  "Hard work is important x Less than I deserve",
+  "Hard work is important x More than I deserve"
+  ) # Nombre coeficientes
+
+library(pBrackets)
+library(grid)
+
+# plotgetah<- 
+# plot_model(getah.or8,rm.terms = rm_plot,show.intercept = F,
+#            show.p = T, show.values = T,
+#            # order.terms = c(2,3,4,1,5,6,7,8,9,10,11,12),
+#            axis.labels = rev(coef_names),
+#            ) +
+#   geom_hline(yintercept = 1)
+# plotgetah
+plotgetah<- 
+plot_models(getah.or6,getah.or8,rm.terms = rm_plot,
+            axis.labels = rev(coef_names),show.values = T,
+            m.labels = c("Individual", "Interactions"),
+            legend.title = "Models") +
+  geom_hline(yintercept = 1) +
+  theme(legend.position = "bottom")  
+
+ggplot2::ggsave(plot = plotgetah,device = "png",units = "cm",
+                width = 1,height = 1,scale = 18,
+                path =  "presentacion-effort/images/",
+                filename = "plotgetahead.png")
+# Elaborar modelo de interacción
+getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+
+# Preparar datos para gráfico
+basereg$fitted_or7 <- getah.or7$fitted.values
+pred_or7<- basereg %>%
+  dplyr::mutate(sj_direct_factor=relevel(sj_direct_factor,ref = "Less than I deserve")) %>%
+  dplyr::group_by(perc_trabajo_duro_factor_est,perc_tduro_bi_ap,sj_direct_factor) %>%
+  dplyr::summarise(yhat=mean(fitted_or7))
+
+# Elaborar gráfico interacción
+graph_interact <- ggplot2::ggplot(data=pred_or7, aes(x=perc_tduro_bi_ap, y=yhat,
+                          group=sj_direct_factor,
+                          color=sj_direct_factor,
+                         # fill=sj_direct_factor
+                         )) +
+  geom_point() +
+  geom_line()+
+  scale_x_discrete(labels = c("Not important", "Important")) +
+  facet_grid(~perc_trabajo_duro_factor_est) +
+  xlab("Importance of hard work (parents)") +
+  ylab("Probability") +
+  scale_color_discrete("Justice in grades - Direct") +
+  theme(legend.position="bottom")
+
+graph_interact
+
+ggplot2::ggsave(plot = graph_interact,device = "png",units = "cm",
+                width = 1,height = 1,scale = 18,
+                path =  "presentacion-effort/images/",
+                filename = "intergetahead.png")
 ```
 
 <!-- [SUBIR TABLA DE RECOMENSA AQUI] -->
@@ -1304,6 +1489,204 @@ texreg::knitreg(list(effort.or0.1,effort.or0.2,effort.or0.3,
         threeparttable = T,
         custom.note="\\item *** p < 0.001; ** p < 0.01; * p < 0.05; \\item ¹Note: the perception of parent’s meritocracy was collapsed into dummies, where the category 'Effort is rewarded' (1) includes the categories 'Agree' and 'Strongly Agree' and the reference category 'Is not rewarded' (0) corresponds to the categories 'Disagree' and 'Strongly Disagree'."
 )
+```
+
+
+```{r ploteffort, eval=FALSE, include=FALSE}
+# Funciones para renderizar tablas tanto en HTML como en pdf
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, ggplot2, ordinal, webshot) # librerias
+knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
+                      message = FALSE,  # mensajes/avisos de librerias
+                      cache = FALSE,    # cache de los chunks,usar analisis pesados
+                      out.width = '85%',# largo de imagen en %
+                      fig.pos= "H",     # posicion figuras H = HERE
+                      echo = FALSE      # incluir chunk en output
+                      )
+
+# Otras configuraciones
+options(scipen=999) # notacion cientifica
+options(knitr.kable.NA = '') # NA en kable = ''
+
+# Cargar base de datos procesada
+load(file = "input/data/ap_est.RData")
+
+# Seleccionar variables
+basereg <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             perc_trabajo_duro_factor_ap,
+                             perc_esfuerzo_factor_ap,
+                             perc_tduro_bi_est,
+                             perc_tduro_bi2_est,
+                             perc_tduro_bi3_est,
+                             perc_esfuerzo_bi_est,
+                             perc_tduro_bi_ap,
+                             perc_tduro_bi2_ap,
+                             perc_tduro_bi3_ap,
+                             perc_esfuerzo_bi_ap,
+                             prom_percmer_est,
+                             prom_percmer_ap,
+                             sj_direct_factor,
+                             sj_indirect_noln,
+                             sj_indirect_ln,
+                             sj_indirect_cat,
+                             sj_indirect_qtil,
+                             quintiles_ingresos_pc_factor,
+                             educ_factor_ap,
+                             libros_hogar_factor_ap,
+                             recompensa_est,  # recompensa en escuela
+                             resp_prof,# justicia trato profesor
+                             pos_pol_factor_ap,
+                             pos_pol_factor_est,
+                             genero_factor_est,
+                             dependencia_factor_ap,
+                             # ingresos_esc,
+                             # ingresos_pc_esc,
+                             # univ_esc,
+                             univ,
+                             rbd_est,
+                             nse_grupo,univ
+                             ) %>% na.omit(basereg)
+
+basereg_est <- ap_est %>% select(perc_trabajo_duro_factor_est,
+                             perc_esfuerzo_factor_est,
+                             perc_trabajo_duro_est,
+                             perc_esfuerzo_est,
+                             sj_direct_factor,
+                             sj_indirect_ln_cwc,
+                             sj_indirect_ln,
+                             # sj_indirect_cat,
+                             # sj_indirect_qtil,
+                             genero_est, pos_pol_est,
+                             rbd_est
+                             ) %>% na.omit(basereg)
+
+omit_coef="(Intercept)|(libros_hogar_factor_ap)|(pos_pol_factor_ap)|(pos_pol_factor_est)|(genero_factor_est)|(dependencia_factor_ap)"
+con <-c(
+  "quintiles_ingresos_pc_factor",
+  "libros_hogar_factor_ap",
+  "univ",
+  "pos_pol_factor_ap",
+  "pos_pol_factor_est",
+  "genero_factor_est",
+  "dependencia_factor_ap"
+  ) # Omitir coeficientes de la visualización
+
+ref <- "(1|rbd_est)" #Cluster
+
+cap1 <- "Multilevel ordinal logit models for Socialization of Effort is rewarded" # Título tabla
+
+
+effort.or6 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_ln","sj_direct_factor", con,ref),collapse="+"))), basereg)
+effort.or8 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor","nse_grupo",ref),collapse="+"))), basereg)
+
+
+rm_plot <- c(
+  "Strongly Disagree|Disagree",
+  "Disagree|Agree",
+  "Agree|Strongly Agree",
+  "quintiles_ingresos_pc_factorDon't know/No response",
+  "libros_hogar_factor_apBetween 11 and 25 books",
+  "libros_hogar_factor_apBetween 26 and 100 book",
+  "libros_hogar_factor_apBetween 101 and 200 books",
+  "libros_hogar_factor_apBetween 201 and 500 books",
+  "libros_hogar_factor_apMore than 500 books",
+  # "univ",
+  "pos_pol_factor_apCenter Right",
+  "pos_pol_factor_apCenter",
+  "pos_pol_factor_apCenter Left",
+  "pos_pol_factor_apLeft",
+  "pos_pol_factor_apIndependent",
+  "pos_pol_factor_apNone",
+  "pos_pol_factor_apNa/Nr",
+  "pos_pol_factor_estCenter Right",
+  "pos_pol_factor_estCenter",
+  "pos_pol_factor_estCenter Left",
+  "pos_pol_factor_estLeft",
+  "pos_pol_factor_estIndependent",
+  "pos_pol_factor_estNone",
+  "pos_pol_factor_estNa/Nr",
+  "genero_factor_estMujer",
+  "genero_factor_estOtro",
+  "dependencia_factor_apPart. Subvencionado",
+  "dependencia_factor_apPart. Privado")
+
+
+coef_names <- c(
+  "Effort is rewarded (ref: Effort is not rewarded)",
+  "Sense of Justice in grades - Indirect (ln)",
+  "Less than I deserve (ref: The ones I deserve)",
+  "More than I deserve",
+  "Quintile 2 (ref: Quintile 1)",
+  "Quintile 3",
+  "Quintile 4",
+  "Quintile 5",
+  # "Quintile Don't know/No Answer",
+  "Parents have universitary degree (ref: does not have)",
+  "School Socio-economic status",
+  "Effort is rewarded x Less than I deserve",
+  "Effort is rewarded x More than I deserve"
+  ) # Nombre coeficientes
+
+library(pBrackets)
+library(grid)
+
+# ploteffort<- 
+# plot_model(effort.or8,rm.terms = rm_plot,show.intercept = F,
+#            show.p = T, show.values = T,
+#            order.terms = c(2,3,4,1,5,6,7,8,9,10,11,12),
+#            axis.labels = rev(coef_names),
+#            ) +
+#   geom_hline(yintercept = 1)
+# ploteffort
+
+ploteffort<- 
+plot_models(effort.or6,effort.or8,rm.terms = rm_plot,
+            axis.labels = rev(coef_names),show.values = T,
+            m.labels = c("Individual", "Interactions"),
+            legend.title = "Models") +
+  geom_hline(yintercept = 1) +
+  theme(legend.position = "bottom")
+
+
+ggplot2::ggsave(plot = ploteffort,device = "png",units = "cm",
+                width = 1,height = 1,scale = 19,
+                path =  "presentacion-effort/images/",
+                filename = "ploteffort.png")
+# Elaborar modelo de interacción
+effort.or7 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+
+# Preparar datos para gráfico
+basereg$fitted_or7 <- effort.or7$fitted.values
+pred_or7<- basereg %>%
+  dplyr::mutate(sj_direct_factor=relevel(sj_direct_factor,ref = "Less than I deserve")) %>%
+  dplyr::group_by(perc_esfuerzo_factor_est,perc_esfuerzo_bi_ap,sj_direct_factor) %>%
+  dplyr::summarise(yhat=mean(fitted_or7))
+
+# Elaborar gráfico interacción
+graph_interact <- ggplot2::ggplot(data=pred_or7, aes(x=perc_esfuerzo_bi_ap, y=yhat,
+                          group=sj_direct_factor,
+                          color=sj_direct_factor,
+                         # fill=sj_direct_factor
+                         )) +
+  geom_point() +
+  geom_line()+
+  scale_x_discrete(labels = c("Disagree", "Agree")) +
+  facet_grid(~perc_esfuerzo_factor_est) +
+  xlab("In Chile, those who make an effort get ahead (parents)") +
+  ylab("Probability") +
+  scale_color_discrete("Justice in grades - Direct") +
+  theme(legend.position="bottom")
+
+graph_interact
+
+ggplot2::ggsave(plot = graph_interact,device = "png",units = "cm",
+                width = 1,height = 1,scale = 18,
+                path =  "presentacion-effort/images/",
+                filename = "intereffort.png")
 ```
 
 Table \@ref(tab:effort) shows the results of multilevel estimation for the second indicator of students' meritocracy perception: "in Chile those who work hard get ahead." As in the table above, Models 1 to 3 introduce the justice variables in grading, showing in this case a significant negative effect for those who feel unjustly rewarded for their grades. In other words, those who feel unjustly rewarded for their grades, in reference to those who consider they get what they deserve, are less likely to consider effort to be rewarded. In relation to the other variables, effects appear less consistent with the hypotheses and with the models in Table \@ref(tab:getah). For example, in this case family income does not show a very clear effect and is in some models even negative for one of the quintiles. In addition, the parents' perception of meritocracy does not show a significant effect in models 3 and 4.
