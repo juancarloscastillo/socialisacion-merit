@@ -3,20 +3,17 @@ title: "The Socialization of Meritocracy: The role of the Family and the School"
 css: "input/css/custom.css" # custom CSS para html
 linestretch: '1.5'          # interlineado
 link-citations: yes         # citas linkeadas
-author:
-- name: Juan Carlos Castillo ^[Corresponding author - juancastillov@uchile.cl - http://jc-castillo.com/]
-  affiliation: Departamento de Sociología, Universidad de Chile
-  number: 1
-- name: Julio Iturra
-  affiliation: Bremen International Graduate School of Social Sciences
-  number: 2
-- name: Francisco Meneses
-  number: 1
-- name: Martín Venegas
-  number: 1
-- name: Daniel Miranda
-  affiliation: Pontificia Universidad Catolica de Chile, MIDE UC
-  number: 3  
+# author:
+# - name: Juan Carlos Castillo ^[Corresponding author - juancastillov@uchile.cl - http://jc-castillo.com/]
+#   number: 1,2
+# - name: Julio Iturra
+#   affiliation: Centro de Estudios de Conflicto y Cohesión Social
+#   number: 2
+# - name: Francisco Meneses
+#   affiliation: Departamento de Sociología, Universidad de Chile
+#   number: 1
+# - name: Martín Venegas
+#   number: 1
 # Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.
 # abstract: La meritocracia se entiende como un sistema de distribución en base a esfuerzo y talento individual. Este sistema ha sido ampliamente cuestionado por su rol en la legitimación de las desigualdades sociales, dado que llevaría a atribuir el éxito o fracaso personal a factores individuales por sobre determinantes sociales. La presente investigación se enfoca en cómo se aprenden algunas nociones de meritocracia en la etapa escolar, atendiendo a la posible influencia de agentes socializadores como son la familia y la escuela. Utilizando datos de estudiantes y sus familias en 3 regiones de Chile (N= 1,635 estudiantes de 64 escuelas) se analiza en qué medida las percepciones meritocráticas de padres se asocian a las de sus hijas e hijos, así como también la influencia de la experiencia escolar de justicia en las notas. Los resultados dan cuenta, parcialmente, de que las percepciones meritocráticas son transmitidas intergeneracionalmente a nivel familiar. Sin embargo, encontramos escasa evidencia de que esa relación se vea afectada por la experiencia de justicia distributiva en la escuela.
 abstract: Meritocracy is understood as a system of distribution based on individual effort and talent. It has been widely questioned for its role in legitimizing social inequalities, given that it would lead to attributing personal success or failure to individual factors over social determinants. This research focuses on how some notions of meritocracy are learned during the school stage, considering the possible influence of socializing agents such as the family and the school. Using data from students and their families in 3 regions of Chile (N= 1,635 students from 64 schools), we analyze the extent to which parents' meritocratic perceptions are associated with their children, as well as the influence of the school experience of justice on grades. The results partially demonstrate that meritocratic perceptions are transmitted intergenerationally. Nevertheless, we find little evidence that this relationship is affected by the experience of distributive justice at school.
@@ -124,19 +121,6 @@ width_table = if(is_html_output()) {
 
 ```
 
-```{css, echo=FALSE}
-# /* expandir el espacio del documento*/
-body .main-container {
-      max-width: 1600px !important;
-      width: 1600px !important;
-    }
-#/* expandir width de la TOC*/
-div.tocify {
-    width: 22% !important;
-    max-width: 331px !important;
-    max-height: 102% !important;
-}
-```
 # Introduction
 
 Meritocracy is an ideal that aspires to the distribution of resources in a society according to personal effort and talent [@young_rise_2006]. This ideal is widely found in modern societies, where it is raised as a legitimate way to progress individually based on personal achievements, and therefore contrasts with the use of family privileges and personal contacts to get ahead [@hadjar_meritokratie_2008]. While obtaining rewards through effort and talent seems to be a credible representation of justice through equity, the implementation of meritocratic systems is far from being unproblematic. On the one hand, it has been argued that meritocracy allows the legitimization of inequalities by attributing success to personal achievement, thus underestimating the conditions of origin or the "starting point" [@hadjar_meritokratie_2008; @bay-cheng_agency_2015]. This implies great psychological and social pressure on young people, who regardless of the inequalities of their contexts, grow up surrounded by meritocratic discourses that constantly contrast with reality [@allen_top_2016]. On the other hand, the emphasis on individual capacities would lead to making people responsible for their situation and therefore less supportive of social policies that compensate for disadvantages: "For why do the successful owe anything to the less advantaged members of society?" [@sandel_tirania_2021 p.292]. In this way, the belief in meritocracy can diminish concern for the common good and solidarity.
@@ -148,8 +132,6 @@ In this paper, our objective is to study the extent to which parental and school
 Through our first question, we focus on the extent to which the meritocratic perceptions of parents are associated with those of their children. For this, we rely on studies on the intergenerational reproduction of political attitudes [@astill_multilevel_2002; @miranda_desigualdad_2018], through which the transmission of opinions and intentions of political participation [@boonen_adolescent_2013; @quintelier_intergenerational_2015a], political beliefs about democracy [@greenstein_personality_2016] and political orientations [@jennings_politics_2009] have been approached. However, these investigations generally do not incorporate aspects related to distributive justice, which can be fundamental if we consider that people's ideas about inequality and the distribution of resources can generate political apathy [@easterbrook_social_2021], as well as  to tolerance towards authoritarian ideas [@madeira_primes_2019a; @azevedo_neoliberal_2019].
 
 The second topic of interest in this work is the role of the school in the meritocratic perceptions of students. In this regard, the literature on justice in schools has succeeded in highlighting the importance of distributive experiences in shaping the world view of young people. Works such as Resh and Sabbagh [-@resh_sense_2014; -@resh_sense_2017] have shown that the sense of justice that students have regarding the distribution of grades has an impact on their democratic attitudes and behaviors, as well as on institutional and social trust [@resh_sense_2018]. This evidence calls for a deeper understanding of the effect of the sense of justice on other aspects of young people's worldview, such as perceptions of meritocracy.
-
-
 
 # Conceptual and empirical background
 
@@ -1030,7 +1012,7 @@ coef_names <- c(
 #         )
 
 # Renderizar tabla
-knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
+htmlreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
              # getah.or1,
              getah.or6,
              # getah.or7,
@@ -1050,8 +1032,8 @@ knitreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
         custom.coef.names=coef_names,
         scalebox = 0.75,
         threeparttable = T,
-        custom.note="\\item *** p < 0.001; ** p < 0.01; * p < 0.05; \\item ¹Note: the perception of parent’s meritocracy was collapsed into dummies, where the category 'It is important' (1) includes the categories 'Very important', 'Important' and 'Somewhat important' and the reference category 'Not important' (0) corresponds to the category 'Not at all important'."
-        #file = "output/tables/trabajoduro_ppt.html"
+        custom.note="\\item *** p < 0.001; ** p < 0.01; * p < 0.05; \\item ¹Note: the perception of parent’s meritocracy was collapsed into dummies, where the category 'It is important' (1) includes the categories 'Very important', 'Important' and 'Somewhat important' and the reference category 'Not important' (0) corresponds to the category 'Not at all important'.",
+        file = "output/tables/trabajoduro_ppt.xls"
         )
 #webshot::webshot("output/tables/trabajoduro_ppt.html","output/tables/trabajoduro_ppt.png")
 ```
@@ -1439,7 +1421,7 @@ Although there is evidence in this research on the relevance of family and schoo
 
 # References
 
-
+<div id="refs"></div>
 
 <!-- # (APPENDIX) Apéndice {-} -->
 
