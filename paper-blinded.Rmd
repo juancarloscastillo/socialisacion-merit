@@ -1050,7 +1050,7 @@ htmlreg(list(getah.or0.1,getah.or0.2,getah.or0.3,
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
-pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, lme4, ordinal, webshot) # librerias
+pacman::p_load(knitr, kableExtra, dplyr, haven, texreg, sjPlot, lme4, ordinal, webshot,ggplot2) # librerias
 knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
                       message = FALSE,  # mensajes/avisos de librerias
                       cache = FALSE,    # cache de los chunks,usar analisis pesados
@@ -1118,14 +1118,32 @@ basereg_est <- ap_est %>% select(perc_trabajo_duro_factor_est,
                              rbd_est
                              ) %>% na.omit(basereg)
 
-getah.or6 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor",con,ref),collapse="+"))), basereg, nAGQ = 10)
+con <-c(
+  "quintiles_ingresos_pc_factor",
+  "libros_hogar_factor_ap",
+  "univ",
+  "pos_pol_factor_ap",
+  "pos_pol_factor_est",
+  "genero_factor_est",
+  "dependencia_factor_ap"
+  ) # Omitir coeficientes en la visualización
 
-getah.or8 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","nse_grupo",ref),collapse="+"))), basereg)
+ref <- "(1|rbd_est)" # Cluster
+
+basereg$perc_tduro_bi_ap <- factor(basereg$perc_tduro_bi_ap,labels = c("Not important","Is important"))
+
+# getah.or6 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor",con,ref),collapse="+"))), basereg, nAGQ = 10)
+# 
+# getah.or8 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor","nse_grupo",ref),collapse="+"))), basereg)
+
+getah.or6 <- lmer(formula(paste("as.numeric(perc_trabajo_duro_factor_est)~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor","nse_grupo",con,ref),collapse="+"))), basereg)
+
+getah.or8 <- lmer(formula(paste("as.numeric(perc_trabajo_duro_factor_est)~",paste(c("perc_tduro_bi_ap","sj_indirect_ln","sj_direct_factor", "perc_tduro_bi_ap*sj_direct_factor",con,ref),collapse="+"))), basereg)
 
 rm_plot <- c(
-  "Not important|Somewhat important",
-  "Somewhat important|Important",
-  "Important|Very important",
+  # "Not important|Somewhat important",
+  # "Somewhat important|Important",
+  # "Important|Very important",
   "quintiles_ingresos_pc_factorDon't know/No response",
   "libros_hogar_factor_apBetween 11 and 25 books",
   "libros_hogar_factor_apBetween 26 and 100 book",
@@ -1180,48 +1198,71 @@ library(grid)
 #            ) +
 #   geom_hline(yintercept = 1)
 # plotgetah
+
+
 plotgetah<- 
 plot_models(getah.or6,getah.or8,rm.terms = rm_plot,
-            axis.labels = rev(coef_names),show.values = T,
-            m.labels = c("Individual", "Interactions"),
+            axis.labels = rev(coef_names),
+            show.values = T,
+            m.labels = c("Base", "Interactions"),
             legend.title = "Models") +
-  geom_hline(yintercept = 1) +
+  geom_hline(yintercept = 0) +
   theme(legend.position = "bottom")  
 
 ggplot2::ggsave(plot = plotgetah,device = "png",units = "cm",
                 width = 1,height = 1,scale = 18,
-                path =  "presentacion-effort/images/",
+                path =  "docs/presentacion-effort/images/",
                 filename = "plotgetahead.png")
+
 # Elaborar modelo de interacción
-getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+# getah.or7 <- ordinal::clmm(formula(paste("perc_trabajo_duro_factor_est~",paste(c("perc_tduro_bi_ap","sj_indirect_noln","sj_direct_factor", con, "perc_tduro_bi_ap*sj_direct_factor",ref),collapse="+"))), basereg)
+# 
+# # Preparar datos para gráfico
+# basereg$fitted_or7 <- getah.or7$fitted.values
+# pred_or7<- basereg %>%
+#   dplyr::mutate(sj_direct_factor=relevel(sj_direct_factor,ref = "Less than I deserve")) %>%
+#   dplyr::group_by(perc_trabajo_duro_factor_est,perc_tduro_bi_ap,sj_direct_factor) %>%
+#   dplyr::summarise(yhat=mean(fitted_or7))
+# 
+# # Elaborar gráfico interacción
+# graph_interact <- ggplot2::ggplot(data=pred_or7, aes(x=perc_tduro_bi_ap, y=yhat,
+#                           group=sj_direct_factor,
+#                           color=sj_direct_factor,
+#                          # fill=sj_direct_factor
+#                          )) +
+#   geom_point() +
+#   geom_line()+
+#   scale_x_discrete(labels = c("Not important", "Important")) +
+#   facet_grid(~perc_trabajo_duro_factor_est) +
+#   xlab("Importance of hard work (parents)") +
+#   ylab("Probability") +
+#   scale_color_discrete("Justice in grades - Direct") +
+#   theme(legend.position="bottom")
 
-# Preparar datos para gráfico
-basereg$fitted_or7 <- getah.or7$fitted.values
-pred_or7<- basereg %>%
-  dplyr::mutate(sj_direct_factor=relevel(sj_direct_factor,ref = "Less than I deserve")) %>%
-  dplyr::group_by(perc_trabajo_duro_factor_est,perc_tduro_bi_ap,sj_direct_factor) %>%
-  dplyr::summarise(yhat=mean(fitted_or7))
-
-# Elaborar gráfico interacción
-graph_interact <- ggplot2::ggplot(data=pred_or7, aes(x=perc_tduro_bi_ap, y=yhat,
-                          group=sj_direct_factor,
-                          color=sj_direct_factor,
-                         # fill=sj_direct_factor
-                         )) +
-  geom_point() +
-  geom_line()+
-  scale_x_discrete(labels = c("Not important", "Important")) +
-  facet_grid(~perc_trabajo_duro_factor_est) +
+graph_interact <- 
+plot_model(getah.or8,type =  "int") +
   xlab("Importance of hard work (parents)") +
-  ylab("Probability") +
-  scale_color_discrete("Justice in grades - Direct") +
-  theme(legend.position="bottom")
+  ylab("Predicted values: Importance of hard work (students)") +
+  ggtitle(NULL)+
+  theme(legend.position = "bottom",legend.title = element_blank())
 
-graph_interact
+# 
+# mtcars$gear <- factor(mtcars$gear)
+# m_gear <- lm(mpg ~ gear * wt, data = mtcars)
+# interplot(m = m_gear, var1 = "wt", var2 = "gear")
+# 
+# interplot::interplot(m = getah.or8, 
+#                      var1 = "sj_direct_factor", 
+#                      var2 = "perc_tduro_bi_ap")
+
+# ggeffects::ggpredict(getah.or8,terms =c("perc_tduro_bi_ap","sj_direct_factor")) %>% plot()
+# ggeffects::ggemmeans(getah.or8,terms =c("perc_tduro_bi_ap","sj_direct_factor")) %>% plot()
+
+# graph_interact
 
 ggplot2::ggsave(plot = graph_interact,device = "png",units = "cm",
-                width = 1,height = 1,scale = 18,
-                path =  "presentacion-effort/images/",
+                width = 1,height = 1,scale = 13,
+                path =  "docs/presentacion-effort/images/",
                 filename = "intergetahead.png")
 ```
 
@@ -1580,14 +1621,17 @@ ref <- "(1|rbd_est)" #Cluster
 cap1 <- "Multilevel ordinal logit models for Socialization of Effort is rewarded" # Título tabla
 
 
-effort.or6 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_ln","sj_direct_factor", con,ref),collapse="+"))), basereg)
-effort.or8 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor","nse_grupo",ref),collapse="+"))), basereg)
+# effort.or6 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_ln","sj_direct_factor", con,ref),collapse="+"))), basereg)
+# effort.or8 <- ordinal::clmm(formula(paste("perc_esfuerzo_factor_est~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor","nse_grupo",ref),collapse="+"))), basereg)
+
+effort.or6 <- lme4::lmer(formula(paste("as.numeric(perc_esfuerzo_factor_est)~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_ln","sj_direct_factor", con,ref),collapse="+"))), basereg)
+effort.or8 <- lme4::lmer(formula(paste("as.numeric(perc_esfuerzo_factor_est)~",paste(c("perc_esfuerzo_bi_ap","sj_indirect_ln","sj_direct_factor", con, "perc_esfuerzo_bi_ap*sj_direct_factor","nse_grupo",ref),collapse="+"))), basereg)
 
 
 rm_plot <- c(
-  "Strongly Disagree|Disagree",
-  "Disagree|Agree",
-  "Agree|Strongly Agree",
+  # "Strongly Disagree|Disagree",
+  # "Disagree|Agree",
+  # "Agree|Strongly Agree",
   "quintiles_ingresos_pc_factorDon't know/No response",
   "libros_hogar_factor_apBetween 11 and 25 books",
   "libros_hogar_factor_apBetween 26 and 100 book",
