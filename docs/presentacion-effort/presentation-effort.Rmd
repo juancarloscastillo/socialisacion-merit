@@ -50,6 +50,7 @@ class: middle title-slide
 .espaciosimplelineas[
 .small[
 Julio Iturra -  Bremen Int. Graduate School of Social Sciences
+[jiturra@bigsss.uni-bremen.de](jiturra@bigsss.uni-bremen.de)
 <br>
 Juan Carlos Castillo -  Universidad de Chile
 <br>
@@ -204,7 +205,7 @@ class: inverse animated slideInRight
 
 * School Citizenship Panel Survey (2019)
 
-- Highschool students (2nd) and parents (n = 541) nested in schools (n = 60)
+- High school students (2nd) and parents (n = 541) nested in schools (n = 60)
   
 * _Method:_  Multilevel regression models   
 ]
@@ -233,11 +234,12 @@ _Today in Chile, for getting ahead in life, how important is (...) Hard work_
 
 
 .pull-left[
+.bold[Obtained:] _What was your last year average grade? If you don't remember exactly, please give an approximate grade._ (M= 5.8)
 
+.bold[Deserved:] _And, what grade average do you think you deserved?_ (M=6.0)
 
-.bold[Obtained:] _What was your last year average grade? If you don't remember exactly, please give an approximate grade._ 
+Min: 1 / Max: 7
 
-.bold[Deserved:] _And, what grade average do you think you deserved?_ 
 $$\text{Justice}= \ln\biggl(\frac{\text{grade obtained}}{\text{grade deserved}}\biggl)$$
 
 ]
@@ -251,10 +253,10 @@ $$\text{Justice}= \ln\biggl(\frac{\text{grade obtained}}{\text{grade deserved}}\
 ---
 ### Justice in grades:  Direct 
 
-_Taking into account the time I ddedicate to my studies, the grades I get are:_
+_Taking into account the time I dedicate to my studies, the grades I get are:_
 
 .center[![:scale 90%](images/direct.png)]
-  ]  
+  
     
 ---
 
@@ -352,16 +354,23 @@ class: inverse animated slideInRight
 
 
 ---
-class: roja middle
+class: roja middle center
 
-# ¡Thank you!
+# Thank you!
+
+
 
 .right[
 .yellow[More information: 
 
+[jiturra@bigsss.uni-bremen.de](jiturra@bigsss.uni-bremen.de)
+
+
+[github.com/juancarloscastillo/socialisacion-merit](https://github.com/juancarloscastillo/socialisacion-merit)
+
+
 [www.ciudadania-escolar.cl](https://ciudadania-escolar.cl/)
 ]]
-
 
 
 
@@ -398,6 +407,7 @@ class: middle title-slide
 .espaciosimplelineas[
 .medium[
 Julio Iturra -  Bremen Int. Graduate School of Social Sciences
+[jiturra@bigsss.uni-bremen.de](jiturra@bigsss.uni-bremen.de)
 <br>
 Juan Carlos Castillo -  Universidad de Chile
 <br>
